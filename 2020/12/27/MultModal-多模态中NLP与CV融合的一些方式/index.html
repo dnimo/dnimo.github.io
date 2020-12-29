@@ -17,20 +17,20 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="多模态(MultiModal)  多种不同的信息源（不同的信息形式）中获取信息表达  五个挑战  表示（Multimodal Representation）的意思，比如shift旋转尺寸不变形，图像研究出的一种表示  表示的冗余问题 不同的信号，有的象征性信号，有波信号，什么样的表示方式方便多模态模型提取信息   表示的方法  联合表示将多个模态的信息一起映射到一个统一的多模态向量空间 协同表示负">
+  <meta name="description" content="多模态(MultiModal)  多种不同的信息源（不同的信息形式）中获取信息表达">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MultModal:多模态中NLP与CV融合的一些方式">
 <meta property="og:url" content="http://example.com/2020/12/27/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Masano">
-<meta property="og:description" content="多模态(MultiModal)  多种不同的信息源（不同的信息形式）中获取信息表达  五个挑战  表示（Multimodal Representation）的意思，比如shift旋转尺寸不变形，图像研究出的一种表示  表示的冗余问题 不同的信号，有的象征性信号，有波信号，什么样的表示方式方便多模态模型提取信息   表示的方法  联合表示将多个模态的信息一起映射到一个统一的多模态向量空间 协同表示负">
+<meta property="og:description" content="多模态(MultiModal)  多种不同的信息源（不同的信息形式）中获取信息表达">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/dnimo/img/master/MultModal-多模态中NLP与CV融合的一些方式/image-20201227143910022.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/dnimo/img/master/MultModal-多模态中NLP与CV融合的一些方式/image-20201227145655886.png">
 <meta property="article:published_time" content="2020-12-27T06:30:07.000Z">
-<meta property="article:modified_time" content="2020-12-29T10:45:48.000Z">
+<meta property="article:modified_time" content="2020-12-29T15:11:07.999Z">
 <meta property="article:author" content="Masano Yu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/dnimo/img/master/MultModal-多模态中NLP与CV融合的一些方式/image-20201227143910022.png">
@@ -211,7 +211,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-29 18:45:48" itemprop="dateModified" datetime="2020-12-29T18:45:48+08:00">2020-12-29</time>
+                <time title="Modified: 2020-12-29 23:11:07" itemprop="dateModified" datetime="2020-12-29T23:11:07+08:00">2020-12-29</time>
               </span>
 
           
@@ -229,6 +229,7 @@
 <blockquote>
 <p>多种不同的信息源（不同的信息形式）中获取信息表达</p>
 </blockquote>
+<a id="more"></a>
 <h4 id="五个挑战">五个挑战</h4>
 <ol type="1">
 <li>表示（Multimodal Representation）的意思，比如shift旋转尺寸不变形，图像研究出的一种表示
@@ -454,7 +455,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Masano Yu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
 
         
@@ -480,7 +481,7 @@
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/muse.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
 <script src="/js/next-boot.js"></script>
