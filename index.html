@@ -1,227 +1,1353 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>
-        Masano
-    </title>
-    
-<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-    
-<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/main.css">
 
-    
-<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Masano">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Masano">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Masano</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-<body id="bodyx">
-    <div class="hd logodiv">
-    <img src="/img/logo.png" class="logopng">
-    <p class="logot"><span class="logo_1">&lt;</span><span class="logo_2">/</span><span class="logo_3">#</span> MasanoYu <span class="logo_3">#</span><span class="logo_2">/</span><span class="logo_1">&gt;</span></p>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Masano</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
 </div>
-<div class="hd">
-    <ol class="breadcrumb">
-        
-            <li><a class="ba" href="/project">作品</a></li>
-        
-            <li><a class="ba" href="/domain">域名</a></li>
-        
-            <li><a class="ba" href="/links">友联</a></li>
-        
-            <li><a class="ba" href="/about">关于</a></li>
-        
-            <li><a class="ba" target="_blank" rel="noopener" href="https://github.com/dnimo">Github</a></li>
-        
-    </ol>
-    <hr class="breadcrumbhr">
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
 </div>
-<div class="hd">
+    </header>
+
     
-    
-        
-        
-            <div class="titlex">
-                <p><span class="jing">#</span>
-                    2020
-                </p>
-            </div>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
             
-        
-        <a class="flink" href="/2020/12/29/%E4%BA%86%E8%A7%A3N-Gram%E6%A8%A1%E5%9E%8B/">
-            <div class="list">
-                <div class="postname">
-                    了解N-Gram模型
-                </div>
-                <div class="posttime">
-                    December 29th
-                </div>
-            </div>
-        </a>
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/29/%E4%BA%86%E8%A7%A3N-Gram%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/%E4%BA%86%E8%A7%A3N-Gram%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">了解N-Gram模型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-29 16:05:20 / Modified: 20:41:16" itemprop="dateCreated datePublished" datetime="2020-12-29T16:05:20+08:00">2020-12-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
     
-        
-        
-        <a class="flink" href="/2020/12/27/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/">
-            <div class="list">
-                <div class="postname">
-                    MultModal:多模态中NLP与CV融合的一些方式
-                </div>
-                <div class="posttime">
-                    December 27th
-                </div>
-            </div>
-        </a>
     
-        
-        
-        <a class="flink" href="/2020/12/20/Parallel-Computing-in-TensorFlow/">
-            <div class="list">
-                <div class="postname">
-                    Parallel Computing in TensorFlow
-                </div>
-                <div class="posttime">
-                    December 20th
-                </div>
-            </div>
-        </a>
     
-        
-        
-        <a class="flink" href="/2020/12/18/Parallel-Computing-for-Machine-Learning/">
-            <div class="list">
-                <div class="postname">
-                    Parallel Computing for Machine Learning
-                </div>
-                <div class="posttime">
-                    December 18th
-                </div>
-            </div>
-        </a>
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="关于语言模型">关于语言模型</h4>
+<blockquote>
+<p>语言模型就是用来计算一个句子的概率的模型，也就是判断一句话是否合理的概率</p>
+<p>一开始，都是基于规则的语言模型研究，但这样往往有很大的问题，后来发明了基于统计的语言模型</p>
+<p>N-gram就是统计语言模型的一种，其他的还有RNN以及LSTM</p>
+</blockquote>
+<h4 id="n-gram详解">N-Gram详解</h4>
+<p>基于统计概率来说，我们需要计算句子的概率大小：<span class="math inline">\(P(S)=P(\omega_1,\omega_2,\cdot\cdot\cdot,\omega_n)\)</span> ，这个就是最终要求的一句话的概率，概率大说明更合理，概率小说明不合理</p>
+<p>因为是不能直接计算的，所以我们要应用条件概率得到：</p>
+<p><span class="math inline">\(P(\omega_1,\omega_2,\cdot\cdot\cdot,\omega_n)=P(\omega_1)*P(\omega_2|\omega_1)*P(\omega_3|\omega_1,\omega_2)\cdot\cdot\cdot P(\omega_n|\omega1,\cdot\cdot\cdot,\omega_{n-1})\)</span></p>
+<p>中间插入条件概率：P(B|A)：A条件下B发生的概率。从一个大的空间进入到一个字空间（切片），计算在子空间中的占比</p>
+<p><span class="math inline">\(P(B|A)=\frac{P(A,B)}{P(A)}\)</span></p>
+<p>然而，如果直接计算条件概率转化后的式子的话，对每个词要考虑它前面的所有词，这在实际中意义不大，而且不好计算。这个时候我们要基于马尔科夫假设来做简化</p>
+<h4 id="马尔科夫假设">马尔科夫假设</h4>
+<blockquote>
+<p>马尔可夫假设是指，每个词出现的概率只跟它前面的少数几个词有关，例如，二阶马尔可夫假设只考虑前面的两个词，相应的语言模型是三元模型。引入马尔科夫假设的语言模型，也叫做马尔科夫模型。</p>
+<p>马尔可夫链为状态空间中经过从一个状态到另一状态的转换的随机 过程。该过程要求具备“无记忆”的性质：下一个状态的概率分布只能由当前状态决定，在时间序列中它前面的事件均与之无关</p>
+</blockquote>
+<p>要就是说，应用了这个假设表明了当前这个词仅仅跟前面几个有限词相关，因此也就不必追溯到最开始的那个词，这样便可以大幅度缩减上述的算式长度</p>
+<p><span class="math inline">\(P(\omega_1,\omega_2,\cdots,\omega_n)=P(\omega_i|\omega_{i-m+1},\cdots,\omega_{i-1})\)</span></p>
+<blockquote>
+<p>这里的m表示前m个词相关</p>
+</blockquote>
+<p>然后我们可以设置m=1,2,3,....得到相应的一元模型，二元模型，三元模型</p>
+<p>而N-Gram模型也就是这样，当m=1，叫1-gram或者unigram；m=2，叫2-gram或者bigram</p>
+<h4 id="利用n-gram模型评估语句是否合理">利用N-Gram模型评估语句是否合理</h4>
+<p>假设现在有一个语料库，我们统计了下面的一些词出现的数量</p>
+<table>
+<thead>
+<tr class="header">
+<th>i</th>
+<th>want</th>
+<th>to</th>
+<th>eat</th>
+<th>chinese</th>
+<th>food</th>
+<th>lunch</th>
+<th>spend</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2533</td>
+<td>927</td>
+<td>2417</td>
+<td>746</td>
+<td>158</td>
+<td>1093</td>
+<td>341</td>
+<td>278</td>
+</tr>
+</tbody>
+</table>
+<p>下面的这些概率作为已知条件：</p>
+<p><span class="math inline">\(P(i|&lt;s&gt;)=0.25 \hspace{2cm} P(english|want)=0.0011\)</span></p>
+<p><span class="math inline">\(P(food|english)=0.5 \hspace{2cm} P(&lt;/s&gt;|food)=0.68\)</span></p>
+<p><span class="math inline">\(P(want|&lt;s&gt;)=0.25\)</span></p>
+<p>下面这个表给出了基于bigram模型进行计数之结果</p>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183103524.png" alt="image-20201229183103524" /><figcaption aria-hidden="true">image-20201229183103524</figcaption>
+</figure>
+<p>Ex：其中第一行，第二列表示给定前一个词是“i”时，当前词“want”的情况一共出现了827次，据此，我们便可以计算相应的频率分布表</p>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183248740.png" alt="image-20201229183248740" /><figcaption aria-hidden="true">image-20201229183248740</figcaption>
+</figure>
+<p>比如说，我们就以表中的<span class="math inline">\(P(eat|i)=0.0036\)</span> 这个概率值讲解，从表中得出”i“一共出现了2533次，而其后出现eat的次数一共有9次，<span class="math inline">\(P(eat|i)=P(eat,i)\hspace{2cm}P(i)=count(eat,i)/count(i)=\frac{9}{2533}=0.0036\)</span></p>
+<p>下面我们通过这个语料库进行判断：</p>
+<ul>
+<li>s1=“i want english food”</li>
+<li>S2="want i English food"</li>
+</ul>
+<p>首先判断p(s1)：<span class="math inline">\(P(s1)=P(i|&lt;s&gt;)P(want|i)P(english|want)P((food|english)P(&lt;/s&gt;|food)=0.000031\)</span></p>
+<p><span class="math inline">\(P(s2)=P(want|&lt;s&gt;)P(i|want)P(english|want)P(food|english)P(&lt;/s&gt;|food)=0.00000002057\)</span></p>
+<p>通过比较我们发现s1更合理，以上就是二元模型</p>
+
+      
+    </div>
+
     
-        
-        
-        <a class="flink" href="/2020/12/18/Bert-%E4%B8%BA%E4%BD%95%E5%AE%9A%E4%B9%89%E4%B8%BA%E5%8F%8C%E5%90%91%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%9F/">
-            <div class="list">
-                <div class="postname">
-                    Bert:为何定义为双向语言模型？
-                </div>
-                <div class="posttime">
-                    December 18th
-                </div>
-            </div>
-        </a>
     
-        
-        
-        <a class="flink" href="/2020/12/14/Tools-kafka%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">
-            <div class="list">
-                <div class="postname">
-                    Tools:kafka分布式消息中间件
-                </div>
-                <div class="posttime">
-                    December 14th
-                </div>
-            </div>
-        </a>
     
-        
-        
-        <a class="flink" href="/2020/12/14/Stanford-Machine-Learning-open-course/">
-            <div class="list">
-                <div class="postname">
-                    Stanford:Machine Learning open course
-                </div>
-                <div class="posttime">
-                    December 14th
-                </div>
-            </div>
-        </a>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/27/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">MultModal:多模态中NLP与CV融合的一些方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-27 14:30:07" itemprop="dateCreated datePublished" datetime="2020-12-27T14:30:07+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-29 18:45:48" itemprop="dateModified" datetime="2020-12-29T18:45:48+08:00">2020-12-29</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
     
-        
-        
-        <a class="flink" href="/2020/12/11/NLP-%E5%B1%82%E7%BA%A7%E6%80%A7%E5%A4%9A%E5%85%83%E6%A0%87%E7%AD%BE%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/">
-            <div class="list">
-                <div class="postname">
-                    NLP:层级性多元标签文本分类
-                </div>
-                <div class="posttime">
-                    December 11th
-                </div>
-            </div>
-        </a>
     
-        
-        
-        <a class="flink" href="/2020/12/11/hello-world/">
-            <div class="list">
-                <div class="postname">
-                    Hello World
-                </div>
-                <div class="posttime">
-                    December 11th
-                </div>
-            </div>
-        </a>
     
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="多模态multimodal">多模态(MultiModal)</h3>
+<blockquote>
+<p>多种不同的信息源（不同的信息形式）中获取信息表达</p>
+</blockquote>
+<h4 id="五个挑战">五个挑战</h4>
+<ol type="1">
+<li>表示（Multimodal Representation）的意思，比如shift旋转尺寸不变形，图像研究出的一种表示
+<ol type="1">
+<li>表示的冗余问题</li>
+<li>不同的信号，有的象征性信号，有波信号，什么样的表示方式方便多模态模型提取信息</li>
+</ol></li>
+</ol>
+<h4 id="表示的方法">表示的方法</h4>
+<ul>
+<li>联合表示将多个模态的信息一起映射到一个统一的多模态向量空间</li>
+<li>协同表示负责将多模态中的每个模态分别映射到各自的表示空间，但映射后的向量之间模组一定的相关性约束</li>
+</ul>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/MultModal-多模态中NLP与CV融合的一些方式/image-20201227143910022.png" alt="image-20201227143910022" /><figcaption aria-hidden="true">image-20201227143910022</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>翻译/转化/映射
+<ol type="1">
+<li>信号的映射，比如给一个图像，将图像翻译成文字，文字翻译成图像，信息转化成统一形式后来应用</li>
+<li>方式，跟专门研究翻译的领域重叠，基于实例的翻译，涉及到检索，字典（规则）等，基于生成方法如生成翻译的内容</li>
+</ol></li>
+<li>对齐
+<ol type="1">
+<li>多模态对齐定义为从两个或多个模态中查找实例子组件之间的关系和对应，研究不同信号如何对齐</li>
+<li>对齐方式，有专门研究对齐的领域，主要有两种，显示对齐（比如时间维度上就是显示对齐），隐式对齐（例如语言的翻译就不是位置对位置）</li>
+</ol></li>
+<li>融合
+<ol type="1">
+<li>比如情感分析中语气和语句的融合</li>
+<li>这个最难也是被研究最多的领域，例如音节和唇语头像怎么融合</li>
+</ol></li>
+</ol>
+<h3 id="应用">应用</h3>
+<p>试听语音识别，多媒体内容检索，视频理解，视频总结，事件监测，情感分析，视频会议情感分析，媒体描述，视觉问答等等，视觉与语言的结合比纯NLP，是离智能更近的一步</p>
+<h3 id="vqa">VQA</h3>
+<blockquote>
+<p>给定一张图片（视频）和一个与该图片相关的自然语言问题，计算机能产生一个正确的回答。这是文本QA和Image Captioning的结合，一般涉及到图像内容上的推理</p>
+</blockquote>
+<h4 id="目前vqa的四大方式">目前VQA的四大方式</h4>
+<ol type="1">
+<li>Joint rmbedding approaches，只是直接从源头编码的角度开始融合信息，最简单粗暴的方式就是把文本和图像的embedding直接拼接</li>
+<li>Attention mechanisms，很多VQA的问题都在attention上做文章，attention本身也是一个提取信息的动作</li>
+<li>Compositional Models，这种方式解决问题的思路是分模块，各模块分别处理不同的功能，然后通过模块的组装推理得出结果</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/MultModal-多模态中NLP与CV融合的一些方式/image-20201227145655886.png" alt="image-20201227145655886" /><figcaption aria-hidden="true">image-20201227145655886</figcaption>
+</figure>
+<p>在上图中，问题是what color is his tie？先选择出attend和classify模块，并且根据推理方式组装模块，最后得出结论</p>
+<ol start="4" type="1">
+<li><p>Models using external knowledge base</p>
+<blockquote>
+<p>利用外部知识库来做VQA很好理解，例如，为了回答“图上有多少只哺乳动物”这样的问题，模型必须要知道“哺乳动物”的定义，而你想从图像上去学习到哺乳动物是有难度的</p>
+</blockquote></li>
+</ol>
+<h3 id="多模态中cv和nlp融合的几种方式">多模态中CV和NLP融合的几种方式</h3>
+<ol type="1">
+<li>Bilinear Fusion双线性融合 and Joint embedding</li>
+</ol>
+<blockquote>
+<p>Bilinear Fusing 双线性融合是最常见的一种融合方式，很多论文用这种方式做基础结构，在CVPR2019一篇VQA多模态推理中，提出CELL就是基于BIlinear Fusion，作者做关系推理，不仅对问题与图片区域的交互关系建模，也对图片区域间的联系建模。并且推导过程是逐步逼近</p>
+<p>作者提出的NuRel，Bilinear Fusion将每个图像区域特征都分别与问题文本特征融合得到多模态embedding（Joint embedding），之后对这些embedding进行成对的关系建模</p>
+</blockquote>
+<ul>
+<li>双线性融合，所谓双线性简单来讲就是函数对于两个变量都是线性的，参数（表达两种信息关联）是个多维矩阵，作者采用的MUTAN模型里面的Tucker decomposition方法，将线性关系的参数分解，大大减小参数量</li>
+<li>Pairwise relation学习的是经过融合后节点之间的两两关系（主要是图像的关系），然后和原始text有效拼接</li>
+</ul>
+<ol start="2" type="1">
+<li>动态attention融合</li>
+</ol>
+<blockquote>
+<p>作者注意到了模态内和模态间的关系，即作者说的intra-modality relation（模态内部关系）和inter-modality relation（跨模态关系），作者使用了attention来做各种fusion</p>
+<p>作者认为intra-modality relation是对inter-modality relation的补充：图像区域不应该仅获得来自问题文本的信息，而且需要与其他图像区域产生联系</p>
+<p>模型结构是首先各自分别对图像和文本提取特征，然后通过模态内部的attention建模和模态间的attention建模，这个模块堆叠多次，最后拼接进行分类。模态间的attention是相互的（文本对图像，图像对文本），attention就是采用transform中的attention</p>
+<p>进行模态内关系建模的模块是Dynamic Intra- modality Attention Flow（DyIntra MAF），文中最大的亮点是进行了条件attention，即图像之间的attention信心建立不应该只根据图像，也要根据不同的具体问题而产生不同的关联</p>
+<p>这种条件attention的condition设计有点类似lstm的门机制，通过加入gating机制来控制信息，下图中图像的self- attention就是经过text的门机制来过滤信息。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/20/Parallel-Computing-in-TensorFlow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/20/Parallel-Computing-in-TensorFlow/" class="post-title-link" itemprop="url">Parallel Computing in TensorFlow</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-20 20:08:12 / Modified: 20:51:53" itemprop="dateCreated datePublished" datetime="2020-12-20T20:08:12+08:00">2020-12-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="tensorflow-dtrategies">TensorFlow Dtrategies</h3>
+<ul>
+<li>MirroredStrategy</li>
+<li>TPUStrategy</li>
+<li>MultiWorkerMirroredStrategy</li>
+<li>CentralStorageStrategy</li>
+<li>ParameterServerStrategy</li>
+<li>OneDeviceStrategy</li>
+</ul>
+<h4 id="ring-all-reduce-------mirroredstrategy">Ring All-Reduce ------MirroredStrategy</h4>
+<ul>
+<li>All-Reduce: Every node gets a copies of the result of reduce</li>
+<li>Reduce: The Server only</li>
+</ul>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220203817942.png" alt="image-20201220203817942" /><figcaption aria-hidden="true">image-20201220203817942</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220204519594.png" alt="image-20201220204519594" /><figcaption aria-hidden="true">image-20201220204519594</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/18/Parallel-Computing-for-Machine-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/18/Parallel-Computing-for-Machine-Learning/" class="post-title-link" itemprop="url">Parallel Computing for Machine Learning</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-18 20:01:36" itemprop="dateCreated datePublished" datetime="2020-12-18T20:01:36+08:00">2020-12-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-20 20:11:13" itemprop="dateModified" datetime="2020-12-20T20:11:13+08:00">2020-12-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="why-paralle-computing-for-ml">why paralle computing for ML?</h3>
+<ul>
+<li>Deep learning models are big: ResNet-50 has 25M parameters.</li>
+<li>Big models are trained on big data, e.g., Imagenet has 14M images.</li>
+<li>Big models + big data --&gt; Big computation cost</li>
+<li>Parallel computing: using multiple processors to make the computation faster(in terms of wall-clock time)</li>
+</ul>
+<blockquote>
+<p>通过并行计算只能减少钟表时间，不能减少CPU时间和GPU时间</p>
+</blockquote>
+<h3 id="least-squares-regression">Least Squares Regression</h3>
+<p>#### Linear Predictor</p>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218202134708-8297698.png" alt="image-20201218202134708" /><figcaption aria-hidden="true">image-20201218202134708</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218202804218-8297693.png" alt="image-20201218202804218" /><figcaption aria-hidden="true">image-20201218202804218</figcaption>
+</figure>
+<h3 id="parallel-gradient-descent-for-least-squares">Parallel Gradient Descent for Least Squares</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218203607101-8297691.png" alt="image-20201218203607101" /><figcaption aria-hidden="true">image-20201218203607101</figcaption>
+</figure>
+<blockquote>
+<p>The bottleneck of GD is at computing the gradient</p>
+<p>It is expensive if #samples and #parameters are both big</p>
+</blockquote>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218204316783-8297688.png" alt="image-20201218204316783" /><figcaption aria-hidden="true">image-20201218204316783</figcaption>
+</figure>
+<p><strong>Aggregate g(w) = g<sub>1</sub> + g<sub>2</sub></strong></p>
+<h3 id="communication">Communication</h3>
+<ol type="1">
+<li>share memeory
+<ol type="1">
+<li>can't to big computing</li>
+</ol></li>
+<li>message passing
+<ol type="1">
+<li>I/O is bottleneck</li>
+</ol></li>
+</ol>
+<figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbpj8p2mj31260oa46g.jpg" alt="image-20201218204704337" /><figcaption aria-hidden="true">image-20201218204704337</figcaption>
+</figure>
+<h3 id="synchronous-parallel-gradient-descent-using-mapreduce">Synchronous Parallel Gradient Descent using MapReduce</h3>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbpbo4ubj30n60pcdkv.jpg" alt="image-20201218205628107" style="zoom:50%;" /></p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbp6ua0bj30o40ocn3b.jpg" alt="image-20201218205649201" style="zoom:50%;" /></p>
+<ol type="1">
+<li>Broadcast: server broadcast the up-to-data parameters w<sub>t</sub> to workers</li>
+<li>Map: Workers do computation locally</li>
+<li>Reduce: Compute the sum: Gradient</li>
+<li>Server updates the parameters</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218210137506.png" alt="image-20201218210137506" /><figcaption aria-hidden="true">image-20201218210137506</figcaption>
+</figure>
+<h3 id="communication-cost">Communication Cost</h3>
+<ol type="1">
+<li>Communication complexity: How many words are transmitted between server and workers</li>
+<li>Latency: How much time it takes for a packet of data to get from one point to another</li>
+<li>Bulk Synchronous</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201218215235240.png" alt="image-20201218215235240" style="zoom:50%;" /></p>
+<h3 id="synchronous-parallel-gradient-descent">Synchronous Parallel Gradient Descent</h3>
+<ul>
+<li>Characters:client-server architecture, message-passing communication, and asynchronous</li>
+<li>(Note that MapReduce is bulk synchronous)</li>
+<li>Ray, an open-source software system, supports parameter server</li>
+</ul>
+<h4 id="asynchronous-gradient-descent">Asynchronous Gradient Descent</h4>
+<p>The i-th worker repeats:</p>
+<ol type="1">
+<li>Pull the up-to-date model parameters w from the server</li>
+<li>Compute gradient g<sub>i</sub> using its local data and w</li>
+<li>Push g<sub>i</sub> to the server</li>
+</ol>
+<h4 id="the-server-performs">The server performs:</h4>
+<ol type="1">
+<li>Receive gradient g<sub>i</sub> from a worker</li>
+<li>Update the parameters by: ==w &lt;-- w-alpha · g<sub>i</sub>==</li>
+</ol>
+<h4 id="pro-and-con-of-asynchronous-algorithms">Pro and con of Asynchronous Algorithms</h4>
+<ol type="1">
+<li>In practice, asynchronous algorithm are faster than the synchronous</li>
+<li>In theory, asnchronous algorithms has slower convergence rate</li>
+<li>Asynchronous algorithms have restrictions, e.g., a worker cannot be much slower than the others</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220193448083.png" alt="image-20201220193448083" /><figcaption aria-hidden="true">image-20201220193448083</figcaption>
+</figure>
+<h3 id="decentralized-network">Decentralized Network</h3>
+<ol type="1">
+<li>Charaters:peer-to-peer architecture (no central server), message-passing communication, a node communicate with its neighbors</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220194440806.png" alt="image-20201220194440806" /><figcaption aria-hidden="true">image-20201220194440806</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220194522617.png" alt="image-20201220194522617" /><figcaption aria-hidden="true">image-20201220194522617</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>Decentralized GD and SGD are guaranteed to converge, e.g.</li>
+<li>Convergence rate depends on how well the nodes are connected
+<ol type="1">
+<li>if the nodes forms a complete graph, then it has very fast convergence</li>
+<li>if the graph is not strongly connected, then it does not converge</li>
+</ol></li>
+</ol>
+<h5 id="reference">Reference</h5>
+<p>:package:<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/dnimo/img/master/article/1705.0905.pdf">Lian and others: Can decentralized algorithms outperform centralized algorithms? In NIPS, 2017.</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/18/Bert-%E4%B8%BA%E4%BD%95%E5%AE%9A%E4%B9%89%E4%B8%BA%E5%8F%8C%E5%90%91%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/18/Bert-%E4%B8%BA%E4%BD%95%E5%AE%9A%E4%B9%89%E4%B8%BA%E5%8F%8C%E5%90%91%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%9F/" class="post-title-link" itemprop="url">Bert:为何定义为双向语言模型？</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-18 14:28:10 / Modified: 14:37:42" itemprop="dateCreated datePublished" datetime="2020-12-18T14:28:10+08:00">2020-12-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="网络结构的双向以bilstm为例">网络结构的双向——以biLSTM为例</h3>
+<p>biLSTM是网络结构上的双向，如下图在网络结构上，每个单词都从正向和反向的到一个表示，然后将此表示进行连接，则此时认为该单词为双向表示。</p>
+<figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glrzv0yys5j30jg0eugnm.jpg" alt="lstm" /><figcaption aria-hidden="true">lstm</figcaption>
+</figure>
+<h3 id="bert的网络结构">Bert的网络结构</h3>
+<p>如下图所示Bert在网络结构层面并不是双向构造，那么我们为什么称Bert为双向语言模型呢？</p>
+<figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glrzxdl87xj307706iabr.jpg" alt="20200516233155897" /><figcaption aria-hidden="true">20200516233155897</figcaption>
+</figure>
+<h4 id="bert如何双向表示">Bert如何双向表示</h4>
+<p>首先我们知道Bert的预训练模型中，预训练任务是一个Mask LM，通过随机的把句子中的单词替换为Mask标签，然后对单词进行预测。</p>
+<p>那么对于模型而言，输入的是一个被挖空的句子，而由于Transformer的特性，它会注意到所有的单词，这就导致模型会根据挖空的上下文来进行预测，这就实现了双向表示，说明Bert是一个双向的语言模型。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/14/Tools-kafka%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/14/Tools-kafka%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-title-link" itemprop="url">Tools:kafka分布式消息中间件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-14 16:08:11 / Modified: 19:06:06" itemprop="dateCreated datePublished" datetime="2020-12-14T16:08:11+08:00">2020-12-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnkep9x89j30u00ohmzj.jpg" alt="思维导图" /><figcaption aria-hidden="true">思维导图</figcaption>
+</figure>
+<blockquote>
+<p>Problem:</p>
+</blockquote>
+<ol type="1">
+<li>什么是分布式消息中间件？</li>
+<li>中间件的作用是什么？</li>
+<li>使用场景？</li>
+<li>消息中间件的选型</li>
+</ol>
+<p>消息中间件采用分布式中间代理的方式进行通信.</p>
+<p>采用中间件将消息分发到对应的业务模块应用（分布式生产者-消费者模式）</p>
+<p>这种异步的方式，减少了服务之间的耦合程度</p>
+<h3 id="定义消息中间件">定义消息中间件</h3>
+<ol type="1">
+<li>利用高效可靠的消息传递机制进行平台无关的数据交流</li>
+<li>基于数据通信，进行分布式系统集成</li>
+<li>通过提供消息传递和消息排队模型，在分布式环境下扩展进程间的通信</li>
+</ol>
+<h3 id="常见的分布式消息系统对比">常见的分布式消息系统对比</h3>
+<figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnkxrl1e6j30hs0i3acr.jpg" alt="compete" /><figcaption aria-hidden="true">compete</figcaption>
+</figure>
+<h3 id="kafka架构">kafka架构</h3>
+<figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnkyugpfpj30ty0ixju2.jpg" alt="framework" /><figcaption aria-hidden="true">framework</figcaption>
+</figure>
+<h5 id="注解">注解</h5>
+<ul>
+<li>Producer：生产者，也就是发送消息的一方。生产者负责创建消息，然后将其发送到kafka</li>
+<li>Consumer：消费者，消息接收的一方。消费者连接到Kafka上并接受消息，进而进行相应的业务逻辑处理。</li>
+<li>Consumer Group：一个消费者组可以包含一个或多个消费者。使用多分区+多消费者的方式极大提高数据下游的处理速度，同一消费者组中的消费者不会重复消费消息，同样的，不同消费者组中的消费者消息互补影响。Kafka通过消费者组的方式来实现消息P2P模式和广播模式</li>
+<li>Broker：服务代理节点</li>
+<li>Topic：Kafka中的消息以Topic为单位进行划分，生产者将消息发送到特定的Topic，而消费者负责订阅Topic的消息并进行消费</li>
+<li>Partition：Topic是一个逻辑概念，它可以进行分区，每个分区只属于单个主题。同一个主题下不同分区包含的消息是不同的，分区在存储层面可以看作一个可追加的日志文件，消息在被追加到分区日志文件的时候都会被分配一个特定的偏移量</li>
+<li>Offset：消息在分区中的唯一表示，Kafka通过它来保证消息在分区内的顺序性，不过offset并不跨分区，换句话说，kafka保证的是分区有序性而不是主题有序性</li>
+<li>Replication：副本，保证数据高可用</li>
+<li>Record：实际写入kafka中并可以被读取的消息记录。每个Record包含了key、value和timestamp</li>
+</ul>
+<h3 id="kafka命令行工具">kafka命令行工具</h3>
+<p>Kafka 的命令行工具在 Kafka 包的<code>/bin</code>目录下，主要包括服务和集群管理脚本，配置脚本，信息查看脚本，Topic 脚本，客户端脚本等。</p>
+<ul>
+<li>kafka-configs.sh：配置管理脚本</li>
+<li>kafka-console-consumer.sh：kafka 消费者控制台</li>
+<li>kafka-console-producer.sh：kafka 生产者控制台</li>
+<li>kafka-consumer-groups.sh：kafka 消费者组相关信息</li>
+<li>kafka-delete-records.sh：删除低水位的日志文件</li>
+<li>kafka-log-dirs.sh：kafka 消息日志目录信息</li>
+<li>kafka-mirror-maker.sh：不同数据中心 kafka 集群复制工具</li>
+<li>kafka-preferred-replica-election.sh：触发 preferred replica 选举</li>
+<li>kafka-producer-perf-test.sh：kafka 生产者性能测试脚本</li>
+<li>kafka-reassign-partitions.sh：分区重分配脚本</li>
+<li>kafka-replica-verification.sh：复制进度验证脚本</li>
+<li>kafka-server-start.sh：启动 kafka 服务</li>
+<li>kafka-server-stop.sh：停止 kafka 服务</li>
+<li>kafka-topics.sh：topic 管理脚本</li>
+<li>kafka-verifiable-consumer.sh：可检验的 kafka 消费者</li>
+<li>kafka-verifiable-producer.sh：可检验的 kafka 生产者</li>
+<li>zookeeper-server-start.sh：启动 zk 服务</li>
+<li>zookeeper-server-stop.sh：停止 zk 服务</li>
+<li>zookeeper-shell.sh：zk 客户端</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/14/Stanford-Machine-Learning-open-course/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/14/Stanford-Machine-Learning-open-course/" class="post-title-link" itemprop="url">Stanford:Machine Learning open course</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-14 15:23:38" itemprop="dateCreated datePublished" datetime="2020-12-14T15:23:38+08:00">2020-12-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-18 19:55:48" itemprop="dateModified" datetime="2020-12-18T19:55:48+08:00">2020-12-18</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="what-is-machine-learning">What is Machine Learning?</h3>
+<h5 id="two-definitions">Two definitions:</h5>
+<ol type="1">
+<li>the field of study that gives computers the ability to learn without being explicitly programmed</li>
+<li>A computer program is said to learn from experience E with respect to some class of task T and performance P, if its performance a tasks in T, as meansured by P, improves with experience E.</li>
+</ol>
+<blockquote>
+<p>E = the experience of plaing many games of checkers</p>
+<p>T = the task of playing checkers</p>
+<p>p = the probability that the program will win the next game</p>
+</blockquote>
+<h3 id="supervised-learning">supervised learning</h3>
+<blockquote>
+<p>The term Supervised Learning refers to the fact that we gave the algorithm a data set in which the,</p>
+<p>called, "right answers" were given.</p>
+</blockquote>
+<ol type="1">
+<li>regreeion: Predict continuous valued output(such as price)</li>
+<li>classification: Discrete valued output (0 or 1), but sometimes you can have more than two possible values for output</li>
+</ol>
+<blockquote>
+<p>machine learning algorithm has lots of attributes, or features , or cues with which to make those predictions. That lead a problem that how to deal with an infinite number of features?</p>
+</blockquote>
+<h3 id="cocktail-party-problem-algorithm">Cocktail party problem algorithm</h3>
+<h5 id="forumla"><span class="citation" data-cites="forumla">@forumla</span> :</h5>
+<figure>
+<img src="/images/0081Kckwly1gls7tvj4ctj30tk01ogmu.jpg" alt="image-20201218190617596" /><figcaption aria-hidden="true">image-20201218190617596</figcaption>
+</figure>
+<p>Ps：svd means “奇异值分解”</p>
+<h3 id="unsupervised-learning">Unsupervised Learning</h3>
+<blockquote>
+<p>unsupervised learning allows us to approach problems with little or no idea what our results should loke like. We can derive structure from data where we don't necessarily know the effect of the varibles.</p>
+</blockquote>
+<h3 id="model-representation">Model Representation</h3>
+<blockquote>
+<p>m = Number of training examples</p>
+<p>x's = "input" variable / features</p>
+<p>y's = "output" variable / "target" variable</p>
+<p>Normal use (x,y) to denote a single traing example</p>
+<p>For specific training example, using x<sup>(i)</sup> comma y<sup>(i)</sup></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/11/NLP-%E5%B1%82%E7%BA%A7%E6%80%A7%E5%A4%9A%E5%85%83%E6%A0%87%E7%AD%BE%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/11/NLP-%E5%B1%82%E7%BA%A7%E6%80%A7%E5%A4%9A%E5%85%83%E6%A0%87%E7%AD%BE%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">NLP:层级性多元标签文本分类</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-11 21:11:03 / Modified: 21:15:55" itemprop="dateCreated datePublished" datetime="2020-12-11T21:11:03+08:00">2020-12-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="introduction">1. introduction</h3>
+<p>文本分类中，根据样本对应的标签数量，可分为单标签分类和多元标签分类。在多元标签分类任务中，根据标签的层级关系：可分为层级性多元标签和平行性多元标签（一般都默认平行）。</p>
+<p>在处理有结构的多元标签分类任务上，现有的很多模型都是non-hierarchical flat mode，只是平行化的利用标签的层级关系信息，而作者的模型是hierarchical mode，一个有层级结构的模型。</p>
+<p><strong>训练学习的思路</strong>：</p>
+<ol type="1">
+<li>输入的是样本一段短文本sentence，将sentence转换成词embedding，文中利用的fastText;</li>
+<li>接着先训练样本的顶层label(A,B)，具体是在embedding层后加一个卷积层(convoluational layer)，最大池化层(maxpooling layer)，全连接层+dropout，最后加个sigmoid层，用的二元交叉熵(binary cross-entorpy loss)进行A,B标签预测，这一个CNN分类框架；</li>
+<li>在预测下一层标签时(A1,A2,B1,B2)，采用的仍是CNN结构，只是在embedding layer和convoluational layer不重新生成，而是继承上一层学习的结果，然后在这个基础上进行微调学习；</li>
+<li>按照2，3步骤，遍历整个层级标签；</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/11/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/11/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-11 20:54:59" itemprop="dateCreated datePublished" datetime="2020-12-11T20:54:59+08:00">2020-12-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
 </div>
-    <div class="footer" id="footer">
-    <p>Copyright © 2020 <a class="flink" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>-<a class="flink" target="_blank" rel="noopener" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
-        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
-            <input type="checkbox" name="switch" id="update_style">
-            <span class="el-switch-style"></span>
-        </label>
-<!--         <script type="text/javascript">
-        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
-        </script> -->
-    </p>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
 </div>
-<input type="hidden" id="web_style" value="black">
-<input type="hidden" id="valine_appid" value="MeWCTePGu9T30hF9ddgxhFos-gzGzoHsz">
-<input type="hidden" id="valine_appKey" value="xMcQwnxYVyT5UqgWzMOqVBPz">
-
-<script src="/libs/jquery.min.js"></script>
 
 
-<script src="/libs/highlight/highlight.pack.js"></script>
 
-<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+      </div>
 
-<script src="/js/js.js"></script>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
 
-<style type="text/css">
-.v * {
-    color: #698fca;
-}
 
-.v .vlist .vcard .vhead .vsys {
-    color: #3a3e4a;
-}
+      </div>
+    </main>
 
-.v .vlist .vcard .vh .vmeta .vat {
-    color: #638fd5;
-}
+    <footer class="footer">
+      <div class="footer-inner">
+        
 
-.v .vlist .vcard .vhead .vnick {
-    color: #6ba1ff;
-}
+        
 
-.v a {
-    color: #8696b1;
-}
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
 
-.v .vlist .vcard .vhead .vnick:hover {
-    color: #669bfc;
-}
-</style>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
 </body>
-
 </html>
