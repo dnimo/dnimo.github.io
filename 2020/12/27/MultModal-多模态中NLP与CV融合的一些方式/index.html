@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Masano
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            MultModal:多模态中NLP与CV融合的一些方式
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h3 id="多模态-MultiModal"><a href="#多模态-MultiModal" class="headerlink" title="多模态(MultiModal)"></a>多模态(MultiModal)</h3><blockquote>
+<p>多种不同的信息源（不同的信息形式）中获取信息表达</p>
+</blockquote>
+<h4 id="五个挑战"><a href="#五个挑战" class="headerlink" title="五个挑战"></a>五个挑战</h4><ol>
+<li>表示（Multimodal Representation）的意思，比如shift旋转尺寸不变形，图像研究出的一种表示<ol>
+<li>表示的冗余问题</li>
+<li>不同的信号，有的象征性信号，有波信号，什么样的表示方式方便多模态模型提取信息</li>
+</ol>
+</li>
+</ol>
+<h4 id="表示的方法"><a href="#表示的方法" class="headerlink" title="表示的方法"></a>表示的方法</h4><ul>
+<li>联合表示将多个模态的信息一起映射到一个统一的多模态向量空间</li>
+<li>协同表示负责将多模态中的每个模态分别映射到各自的表示空间，但映射后的向量之间模组一定的相关性约束</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/dnimo/img/master/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/image-20201227143910022.png" alt="image-20201227143910022"></p>
+<ol start="2">
+<li>翻译/转化/映射<ol>
+<li>信号的映射，比如给一个图像，将图像翻译成文字，文字翻译成图像，信息转化成统一形式后来应用</li>
+<li>方式，跟专门研究翻译的领域重叠，基于实例的翻译，涉及到检索，字典（规则）等，基于生成方法如生成翻译的内容</li>
+</ol>
+</li>
+<li>对齐<ol>
+<li>多模态对齐定义为从两个或多个模态中查找实例子组件之间的关系和对应，研究不同信号如何对齐</li>
+<li>对齐方式，有专门研究对齐的领域，主要有两种，显示对齐（比如时间维度上就是显示对齐），隐式对齐（例如语言的翻译就不是位置对位置）</li>
+</ol>
+</li>
+<li>融合<ol>
+<li>比如情感分析中语气和语句的融合</li>
+<li>这个最难也是被研究最多的领域，例如音节和唇语头像怎么融合</li>
+</ol>
+</li>
+</ol>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>试听语音识别，多媒体内容检索，视频理解，视频总结，事件监测，情感分析，视频会议情感分析，媒体描述，视觉问答等等，视觉与语言的结合比纯NLP，是离智能更近的一步</p>
+<h3 id="VQA"><a href="#VQA" class="headerlink" title="VQA"></a>VQA</h3><blockquote>
+<p>给定一张图片（视频）和一个与该图片相关的自然语言问题，计算机能产生一个正确的回答。这是文本QA和Image Captioning的结合，一般涉及到图像内容上的推理</p>
+</blockquote>
+<h4 id="目前VQA的四大方式"><a href="#目前VQA的四大方式" class="headerlink" title="目前VQA的四大方式"></a>目前VQA的四大方式</h4><ol>
+<li>Joint rmbedding approaches，只是直接从源头编码的角度开始融合信息，最简单粗暴的方式就是把文本和图像的embedding直接拼接</li>
+<li>Attention mechanisms，很多VQA的问题都在attention上做文章，attention本身也是一个提取信息的动作</li>
+<li>Compositional Models，这种方式解决问题的思路是分模块，各模块分别处理不同的功能，然后通过模块的组装推理得出结果</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/dnimo/img/master/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/image-20201227145655886.png" alt="image-20201227145655886"></p>
+<p>在上图中，问题是what color is his tie？先选择出attend和classify模块，并且根据推理方式组装模块，最后得出结论</p>
+<ol start="4">
+<li><p>Models using external knowledge base</p>
+<blockquote>
+<p>利用外部知识库来做VQA很好理解，例如，为了回答“图上有多少只哺乳动物”这样的问题，模型必须要知道“哺乳动物”的定义，而你想从图像上去学习到哺乳动物是有难度的</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="多模态中CV和NLP融合的几种方式"><a href="#多模态中CV和NLP融合的几种方式" class="headerlink" title="多模态中CV和NLP融合的几种方式"></a>多模态中CV和NLP融合的几种方式</h3><ol>
+<li>Bilinear Fusion双线性融合 and Joint embedding</li>
+</ol>
+<blockquote>
+<p>Bilinear Fusing 双线性融合是最常见的一种融合方式，很多论文用这种方式做基础结构，在CVPR2019一篇VQA多模态推理中，提出CELL就是基于BIlinear Fusion，作者做关系推理，不仅对问题与图片区域的交互关系建模，也对图片区域间的联系建模。并且推导过程是逐步逼近</p>
+<p>作者提出的NuRel，Bilinear Fusion将每个图像区域特征都分别与问题文本特征融合得到多模态embedding（Joint embedding），之后对这些embedding进行成对的关系建模</p>
+</blockquote>
+<ul>
+<li>双线性融合，所谓双线性简单来讲就是函数对于两个变量都是线性的，参数（表达两种信息关联）是个多维矩阵，作者采用的MUTAN模型里面的Tucker decomposition方法，将线性关系的参数分解，大大减小参数量</li>
+<li>Pairwise relation学习的是经过融合后节点之间的两两关系（主要是图像的关系），然后和原始text有效拼接</li>
+</ul>
+<ol start="2">
+<li>动态attention融合</li>
+</ol>
+<blockquote>
+<p>作者注意到了模态内和模态间的关系，即作者说的intra-modality relation（模态内部关系）和inter-modality relation（跨模态关系），作者使用了attention来做各种fusion</p>
+<p>作者认为intra-modality relation是对inter-modality relation的补充：图像区域不应该仅获得来自问题文本的信息，而且需要与其他图像区域产生联系</p>
+<p>模型结构是首先各自分别对图像和文本提取特征，然后通过模态内部的attention建模和模态间的attention建模，这个模块堆叠多次，最后拼接进行分类。模态间的attention是相互的（文本对图像，图像对文本），attention就是采用transform中的attention</p>
+<p>进行模态内关系建模的模块是Dynamic Intra- modality Attention Flow（DyIntra MAF），文中最大的亮点是进行了条件attention，即图像之间的attention信心建立不应该只根据图像，也要根据不同的具体问题而产生不同的关联</p>
+<p>这种条件attention的condition设计有点类似lstm的门机制，通过加入gating机制来控制信息，下图中图像的self- attention就是经过text的门机制来过滤信息。</p>
+</blockquote>
+
+    </div>
+
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>-<a class="flink" target="_blank" rel="noopener" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="MeWCTePGu9T30hF9ddgxhFos-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="xMcQwnxYVyT5UqgWzMOqVBPz">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>
