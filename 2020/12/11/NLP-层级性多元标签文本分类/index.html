@@ -17,7 +17,9 @@
     
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
 
 <body id="bodyx">
     <div class="hd posts">
@@ -29,13 +31,14 @@
         <hr>
     </div>
     <div class="post-content">
-        <h3 id="1-introduction"><a href="#1-introduction" class="headerlink" title="1. introduction"></a>1. introduction</h3><p>文本分类中，根据样本对应的标签数量，可分为单标签分类和多元标签分类。在多元标签分类任务中，根据标签的层级关系：可分为层级性多元标签和平行性多元标签（一般都默认平行）。</p>
+        <h3 id="introduction">1. introduction</h3>
+<p>文本分类中，根据样本对应的标签数量，可分为单标签分类和多元标签分类。在多元标签分类任务中，根据标签的层级关系：可分为层级性多元标签和平行性多元标签（一般都默认平行）。</p>
 <p>在处理有结构的多元标签分类任务上，现有的很多模型都是non-hierarchical flat mode，只是平行化的利用标签的层级关系信息，而作者的模型是hierarchical mode，一个有层级结构的模型。</p>
-<p><strong>训练学习的思路</strong>： </p>
-<ol>
-<li>输入的是样本一段短文本sentence，将sentence转换成词embedding，文中利用的fastText; </li>
-<li>接着先训练样本的顶层label(A,B)，具体是在embedding层后加一个卷积层(convoluational layer)，最大池化层(maxpooling layer)，全连接层+dropout，最后加个sigmoid层，用的二元交叉熵(binary cross-entorpy loss)进行A,B标签预测，这一个CNN分类框架； </li>
-<li>在预测下一层标签时(A1,A2,B1,B2)，采用的仍是CNN结构，只是在embedding layer和convoluational layer不重新生成，而是继承上一层学习的结果，然后在这个基础上进行微调学习； </li>
+<p><strong>训练学习的思路</strong>：</p>
+<ol type="1">
+<li>输入的是样本一段短文本sentence，将sentence转换成词embedding，文中利用的fastText;</li>
+<li>接着先训练样本的顶层label(A,B)，具体是在embedding层后加一个卷积层(convoluational layer)，最大池化层(maxpooling layer)，全连接层+dropout，最后加个sigmoid层，用的二元交叉熵(binary cross-entorpy loss)进行A,B标签预测，这一个CNN分类框架；</li>
+<li>在预测下一层标签时(A1,A2,B1,B2)，采用的仍是CNN结构，只是在embedding layer和convoluational layer不重新生成，而是继承上一层学习的结果，然后在这个基础上进行微调学习；</li>
 <li>按照2，3步骤，遍历整个层级标签；</li>
 </ol>
 

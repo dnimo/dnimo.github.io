@@ -17,7 +17,9 @@
     
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
 
 <body id="bodyx">
     <div class="hd posts">
@@ -29,88 +31,116 @@
         <hr>
     </div>
     <div class="post-content">
-        <h3 id="why-paralle-computing-for-ML"><a href="#why-paralle-computing-for-ML" class="headerlink" title="why paralle computing for ML?"></a>why paralle computing for ML?</h3><ul>
+        <h3 id="why-paralle-computing-for-ml">why paralle computing for ML?</h3>
+<ul>
 <li>Deep learning models are big: ResNet-50 has 25M parameters.</li>
 <li>Big models are trained on big data, e.g., Imagenet has 14M images.</li>
-<li>Big models + big data –&gt; Big computation cost</li>
+<li>Big models + big data --&gt; Big computation cost</li>
 <li>Parallel computing: using multiple processors to make the computation faster(in terms of wall-clock time)</li>
 </ul>
 <blockquote>
 <p>通过并行计算只能减少钟表时间，不能减少CPU时间和GPU时间</p>
 </blockquote>
-<h3 id="Least-Squares-Regression"><a href="#Least-Squares-Regression" class="headerlink" title="Least Squares Regression"></a>Least Squares Regression</h3><h4 id="Linear-Predictor"><a href="#Linear-Predictor" class="headerlink" title="Linear Predictor"></a>Linear Predictor</h4><p><img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218202134708-8297698.png" alt="image-20201218202134708"></p>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218202804218-8297693.png" alt="image-20201218202804218"></p>
-<h3 id="Parallel-Gradient-Descent-for-Least-Squares"><a href="#Parallel-Gradient-Descent-for-Least-Squares" class="headerlink" title="Parallel Gradient Descent for Least Squares"></a>Parallel Gradient Descent for Least Squares</h3><p><img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218203607101-8297691.png" alt="image-20201218203607101"></p>
+<h3 id="least-squares-regression">Least Squares Regression</h3>
+<p>#### Linear Predictor</p>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218202134708-8297698.png" alt="image-20201218202134708" /><figcaption aria-hidden="true">image-20201218202134708</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218202804218-8297693.png" alt="image-20201218202804218" /><figcaption aria-hidden="true">image-20201218202804218</figcaption>
+</figure>
+<h3 id="parallel-gradient-descent-for-least-squares">Parallel Gradient Descent for Least Squares</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218203607101-8297691.png" alt="image-20201218203607101" /><figcaption aria-hidden="true">image-20201218203607101</figcaption>
+</figure>
 <blockquote>
 <p>The bottleneck of GD is at computing the gradient</p>
 <p>It is expensive if #samples and #parameters are both big</p>
 </blockquote>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218204316783-8297688.png" alt="image-20201218204316783"></p>
-<p><strong>Aggregate g(w) = g<del>1</del> + g<del>2</del></strong></p>
-<h3 id="Communication"><a href="#Communication" class="headerlink" title="Communication"></a>Communication</h3><ol>
-<li>share memeory <ol>
-<li>can’t to big computing</li>
-</ol>
-</li>
-<li>message passing<ol>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218204316783-8297688.png" alt="image-20201218204316783" /><figcaption aria-hidden="true">image-20201218204316783</figcaption>
+</figure>
+<p><strong>Aggregate g(w) = g<sub>1</sub> + g<sub>2</sub></strong></p>
+<h3 id="communication">Communication</h3>
+<ol type="1">
+<li>share memeory
+<ol type="1">
+<li>can't to big computing</li>
+</ol></li>
+<li>message passing
+<ol type="1">
 <li>I/O is bottleneck</li>
+</ol></li>
 </ol>
-</li>
-</ol>
-<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbpj8p2mj31260oa46g.jpg" alt="image-20201218204704337"></p>
-<h3 id="Synchronous-Parallel-Gradient-Descent-using-MapReduce"><a href="#Synchronous-Parallel-Gradient-Descent-using-MapReduce" class="headerlink" title="Synchronous Parallel Gradient Descent using MapReduce"></a>Synchronous Parallel Gradient Descent using MapReduce</h3><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbpbo4ubj30n60pcdkv.jpg" alt="image-20201218205628107" style="zoom:50%;" />
-
-<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbp6ua0bj30o40ocn3b.jpg" alt="image-20201218205649201" style="zoom:50%;" />
-
-<ol>
-<li>Broadcast: server broadcast the up-to-data parameters w<del>t</del> to workers</li>
+<figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbpj8p2mj31260oa46g.jpg" alt="image-20201218204704337" /><figcaption aria-hidden="true">image-20201218204704337</figcaption>
+</figure>
+<h3 id="synchronous-parallel-gradient-descent-using-mapreduce">Synchronous Parallel Gradient Descent using MapReduce</h3>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbpbo4ubj30n60pcdkv.jpg" alt="image-20201218205628107" style="zoom:50%;" /></p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glsbp6ua0bj30o40ocn3b.jpg" alt="image-20201218205649201" style="zoom:50%;" /></p>
+<ol type="1">
+<li>Broadcast: server broadcast the up-to-data parameters w<sub>t</sub> to workers</li>
 <li>Map: Workers do computation locally</li>
 <li>Reduce: Compute the sum: Gradient</li>
-<li>Server updates the parameters </li>
+<li>Server updates the parameters</li>
 </ol>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218210137506.png" alt="image-20201218210137506"></p>
-<h3 id="Communication-Cost"><a href="#Communication-Cost" class="headerlink" title="Communication Cost"></a>Communication Cost</h3><ol>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/image-20201218210137506.png" alt="image-20201218210137506" /><figcaption aria-hidden="true">image-20201218210137506</figcaption>
+</figure>
+<h3 id="communication-cost">Communication Cost</h3>
+<ol type="1">
 <li>Communication complexity: How many words are transmitted between server and workers</li>
 <li>Latency: How much time it takes for a packet of data to get from one point to another</li>
 <li>Bulk Synchronous</li>
 </ol>
-<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201218215235240.png" alt="image-20201218215235240" style="zoom:50%;" />
-
-<h3 id="Synchronous-Parallel-Gradient-Descent"><a href="#Synchronous-Parallel-Gradient-Descent" class="headerlink" title="Synchronous Parallel Gradient Descent"></a>Synchronous Parallel Gradient Descent</h3><ul>
+<p><img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201218215235240.png" alt="image-20201218215235240" style="zoom:50%;" /></p>
+<h3 id="synchronous-parallel-gradient-descent">Synchronous Parallel Gradient Descent</h3>
+<ul>
 <li>Characters:client-server architecture, message-passing communication, and asynchronous</li>
 <li>(Note that MapReduce is bulk synchronous)</li>
 <li>Ray, an open-source software system, supports parameter server</li>
 </ul>
-<h4 id="Asynchronous-Gradient-Descent"><a href="#Asynchronous-Gradient-Descent" class="headerlink" title="Asynchronous Gradient Descent"></a>Asynchronous Gradient Descent</h4><p>The i-th worker repeats:</p>
-<ol>
-<li>Pull the up-to-date model parameters w from the server </li>
-<li>Compute gradient g<del>i</del> using its local data and w</li>
-<li>Push g<del>i</del> to the server</li>
+<h4 id="asynchronous-gradient-descent">Asynchronous Gradient Descent</h4>
+<p>The i-th worker repeats:</p>
+<ol type="1">
+<li>Pull the up-to-date model parameters w from the server</li>
+<li>Compute gradient g<sub>i</sub> using its local data and w</li>
+<li>Push g<sub>i</sub> to the server</li>
 </ol>
-<h4 id="The-server-performs"><a href="#The-server-performs" class="headerlink" title="The server performs:"></a>The server performs:</h4><ol>
-<li>Receive gradient g<del>i</del> from a worker </li>
-<li>Update the parameters by: ==w &lt;– w-alpha · g<del>i</del>==</li>
+<h4 id="the-server-performs">The server performs:</h4>
+<ol type="1">
+<li>Receive gradient g<sub>i</sub> from a worker</li>
+<li>Update the parameters by: ==w &lt;-- w-alpha · g<sub>i</sub>==</li>
 </ol>
-<h4 id="Pro-and-con-of-Asynchronous-Algorithms"><a href="#Pro-and-con-of-Asynchronous-Algorithms" class="headerlink" title="Pro and con of Asynchronous Algorithms"></a>Pro and con of Asynchronous Algorithms</h4><ol>
+<h4 id="pro-and-con-of-asynchronous-algorithms">Pro and con of Asynchronous Algorithms</h4>
+<ol type="1">
 <li>In practice, asynchronous algorithm are faster than the synchronous</li>
 <li>In theory, asnchronous algorithms has slower convergence rate</li>
 <li>Asynchronous algorithms have restrictions, e.g., a worker cannot be much slower than the others</li>
 </ol>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220193448083.png" alt="image-20201220193448083"></p>
-<h3 id="Decentralized-Network"><a href="#Decentralized-Network" class="headerlink" title="Decentralized Network"></a>Decentralized Network</h3><ol>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220193448083.png" alt="image-20201220193448083" /><figcaption aria-hidden="true">image-20201220193448083</figcaption>
+</figure>
+<h3 id="decentralized-network">Decentralized Network</h3>
+<ol type="1">
 <li>Charaters:peer-to-peer architecture (no central server), message-passing communication, a node communicate with its neighbors</li>
 </ol>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220194440806.png" alt="image-20201220194440806"></p>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220194522617.png" alt="image-20201220194522617"></p>
-<ol start="2">
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220194440806.png" alt="image-20201220194440806" /><figcaption aria-hidden="true">image-20201220194440806</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-for-Machine-Learning/image-20201220194522617.png" alt="image-20201220194522617" /><figcaption aria-hidden="true">image-20201220194522617</figcaption>
+</figure>
+<ol start="2" type="1">
 <li>Decentralized GD and SGD are guaranteed to converge, e.g.</li>
-<li>Convergence rate depends on how well the nodes are connected<ol>
-<li>if the nodes forms a complete graph, then it has very fast convergence </li>
+<li>Convergence rate depends on how well the nodes are connected
+<ol type="1">
+<li>if the nodes forms a complete graph, then it has very fast convergence</li>
 <li>if the graph is not strongly connected, then it does not converge</li>
+</ol></li>
 </ol>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p> :package:<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/dnimo/img/master/article/1705.0905.pdf">Lian and others: Can decentralized algorithms outperform centralized algorithms? In NIPS, 2017.</a> </p>
+<h5 id="reference">Reference</h5>
+<p>:package:<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/dnimo/img/master/article/1705.0905.pdf">Lian and others: Can decentralized algorithms outperform centralized algorithms? In NIPS, 2017.</a></p>
 
     </div>
 

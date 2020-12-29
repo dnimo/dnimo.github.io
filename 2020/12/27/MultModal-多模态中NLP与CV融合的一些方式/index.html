@@ -17,7 +17,9 @@
     
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
 
 <body id="bodyx">
     <div class="hd posts">
@@ -29,57 +31,67 @@
         <hr>
     </div>
     <div class="post-content">
-        <h3 id="多模态-MultiModal"><a href="#多模态-MultiModal" class="headerlink" title="多模态(MultiModal)"></a>多模态(MultiModal)</h3><blockquote>
+        <h3 id="多模态multimodal">多模态(MultiModal)</h3>
+<blockquote>
 <p>多种不同的信息源（不同的信息形式）中获取信息表达</p>
 </blockquote>
-<h4 id="五个挑战"><a href="#五个挑战" class="headerlink" title="五个挑战"></a>五个挑战</h4><ol>
-<li>表示（Multimodal Representation）的意思，比如shift旋转尺寸不变形，图像研究出的一种表示<ol>
+<h4 id="五个挑战">五个挑战</h4>
+<ol type="1">
+<li>表示（Multimodal Representation）的意思，比如shift旋转尺寸不变形，图像研究出的一种表示
+<ol type="1">
 <li>表示的冗余问题</li>
 <li>不同的信号，有的象征性信号，有波信号，什么样的表示方式方便多模态模型提取信息</li>
+</ol></li>
 </ol>
-</li>
-</ol>
-<h4 id="表示的方法"><a href="#表示的方法" class="headerlink" title="表示的方法"></a>表示的方法</h4><ul>
+<h4 id="表示的方法">表示的方法</h4>
+<ul>
 <li>联合表示将多个模态的信息一起映射到一个统一的多模态向量空间</li>
 <li>协同表示负责将多模态中的每个模态分别映射到各自的表示空间，但映射后的向量之间模组一定的相关性约束</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/image-20201227143910022.png" alt="image-20201227143910022"></p>
-<ol start="2">
-<li>翻译/转化/映射<ol>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/MultModal-多模态中NLP与CV融合的一些方式/image-20201227143910022.png" alt="image-20201227143910022" /><figcaption aria-hidden="true">image-20201227143910022</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>翻译/转化/映射
+<ol type="1">
 <li>信号的映射，比如给一个图像，将图像翻译成文字，文字翻译成图像，信息转化成统一形式后来应用</li>
 <li>方式，跟专门研究翻译的领域重叠，基于实例的翻译，涉及到检索，字典（规则）等，基于生成方法如生成翻译的内容</li>
-</ol>
-</li>
-<li>对齐<ol>
+</ol></li>
+<li>对齐
+<ol type="1">
 <li>多模态对齐定义为从两个或多个模态中查找实例子组件之间的关系和对应，研究不同信号如何对齐</li>
 <li>对齐方式，有专门研究对齐的领域，主要有两种，显示对齐（比如时间维度上就是显示对齐），隐式对齐（例如语言的翻译就不是位置对位置）</li>
-</ol>
-</li>
-<li>融合<ol>
+</ol></li>
+<li>融合
+<ol type="1">
 <li>比如情感分析中语气和语句的融合</li>
 <li>这个最难也是被研究最多的领域，例如音节和唇语头像怎么融合</li>
+</ol></li>
 </ol>
-</li>
-</ol>
-<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>试听语音识别，多媒体内容检索，视频理解，视频总结，事件监测，情感分析，视频会议情感分析，媒体描述，视觉问答等等，视觉与语言的结合比纯NLP，是离智能更近的一步</p>
-<h3 id="VQA"><a href="#VQA" class="headerlink" title="VQA"></a>VQA</h3><blockquote>
+<h3 id="应用">应用</h3>
+<p>试听语音识别，多媒体内容检索，视频理解，视频总结，事件监测，情感分析，视频会议情感分析，媒体描述，视觉问答等等，视觉与语言的结合比纯NLP，是离智能更近的一步</p>
+<h3 id="vqa">VQA</h3>
+<blockquote>
 <p>给定一张图片（视频）和一个与该图片相关的自然语言问题，计算机能产生一个正确的回答。这是文本QA和Image Captioning的结合，一般涉及到图像内容上的推理</p>
 </blockquote>
-<h4 id="目前VQA的四大方式"><a href="#目前VQA的四大方式" class="headerlink" title="目前VQA的四大方式"></a>目前VQA的四大方式</h4><ol>
+<h4 id="目前vqa的四大方式">目前VQA的四大方式</h4>
+<ol type="1">
 <li>Joint rmbedding approaches，只是直接从源头编码的角度开始融合信息，最简单粗暴的方式就是把文本和图像的embedding直接拼接</li>
 <li>Attention mechanisms，很多VQA的问题都在attention上做文章，attention本身也是一个提取信息的动作</li>
 <li>Compositional Models，这种方式解决问题的思路是分模块，各模块分别处理不同的功能，然后通过模块的组装推理得出结果</li>
 </ol>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/image-20201227145655886.png" alt="image-20201227145655886"></p>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/MultModal-多模态中NLP与CV融合的一些方式/image-20201227145655886.png" alt="image-20201227145655886" /><figcaption aria-hidden="true">image-20201227145655886</figcaption>
+</figure>
 <p>在上图中，问题是what color is his tie？先选择出attend和classify模块，并且根据推理方式组装模块，最后得出结论</p>
-<ol start="4">
+<ol start="4" type="1">
 <li><p>Models using external knowledge base</p>
 <blockquote>
 <p>利用外部知识库来做VQA很好理解，例如，为了回答“图上有多少只哺乳动物”这样的问题，模型必须要知道“哺乳动物”的定义，而你想从图像上去学习到哺乳动物是有难度的</p>
-</blockquote>
-</li>
+</blockquote></li>
 </ol>
-<h3 id="多模态中CV和NLP融合的几种方式"><a href="#多模态中CV和NLP融合的几种方式" class="headerlink" title="多模态中CV和NLP融合的几种方式"></a>多模态中CV和NLP融合的几种方式</h3><ol>
+<h3 id="多模态中cv和nlp融合的几种方式">多模态中CV和NLP融合的几种方式</h3>
+<ol type="1">
 <li>Bilinear Fusion双线性融合 and Joint embedding</li>
 </ol>
 <blockquote>
@@ -90,7 +102,7 @@
 <li>双线性融合，所谓双线性简单来讲就是函数对于两个变量都是线性的，参数（表达两种信息关联）是个多维矩阵，作者采用的MUTAN模型里面的Tucker decomposition方法，将线性关系的参数分解，大大减小参数量</li>
 <li>Pairwise relation学习的是经过融合后节点之间的两两关系（主要是图像的关系），然后和原始text有效拼接</li>
 </ul>
-<ol start="2">
+<ol start="2" type="1">
 <li>动态attention融合</li>
 </ol>
 <blockquote>

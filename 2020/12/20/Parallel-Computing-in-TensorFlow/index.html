@@ -17,7 +17,9 @@
     
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
 
 <body id="bodyx">
     <div class="hd posts">
@@ -29,7 +31,8 @@
         <hr>
     </div>
     <div class="post-content">
-        <h3 id="TensorFlow-Dtrategies"><a href="#TensorFlow-Dtrategies" class="headerlink" title="TensorFlow Dtrategies"></a>TensorFlow Dtrategies</h3><ul>
+        <h3 id="tensorflow-dtrategies">TensorFlow Dtrategies</h3>
+<ul>
 <li>MirroredStrategy</li>
 <li>TPUStrategy</li>
 <li>MultiWorkerMirroredStrategy</li>
@@ -37,12 +40,17 @@
 <li>ParameterServerStrategy</li>
 <li>OneDeviceStrategy</li>
 </ul>
-<h4 id="Ring-All-Reduce-——MirroredStrategy"><a href="#Ring-All-Reduce-——MirroredStrategy" class="headerlink" title="Ring All-Reduce ——MirroredStrategy"></a>Ring All-Reduce ——MirroredStrategy</h4><ul>
+<h4 id="ring-all-reduce-------mirroredstrategy">Ring All-Reduce ------MirroredStrategy</h4>
+<ul>
 <li>All-Reduce: Every node gets a copies of the result of reduce</li>
 <li>Reduce: The Server only</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220203817942.png" alt="image-20201220203817942"></p>
-<p><img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220204519594.png" alt="image-20201220204519594"></p>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220203817942.png" alt="image-20201220203817942" /><figcaption aria-hidden="true">image-20201220203817942</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220204519594.png" alt="image-20201220204519594" /><figcaption aria-hidden="true">image-20201220204519594</figcaption>
+</figure>
 
     </div>
 

@@ -17,7 +17,9 @@
     
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
 
 <body id="bodyx">
     <div class="hd posts">
@@ -29,11 +31,18 @@
         <hr>
     </div>
     <div class="post-content">
-        <h3 id="网络结构的双向——以biLSTM为例"><a href="#网络结构的双向——以biLSTM为例" class="headerlink" title="网络结构的双向——以biLSTM为例"></a>网络结构的双向——以biLSTM为例</h3><p>biLSTM是网络结构上的双向，如下图在网络结构上，每个单词都从正向和反向的到一个表示，然后将此表示进行连接，则此时认为该单词为双向表示。</p>
-<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glrzv0yys5j30jg0eugnm.jpg" alt="lstm"> </p>
-<h3 id="Bert的网络结构"><a href="#Bert的网络结构" class="headerlink" title="Bert的网络结构"></a>Bert的网络结构</h3><p>如下图所示Bert在网络结构层面并不是双向构造，那么我们为什么称Bert为双向语言模型呢？</p>
-<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glrzxdl87xj307706iabr.jpg" alt="20200516233155897"></p>
-<h4 id="Bert如何双向表示"><a href="#Bert如何双向表示" class="headerlink" title="Bert如何双向表示"></a>Bert如何双向表示</h4><p>首先我们知道Bert的预训练模型中，预训练任务是一个Mask LM，通过随机的把句子中的单词替换为Mask标签，然后对单词进行预测。</p>
+        <h3 id="网络结构的双向以bilstm为例">网络结构的双向——以biLSTM为例</h3>
+<p>biLSTM是网络结构上的双向，如下图在网络结构上，每个单词都从正向和反向的到一个表示，然后将此表示进行连接，则此时认为该单词为双向表示。</p>
+<figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glrzv0yys5j30jg0eugnm.jpg" alt="lstm" /><figcaption aria-hidden="true">lstm</figcaption>
+</figure>
+<h3 id="bert的网络结构">Bert的网络结构</h3>
+<p>如下图所示Bert在网络结构层面并不是双向构造，那么我们为什么称Bert为双向语言模型呢？</p>
+<figure>
+<img src="https://tva1.sinaimg.cn/large/0081Kckwly1glrzxdl87xj307706iabr.jpg" alt="20200516233155897" /><figcaption aria-hidden="true">20200516233155897</figcaption>
+</figure>
+<h4 id="bert如何双向表示">Bert如何双向表示</h4>
+<p>首先我们知道Bert的预训练模型中，预训练任务是一个Mask LM，通过随机的把句子中的单词替换为Mask标签，然后对单词进行预测。</p>
 <p>那么对于模型而言，输入的是一个被挖空的句子，而由于Transformer的特性，它会注意到所有的单词，这就导致模型会根据挖空的上下文来进行预测，这就实现了双向表示，说明Bert是一个双向的语言模型。</p>
 
     </div>
