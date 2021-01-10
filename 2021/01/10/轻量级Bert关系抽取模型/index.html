@@ -20,23 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="关于语言模型  语言模型就是用来计算一个句子的概率的模型，也就是判断一句话是否合理的概率 一开始，都是基于规则的语言模型研究，但这样往往有很大的问题，后来发明了基于统计的语言模型 N-gram就是统计语言模型的一种，其他的还有RNN以及LSTM">
+  <meta name="description" content="Bert的诞生  Bert是谷歌开源的大规模语料预训练模型，也是基于Attention  Keras封装的Bert  目前，Github上已经有大佬封装好的Keras版Bert，可以直接调用官方发布的预训练权重，如果有一定的keras基础，使用Keras是最简单的调用Bert的方式，也就是“站在巨人的肩膀上”。  Keras-bert &lt;keras-bert: https:&#x2F;&#x2F;github.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="了解N-Gram模型">
-<meta property="og:url" content="http://example.com/2020/12/29/%E4%BA%86%E8%A7%A3N-Gram%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:title" content="轻量级Bert关系抽取模型">
+<meta property="og:url" content="http://example.com/2021/01/10/%E8%BD%BB%E9%87%8F%E7%BA%A7Bert%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="Masano">
-<meta property="og:description" content="关于语言模型  语言模型就是用来计算一个句子的概率的模型，也就是判断一句话是否合理的概率 一开始，都是基于规则的语言模型研究，但这样往往有很大的问题，后来发明了基于统计的语言模型 N-gram就是统计语言模型的一种，其他的还有RNN以及LSTM">
+<meta property="og:description" content="Bert的诞生  Bert是谷歌开源的大规模语料预训练模型，也是基于Attention  Keras封装的Bert  目前，Github上已经有大佬封装好的Keras版Bert，可以直接调用官方发布的预训练权重，如果有一定的keras基础，使用Keras是最简单的调用Bert的方式，也就是“站在巨人的肩膀上”。  Keras-bert &lt;keras-bert: https:&#x2F;&#x2F;github.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183103524.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183248740.png">
-<meta property="article:published_time" content="2020-12-29T08:05:20.000Z">
-<meta property="article:modified_time" content="2021-01-02T13:16:18.954Z">
+<meta property="article:published_time" content="2021-01-10T08:47:40.000Z">
+<meta property="article:modified_time" content="2021-01-10T12:51:29.615Z">
 <meta property="article:author" content="Masano Yu">
-<meta property="article:tag" content="语言模型">
+<meta property="article:tag" content="bert 关系抽取">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183103524.png">
 
-<link rel="canonical" href="http://example.com/2020/12/29/%E4%BA%86%E8%A7%A3N-Gram%E6%A8%A1%E5%9E%8B/">
+<link rel="canonical" href="http://example.com/2021/01/10/%E8%BD%BB%E9%87%8F%E7%BA%A7Bert%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -49,7 +46,7 @@
   };
 </script>
 
-  <title>了解N-Gram模型 | Masano</title>
+  <title>轻量级Bert关系抽取模型 | Masano</title>
   
 
 
@@ -172,7 +169,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/29/%E4%BA%86%E8%A7%A3N-Gram%E6%A8%A1%E5%9E%8B/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/10/%E8%BD%BB%E9%87%8F%E7%BA%A7Bert%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -185,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          了解N-Gram模型
+          轻量级Bert关系抽取模型
         </h1>
 
         <div class="post-meta">
@@ -194,16 +191,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-12-29 16:05:20" itemprop="dateCreated datePublished" datetime="2020-12-29T16:05:20+08:00">2020-12-29</time>
+              <time title="Created: 2021-01-10 16:47:40 / Modified: 20:51:29" itemprop="dateCreated datePublished" datetime="2021-01-10T16:47:40+08:00">2021-01-10</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-02 21:16:18" itemprop="dateModified" datetime="2021-01-02T21:16:18+08:00">2021-01-02</time>
-              </span>
 
           
 
@@ -216,81 +207,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="关于语言模型">关于语言模型</h4>
+        <h4 id="bert的诞生">Bert的诞生</h4>
 <blockquote>
-<p>语言模型就是用来计算一个句子的概率的模型，也就是判断一句话是否合理的概率</p>
-<p>一开始，都是基于规则的语言模型研究，但这样往往有很大的问题，后来发明了基于统计的语言模型</p>
-<p>N-gram就是统计语言模型的一种，其他的还有RNN以及LSTM</p>
+<p>Bert是谷歌开源的大规模语料预训练模型，也是基于Attention</p>
 </blockquote>
-<a id="more"></a>
-<h4 id="n-gram详解">N-Gram详解</h4>
-<p>基于统计概率来说，我们需要计算句子的概率大小：<span class="math inline">\(P(S)=P(\omega_1,\omega_2,\cdot\cdot\cdot,\omega_n)\)</span> ，这个就是最终要求的一句话的概率，概率大说明更合理，概率小说明不合理</p>
-<p>因为是不能直接计算的，所以我们要应用条件概率得到：</p>
-<p><span class="math inline">\(P(\omega_1,\omega_2,\cdot\cdot\cdot,\omega_n)=P(\omega_1)*P(\omega_2|\omega_1)*P(\omega_3|\omega_1,\omega_2)\cdot\cdot\cdot P(\omega_n|\omega1,\cdot\cdot\cdot,\omega_{n-1})\)</span></p>
-<p>中间插入条件概率：P(B|A)：A条件下B发生的概率。从一个大的空间进入到一个字空间（切片），计算在子空间中的占比</p>
-<p><span class="math inline">\(P(B|A)=\frac{P(A,B)}{P(A)}\)</span></p>
-<p>然而，如果直接计算条件概率转化后的式子的话，对每个词要考虑它前面的所有词，这在实际中意义不大，而且不好计算。这个时候我们要基于马尔科夫假设来做简化</p>
-<h4 id="马尔科夫假设">马尔科夫假设</h4>
+<h4 id="keras封装的bert">Keras封装的Bert</h4>
 <blockquote>
-<p>马尔可夫假设是指，每个词出现的概率只跟它前面的少数几个词有关，例如，二阶马尔可夫假设只考虑前面的两个词，相应的语言模型是三元模型。引入马尔科夫假设的语言模型，也叫做马尔科夫模型。</p>
-<p>马尔可夫链为状态空间中经过从一个状态到另一状态的转换的随机 过程。该过程要求具备“无记忆”的性质：下一个状态的概率分布只能由当前状态决定，在时间序列中它前面的事件均与之无关</p>
+<p>目前，Github上已经有大佬封装好的Keras版Bert，可以直接调用官方发布的预训练权重，如果有一定的keras基础，使用Keras是最简单的调用Bert的方式，也就是“站在巨人的肩膀上”。</p>
 </blockquote>
-<p>要就是说，应用了这个假设表明了当前这个词仅仅跟前面几个有限词相关，因此也就不必追溯到最开始的那个词，这样便可以大幅度缩减上述的算式长度</p>
-<p><span class="math inline">\(P(\omega_1,\omega_2,\cdots,\omega_n)=P(\omega_i|\omega_{i-m+1},\cdots,\omega_{i-1})\)</span></p>
+<h4 id="keras-bert">Keras-bert</h4>
+<p>&lt;keras-bert: https://github.com/CyberZHG/keras-bert&gt;</p>
+<p>在该开源项目中，CyberZHG大佬还封装了很多有价值的Keras模块，例如Keras-gpt-2（可以像使用Bert一样使用gpt2）、keras-lr-multiplier（分层设置学习率）、keras-ordered-neurons（On-LSTM）等等</p>
+<p>事实上，有Keras-bert之后，再加上一点点Keras基础知识，而且Keras-bert给出的demo已经十分完善，调用、微调Bert已经变成了没有什么技术含量的事情，下文我们将根据CyberZHG大佬给出的demo解读keras-bert的基本用法。</p>
+<h4 id="tokenizer-分词器">Tokenizer 分词器</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入tokenizer并进行重构</span></span><br><span class="line"><span class="comment"># 使用官方开源的中文权重 项目代号chinese_L-12_H-768_A-12</span></span><br><span class="line"><span class="keyword">from</span> keras_bert <span class="keyword">import</span> load_trained_model_from_checkpoint, Tokenizer</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"></span><br><span class="line">config_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/bert_config.json&#x27;</span></span><br><span class="line">checkpoint_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/bert_model.ckpt&#x27;</span></span><br><span class="line">dict_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/vocab.txt&#x27;</span></span><br><span class="line"></span><br><span class="line">token_dict = &#123;&#125;</span><br><span class="line"><span class="keyword">with</span> codecs.<span class="built_in">open</span>(dict_path, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;utf8&#x27;</span>) <span class="keyword">as</span> reader:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> reader:</span><br><span class="line">        token = line.strip()</span><br><span class="line">        token_dict[token] = <span class="built_in">len</span>(token_dict)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OurTokenizer</span>(<span class="params">Tokenizer</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_tokenize</span>(<span class="params">self, text</span>):</span></span><br><span class="line">        R = []</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> text:</span><br><span class="line">            <span class="keyword">if</span> c <span class="keyword">in</span> self._token_dict:</span><br><span class="line">                R.append(c)</span><br><span class="line">            <span class="keyword">elif</span> self._is_space(c):</span><br><span class="line">                R.append(<span class="string">&#x27;[unused1]&#x27;</span>) <span class="comment"># space类用未经训练的[unused1]表示</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                R.append(<span class="string">&#x27;[UNK]&#x27;</span>) <span class="comment"># 剩余的字符是[UNK]</span></span><br><span class="line">        <span class="keyword">return</span> R</span><br><span class="line"></span><br><span class="line">tokenizer = OurTokenizer(token_dict)</span><br><span class="line">tokenizer.tokenize(<span class="string">u&#x27;今天天气不错&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>这里的m表示前m个词相关</p>
+<p>默认情况下，分词后句首毁分别添加[CLS]和[SEP]标记，其中[CLS]位置对应的输出向量是能代表整句的句向量，[SEP]则是句间的分隔符，其余部分为单字输出。</p>
+<p>keras-bert中自带的Tokenizer有自己的_tokenize方法，我们在这里重写该方法的目的是为了，保证tokenize之后的结果，跟原来的字符串长度保持一致。Tokenizer自带的 _tokenize方法会自动去除空格，然后有部分字符会粘贴在在一起输出，导致tokenize之后的列表不等于原来字符串的长度，这样做序列标注任务十分模范。在这里我们使用[unused1]表示空格类字符，其余不在列表中的字符使用[UNK]表示，其中[unused*]这一类标记是未经训练的（初始化），是Bert预留出来用来添加词汇的标记，所以我们可以用它们指代任何新的字符。</p>
 </blockquote>
-<p>然后我们可以设置m=1,2,3,....得到相应的一元模型，二元模型，三元模型</p>
-<p>而N-Gram模型也就是这样，当m=1，叫1-gram或者unigram；m=2，叫2-gram或者bigram</p>
-<h4 id="利用n-gram模型评估语句是否合理">利用N-Gram模型评估语句是否合理</h4>
-<p>假设现在有一个语料库，我们统计了下面的一些词出现的数量</p>
-<table>
-<thead>
-<tr class="header">
-<th>i</th>
-<th>want</th>
-<th>to</th>
-<th>eat</th>
-<th>chinese</th>
-<th>food</th>
-<th>lunch</th>
-<th>spend</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>2533</td>
-<td>927</td>
-<td>2417</td>
-<td>746</td>
-<td>158</td>
-<td>1093</td>
-<td>341</td>
-<td>278</td>
-</tr>
-</tbody>
-</table>
-<p>下面的这些概率作为已知条件：</p>
-<p><span class="math inline">\(P(i|&lt;s&gt;)=0.25 \hspace{2cm} P(english|want)=0.0011\)</span></p>
-<p><span class="math inline">\(P(food|english)=0.5 \hspace{2cm} P(&lt;/s&gt;|food)=0.68\)</span></p>
-<p><span class="math inline">\(P(want|&lt;s&gt;)=0.25\)</span></p>
-<p>下面这个表给出了基于bigram模型进行计数之结果</p>
-<figure>
-<img src="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183103524.png" alt="image-20201229183103524" /><figcaption aria-hidden="true">image-20201229183103524</figcaption>
-</figure>
-<p>Ex：其中第一行，第二列表示给定前一个词是“i”时，当前词“want”的情况一共出现了827次，据此，我们便可以计算相应的频率分布表</p>
-<figure>
-<img src="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183248740.png" alt="image-20201229183248740" /><figcaption aria-hidden="true">image-20201229183248740</figcaption>
-</figure>
-<p>比如说，我们就以表中的<span class="math inline">\(P(eat|i)=0.0036\)</span> 这个概率值讲解，从表中得出”i“一共出现了2533次，而其后出现eat的次数一共有9次，<span class="math inline">\(P(eat|i)=P(eat,i)\hspace{2cm}P(i)=count(eat,i)/count(i)=\frac{9}{2533}=0.0036\)</span></p>
-<p>下面我们通过这个语料库进行判断：</p>
-<ul>
-<li>s1=“i want english food”</li>
-<li>S2="want i English food"</li>
-</ul>
-<p>首先判断p(s1)：<span class="math inline">\(P(s1)=P(i|&lt;s&gt;)P(want|i)P(english|want)P((food|english)P(&lt;/s&gt;|food)=0.000031\)</span></p>
-<p><span class="math inline">\(P(s2)=P(want|&lt;s&gt;)P(i|want)P(english|want)P(food|english)P(&lt;/s&gt;|food)=0.00000002057\)</span></p>
-<p>通过比较我们发现s1更合理，以上就是二元模型</p>
+<h4 id="关系抽取模型部分">关系抽取模型部分</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">t = bert_model([t1,t2])</span><br><span class="line">ps1 = Dense(<span class="number">1</span>,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line">ps2 = Dense(<span class="number">1</span>,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line"></span><br><span class="line">subject_model = Model([t1_in,t2_in],[ps1,ps2])<span class="comment"># 预测subject的模型</span></span><br><span class="line"></span><br><span class="line">k1v = Lambda(seq_gather)([t,k1])</span><br><span class="line">k2v = Lambda(seq_gather)([t,k2])</span><br><span class="line">kv = Average()([k1v,k2v])</span><br><span class="line">t = Add()[t,kv]</span><br><span class="line">po1 = Dense(num_classes,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line">po2 = Dense(num_classes,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line"></span><br><span class="line">object_model = Model([t1_in,t2_in,ki_in,k2_in],[po1,po2])<span class="comment">#输入text和subject，预测object及其关系</span></span><br><span class="line"> train_model = Model([t1_in,t2_in,si_in,s2_in,k1_in,k2_in,o1_in,o2_in],</span><br><span class="line">                     [ps1,ps2,po1,po2])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在这段关键代码中，我们引入了bert作为编码器，然后得到编码序列t，然后直接泗洪两个Dense()，这就完成了subject的标注模型；接着，我们把传入的s的首尾对应的编码向量拿出来，直接加到编码向量序列t中去，然后再接两个Dense(num_classes)，就完成object的标注模型，同时标注出了关系。</p>
+<p>在关系抽取这个例子中，第一个epoch学习率慢慢从0增加到<span class="math inline">\(5*10^{-5}\)</span> （这样成为warmup），第二个epoch再从<span class="math inline">\(5*10^{-5}\)</span>降到<span class="math inline">\(10^{-5}\)</span>，总的来说就是先增后减，Bert本身也是用类似的学习率曲线来进行训练，这样的训练方式比较稳定，不容易崩溃，而且效果也比较好。</p>
+</blockquote>
+<p>==参考kexue大佬的博客：==&lt;hhtps://kexue.fm/archives/6736&gt;</p>
 
     </div>
 
@@ -300,7 +241,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" rel="tag"># 语言模型</a>
+              <a href="/tags/bert-%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/" rel="tag"># bert 关系抽取</a>
           </div>
 
         
@@ -309,13 +250,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/27/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/" rel="prev" title="MultModal:多模态中NLP与CV融合的一些方式">
-      <i class="fa fa-chevron-left"></i> MultModal:多模态中NLP与CV融合的一些方式
+    <a href="/2021/01/02/%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/" rel="prev" title="希尔伯特空间">
+      <i class="fa fa-chevron-left"></i> 希尔伯特空间
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/01/02/%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/" rel="next" title="希尔伯特空间">
-      希尔伯特空间 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -374,7 +312,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">关于语言模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n-gram%E8%AF%A6%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">N-Gram详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E5%81%87%E8%AE%BE"><span class="nav-number">3.</span> <span class="nav-text">马尔科夫假设</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8n-gram%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E8%AF%AD%E5%8F%A5%E6%98%AF%E5%90%A6%E5%90%88%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">利用N-Gram模型评估语句是否合理</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#bert%E7%9A%84%E8%AF%9E%E7%94%9F"><span class="nav-number">1.</span> <span class="nav-text">Bert的诞生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keras%E5%B0%81%E8%A3%85%E7%9A%84bert"><span class="nav-number">2.</span> <span class="nav-text">Keras封装的Bert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keras-bert"><span class="nav-number">3.</span> <span class="nav-text">Keras-bert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tokenizer-%E5%88%86%E8%AF%8D%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">Tokenizer 分词器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B%E9%83%A8%E5%88%86"><span class="nav-number">5.</span> <span class="nav-text">关系抽取模型部分</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

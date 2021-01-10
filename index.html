@@ -163,6 +163,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/10/%E8%BD%BB%E9%87%8F%E7%BA%A7Bert%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Masano Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/10/%E8%BD%BB%E9%87%8F%E7%BA%A7Bert%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">轻量级Bert关系抽取模型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-10 16:47:40 / Modified: 20:51:29" itemprop="dateCreated datePublished" datetime="2021-01-10T16:47:40+08:00">2021-01-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="bert的诞生">Bert的诞生</h4>
+<blockquote>
+<p>Bert是谷歌开源的大规模语料预训练模型，也是基于Attention</p>
+</blockquote>
+<h4 id="keras封装的bert">Keras封装的Bert</h4>
+<blockquote>
+<p>目前，Github上已经有大佬封装好的Keras版Bert，可以直接调用官方发布的预训练权重，如果有一定的keras基础，使用Keras是最简单的调用Bert的方式，也就是“站在巨人的肩膀上”。</p>
+</blockquote>
+<h4 id="keras-bert">Keras-bert</h4>
+<p>&lt;keras-bert: https://github.com/CyberZHG/keras-bert&gt;</p>
+<p>在该开源项目中，CyberZHG大佬还封装了很多有价值的Keras模块，例如Keras-gpt-2（可以像使用Bert一样使用gpt2）、keras-lr-multiplier（分层设置学习率）、keras-ordered-neurons（On-LSTM）等等</p>
+<p>事实上，有Keras-bert之后，再加上一点点Keras基础知识，而且Keras-bert给出的demo已经十分完善，调用、微调Bert已经变成了没有什么技术含量的事情，下文我们将根据CyberZHG大佬给出的demo解读keras-bert的基本用法。</p>
+<h4 id="tokenizer-分词器">Tokenizer 分词器</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入tokenizer并进行重构</span></span><br><span class="line"><span class="comment"># 使用官方开源的中文权重 项目代号chinese_L-12_H-768_A-12</span></span><br><span class="line"><span class="keyword">from</span> keras_bert <span class="keyword">import</span> load_trained_model_from_checkpoint, Tokenizer</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"></span><br><span class="line">config_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/bert_config.json&#x27;</span></span><br><span class="line">checkpoint_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/bert_model.ckpt&#x27;</span></span><br><span class="line">dict_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/vocab.txt&#x27;</span></span><br><span class="line"></span><br><span class="line">token_dict = &#123;&#125;</span><br><span class="line"><span class="keyword">with</span> codecs.<span class="built_in">open</span>(dict_path, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;utf8&#x27;</span>) <span class="keyword">as</span> reader:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> reader:</span><br><span class="line">        token = line.strip()</span><br><span class="line">        token_dict[token] = <span class="built_in">len</span>(token_dict)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OurTokenizer</span>(<span class="params">Tokenizer</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_tokenize</span>(<span class="params">self, text</span>):</span></span><br><span class="line">        R = []</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> text:</span><br><span class="line">            <span class="keyword">if</span> c <span class="keyword">in</span> self._token_dict:</span><br><span class="line">                R.append(c)</span><br><span class="line">            <span class="keyword">elif</span> self._is_space(c):</span><br><span class="line">                R.append(<span class="string">&#x27;[unused1]&#x27;</span>) <span class="comment"># space类用未经训练的[unused1]表示</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                R.append(<span class="string">&#x27;[UNK]&#x27;</span>) <span class="comment"># 剩余的字符是[UNK]</span></span><br><span class="line">        <span class="keyword">return</span> R</span><br><span class="line"></span><br><span class="line">tokenizer = OurTokenizer(token_dict)</span><br><span class="line">tokenizer.tokenize(<span class="string">u&#x27;今天天气不错&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>默认情况下，分词后句首毁分别添加[CLS]和[SEP]标记，其中[CLS]位置对应的输出向量是能代表整句的句向量，[SEP]则是句间的分隔符，其余部分为单字输出。</p>
+<p>keras-bert中自带的Tokenizer有自己的_tokenize方法，我们在这里重写该方法的目的是为了，保证tokenize之后的结果，跟原来的字符串长度保持一致。Tokenizer自带的 _tokenize方法会自动去除空格，然后有部分字符会粘贴在在一起输出，导致tokenize之后的列表不等于原来字符串的长度，这样做序列标注任务十分模范。在这里我们使用[unused1]表示空格类字符，其余不在列表中的字符使用[UNK]表示，其中[unused*]这一类标记是未经训练的（初始化），是Bert预留出来用来添加词汇的标记，所以我们可以用它们指代任何新的字符。</p>
+</blockquote>
+<h4 id="关系抽取模型部分">关系抽取模型部分</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">t = bert_model([t1,t2])</span><br><span class="line">ps1 = Dense(<span class="number">1</span>,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line">ps2 = Dense(<span class="number">1</span>,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line"></span><br><span class="line">subject_model = Model([t1_in,t2_in],[ps1,ps2])<span class="comment"># 预测subject的模型</span></span><br><span class="line"></span><br><span class="line">k1v = Lambda(seq_gather)([t,k1])</span><br><span class="line">k2v = Lambda(seq_gather)([t,k2])</span><br><span class="line">kv = Average()([k1v,k2v])</span><br><span class="line">t = Add()[t,kv]</span><br><span class="line">po1 = Dense(num_classes,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line">po2 = Dense(num_classes,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line"></span><br><span class="line">object_model = Model([t1_in,t2_in,ki_in,k2_in],[po1,po2])<span class="comment">#输入text和subject，预测object及其关系</span></span><br><span class="line"> train_model = Model([t1_in,t2_in,si_in,s2_in,k1_in,k2_in,o1_in,o2_in],</span><br><span class="line">                     [ps1,ps2,po1,po2])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在这段关键代码中，我们引入了bert作为编码器，然后得到编码序列t，然后直接泗洪两个Dense()，这就完成了subject的标注模型；接着，我们把传入的s的首尾对应的编码向量拿出来，直接加到编码向量序列t中去，然后再接两个Dense(num_classes)，就完成object的标注模型，同时标注出了关系。</p>
+<p>在关系抽取这个例子中，第一个epoch学习率慢慢从0增加到<span class="math inline">\(5*10^{-5}\)</span> （这样成为warmup），第二个epoch再从<span class="math inline">\(5*10^{-5}\)</span>降到<span class="math inline">\(10^{-5}\)</span>，总的来说就是先增后减，Bert本身也是用类似的学习率曲线来进行训练，这样的训练方式比较稳定，不容易崩溃，而且效果也比较好。</p>
+</blockquote>
+<p>==参考kexue大佬的博客：==&lt;hhtps://kexue.fm/archives/6736&gt;</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/02/%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -574,7 +657,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-29 23:10:38" itemprop="dateModified" datetime="2020-12-29T23:10:38+08:00">2020-12-29</time>
+                <time title="Modified: 2021-01-10 16:48:52" itemprop="dateModified" datetime="2021-01-10T16:48:52+08:00">2021-01-10</time>
               </span>
 
           
@@ -909,14 +992,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
