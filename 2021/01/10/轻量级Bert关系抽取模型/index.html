@@ -28,7 +28,7 @@
 <meta property="og:description" content="Bert的诞生  Bert是谷歌开源的大规模语料预训练模型，也是基于Attention  Keras封装的Bert  目前，Github上已经有大佬封装好的Keras版Bert，可以直接调用官方发布的预训练权重，如果有一定的keras基础，使用Keras是最简单的调用Bert的方式，也就是“站在巨人的肩膀上”。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-10T08:47:40.000Z">
-<meta property="article:modified_time" content="2021-01-10T12:52:45.072Z">
+<meta property="article:modified_time" content="2021-01-10T13:01:26.020Z">
 <meta property="article:author" content="Masano Yu">
 <meta property="article:tag" content="bert 关系抽取">
 <meta name="twitter:card" content="summary">
@@ -193,7 +193,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-01-10 16:47:40 / Modified: 20:52:45" itemprop="dateCreated datePublished" datetime="2021-01-10T16:47:40+08:00">2021-01-10</time>
+              <time title="Created: 2021-01-10 16:47:40 / Modified: 21:01:26" itemprop="dateCreated datePublished" datetime="2021-01-10T16:47:40+08:00">2021-01-10</time>
             </span>
 
           
@@ -232,7 +232,7 @@
 <p>在这段关键代码中，我们引入了bert作为编码器，然后得到编码序列t，然后直接泗洪两个Dense()，这就完成了subject的标注模型；接着，我们把传入的s的首尾对应的编码向量拿出来，直接加到编码向量序列t中去，然后再接两个Dense(num_classes)，就完成object的标注模型，同时标注出了关系。</p>
 <p>在关系抽取这个例子中，第一个epoch学习率慢慢从0增加到<span class="math inline">\(5*10^{-5}\)</span> （这样成为warmup），第二个epoch再从<span class="math inline">\(5*10^{-5}\)</span>降到<span class="math inline">\(10^{-5}\)</span>，总的来说就是先增后减，Bert本身也是用类似的学习率曲线来进行训练，这样的训练方式比较稳定，不容易崩溃，而且效果也比较好。</p>
 </blockquote>
-<p>==参考kexue大佬的博客：==&lt;hhtps://kexue.fm/archives/6736&gt;</p>
+<p>参考：苏剑林. (Jun. 18, 2019). 《当Bert遇上Keras：这可能是Bert最简单的打开姿势 》[Blog post]. Retrieved from https://kexue.fm/archives/6736</p>
 
     </div>
 
