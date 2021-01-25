@@ -20,22 +20,23 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="TensorFlow Dtrategies  MirroredStrategy TPUStrategy MultiWorkerMirroredStrategy CentralStorageStrategy ParameterServerStrategy OneDeviceStrategy">
+  <meta name="description" content="概率图思想  一种比较基准的思想是先进行实体识别，然后对识别出的实体进行关系分类，但这种思路无法很好的处理同一组（subject，object）对应多个predicative的情况，同时会存在采样效率的问题；另一种思路是作为一个整体的序列标注，但是这种设计不能很好地处理同食多个s、多个o的情况，需要采取丑陋的“就近原则”；强化学习也不是一个好的解决方法。 在苏剑林大佬提出使用类似seq2seq的概">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Parallel Computing in TensorFlow">
-<meta property="og:url" content="http://example.com/2020/12/20/Parallel-Computing-in-TensorFlow/index.html">
+<meta property="og:title" content="基于DGCNN和概率图的轻量级关系抽取模型">
+<meta property="og:url" content="http://example.com/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="Masano">
-<meta property="og:description" content="TensorFlow Dtrategies  MirroredStrategy TPUStrategy MultiWorkerMirroredStrategy CentralStorageStrategy ParameterServerStrategy OneDeviceStrategy">
+<meta property="og:description" content="概率图思想  一种比较基准的思想是先进行实体识别，然后对识别出的实体进行关系分类，但这种思路无法很好的处理同一组（subject，object）对应多个predicative的情况，同时会存在采样效率的问题；另一种思路是作为一个整体的序列标注，但是这种设计不能很好地处理同食多个s、多个o的情况，需要采取丑陋的“就近原则”；强化学习也不是一个好的解决方法。 在苏剑林大佬提出使用类似seq2seq的概">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220203817942.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220204519594.png">
-<meta property="article:published_time" content="2020-12-20T12:08:12.000Z">
-<meta property="article:modified_time" content="2020-12-29T15:11:49.339Z">
+<meta property="og:image" content="http://example.com/Users/yumasano/workspace/img/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png">
+<meta property="article:published_time" content="2021-01-22T09:04:31.000Z">
+<meta property="article:modified_time" content="2021-01-22T10:48:32.250Z">
 <meta property="article:author" content="Masano Yu">
+<meta property="article:tag" content="DGCNN">
+<meta property="article:tag" content="关系抽取">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220203817942.png">
+<meta name="twitter:image" content="http://example.com/Users/yumasano/workspace/img/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png">
 
-<link rel="canonical" href="http://example.com/2020/12/20/Parallel-Computing-in-TensorFlow/">
+<link rel="canonical" href="http://example.com/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -48,7 +49,7 @@
   };
 </script>
 
-  <title>Parallel Computing in TensorFlow | Masano</title>
+  <title>基于DGCNN和概率图的轻量级关系抽取模型 | Masano</title>
   
 
 
@@ -171,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/20/Parallel-Computing-in-TensorFlow/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -184,7 +185,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Parallel Computing in TensorFlow
+          基于DGCNN和概率图的轻量级关系抽取模型
         </h1>
 
         <div class="post-meta">
@@ -193,16 +194,19 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-12-20 20:08:12" itemprop="dateCreated datePublished" datetime="2020-12-20T20:08:12+08:00">2020-12-20</time>
+              <time title="Created: 2021-01-22 17:04:31 / Modified: 18:48:32" itemprop="dateCreated datePublished" datetime="2021-01-22T17:04:31+08:00">2021-01-22</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-29 23:11:49" itemprop="dateModified" datetime="2020-12-29T23:11:49+08:00">2020-12-29</time>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
+                </span>
+            </span>
 
           
 
@@ -215,27 +219,33 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="tensorflow-dtrategies">TensorFlow Dtrategies</h3>
-<ul>
-<li>MirroredStrategy</li>
-<li>TPUStrategy</li>
-<li>MultiWorkerMirroredStrategy</li>
-<li>CentralStorageStrategy</li>
-<li>ParameterServerStrategy</li>
-<li>OneDeviceStrategy</li>
-</ul>
-<a id="more"></a>
-<h4 id="ring-all-reduce-------mirroredstrategy">Ring All-Reduce ------MirroredStrategy</h4>
-<ul>
-<li>All-Reduce: Every node gets a copies of the result of reduce</li>
-<li>Reduce: The Server only</li>
-</ul>
-<figure>
-<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220203817942.png" alt="image-20201220203817942" /><figcaption aria-hidden="true">image-20201220203817942</figcaption>
-</figure>
-<figure>
-<img src="https://raw.githubusercontent.com/dnimo/img/master/Parallel-Computing-in-TensorFlow/image-20201220204519594.png" alt="image-20201220204519594" /><figcaption aria-hidden="true">image-20201220204519594</figcaption>
-</figure>
+        <h4 id="概率图思想">概率图思想</h4>
+<blockquote>
+<p>一种比较基准的思想是先进行实体识别，然后对识别出的实体进行关系分类，但这种思路无法很好的处理同一组（subject，object）对应多个predicative的情况，同时会存在采样效率的问题；另一种思路是作为一个整体的序列标注，但是这种设计不能很好地处理同食多个s、多个o的情况，需要采取丑陋的“就近原则”；强化学习也不是一个好的解决方法。</p>
+<p>在苏剑林大佬提出使用类似seq2seq的概率图思路。</p>
+<p>seq2seq的解码器：</p>
+<p><span class="math display">\[P(y_1,y_2,\dots,y_n|x)=P(y_1|x)P(y_2|x,y_1)\dots P(y_n|x,y_1,y_2,\dots,y_{n-1})\]</span></p>
+<p>上述公式的意思是：先通过x来预测第一个单词，然后假设第一个单词已知来预测第二个单词，以此类推，直到出现结束标记。</p>
+<p>抽取三元组时参考这个思路，则会变成：</p>
+<p><span class="math display">\[P(s,p,o)=P(s)P(o|s)P(p|s,o)\]</span></p>
+<p>也就是说，我们可以先预测s，然后传入s来预测该s对应的o，然后传入s、o来预测所传入的s、o的关系p，实际应用中，我们还可以把o、p的预测合并成一步，所以总的步骤只需要两步：先预测s，然后传入s来预测该s所对应的o及p。</p>
+<p>理论上，上述模型只能抽取单一一个三元组，所以为了处理多个s、多个o甚至多个p的情况，我们全部使用“半指针-半标注”结构。</p>
+</blockquote>
+<h4 id="模型整体结构">模型整体结构</h4>
+<blockquote>
+<p>模型使用了CNN+Attention的结构（为加一个短序列LSTM，由于序列很短，所以即使有循环也不影响效率），CNN使用了DGCNN，Attention是用了Google的Self- Attention。</p>
+<p><img src="/Users/yumasano/workspace/img/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png" alt="模型整体结构图" style="zoom:50%;" /></p>
+<p>处理流程：</p>
+<ol type="1">
+<li>输入字id序列，然后通过字词混合Emdeding得到了对应的字向量序列，然后加上Position Embedding；</li>
+<li>将得到“字+词+位置Embedding”输入到12层DGCNN中进行编码，然后得到编码后的序列（H）</li>
+<li>将H传入一层Self- Attention后，将输出结果与先验特征进行拼接</li>
+<li>将拼接后的结果传入CNN、Dense，用“半指针-半标注”结构预测s的首、尾位置；</li>
+<li>训练时随机采样一个标注的s（预测时逐一遍历所有的s），然后将H对应此s的子序列传入到一个双向LSTM中，得到s的编码向量，然后加上相对位置的Position Embedding，得到一个与输入序列等长的向量序列；</li>
+<li>将H传入另一层Self-Attention后，将输出结果与第5步输出的向量序列、先验特征进行拼接（先验特征可加可不加）；</li>
+<li>将拼接结果传入CNN、Dense，对于每一种p，都构建一个“半指针-半标注”结构来预测对应的o的首、尾位置，这样就同时把o、p都预测出来；</li>
+</ol>
+</blockquote>
 
     </div>
 
@@ -244,6 +254,10 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DGCNN/" rel="tag"># DGCNN</a>
+              <a href="/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/" rel="tag"># 关系抽取</a>
+          </div>
 
         
 
@@ -251,13 +265,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/18/Parallel-Computing-for-Machine-Learning/" rel="prev" title="Parallel Computing for Machine Learning">
-      <i class="fa fa-chevron-left"></i> Parallel Computing for Machine Learning
+    <a href="/2021/01/14/%E4%BD%BF%E7%94%A8CNN%E6%9E%84%E5%BB%BA%E9%98%85%E8%AF%BB%E7%90%86%E8%A7%A3%E5%BC%8F%E9%97%AE%E7%AD%94%E6%A8%A1%E5%9E%8B/" rel="prev" title="使用CNN构建阅读理解式问答模型">
+      <i class="fa fa-chevron-left"></i> 使用CNN构建阅读理解式问答模型
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/27/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/" rel="next" title="MultModal:多模态中NLP与CV融合的一些方式">
-      MultModal:多模态中NLP与CV融合的一些方式 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -316,7 +327,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow-dtrategies"><span class="nav-number">1.</span> <span class="nav-text">TensorFlow Dtrategies</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ring-all-reduce-------mirroredstrategy"><span class="nav-number">1.1.</span> <span class="nav-text">Ring All-Reduce ------MirroredStrategy</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E5%9B%BE%E6%80%9D%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">概率图思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">模型整体结构</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
