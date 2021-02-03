@@ -27,14 +27,14 @@
 <meta property="og:site_name" content="Masano">
 <meta property="og:description" content="概率图思想  一种比较基准的思想是先进行实体识别，然后对识别出的实体进行关系分类，但这种思路无法很好的处理同一组（subject，object）对应多个predicative的情况，同时会存在采样效率的问题；另一种思路是作为一个整体的序列标注，但是这种设计不能很好地处理同食多个s、多个o的情况，需要采取丑陋的“就近原则”；强化学习也不是一个好的解决方法。 在苏剑林大佬提出使用类似seq2seq的概">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/Users/yumasano/workspace/img/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/dnimo/img/master/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png">
 <meta property="article:published_time" content="2021-01-22T09:04:31.000Z">
-<meta property="article:modified_time" content="2021-02-03T14:12:04.457Z">
+<meta property="article:modified_time" content="2021-02-03T14:18:16.113Z">
 <meta property="article:author" content="Masano Yu">
 <meta property="article:tag" content="DGCNN">
 <meta property="article:tag" content="关系抽取">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/Users/yumasano/workspace/img/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/dnimo/img/master/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png">
 
 <link rel="canonical" href="http://example.com/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/">
 
@@ -202,7 +202,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-03 22:12:04" itemprop="dateModified" datetime="2021-02-03T22:12:04+08:00">2021-02-03</time>
+                <time title="Modified: 2021-02-03 22:18:16" itemprop="dateModified" datetime="2021-02-03T22:18:16+08:00">2021-02-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,7 +241,7 @@
 <h4 id="模型整体结构">模型整体结构</h4>
 <blockquote>
 <p>模型使用了CNN+Attention的结构（为加一个短序列LSTM，由于序列很短，所以即使有循环也不影响效率），CNN使用了DGCNN，Attention是用了Google的Self- Attention。</p>
-<p><img src="/Users/yumasano/workspace/img/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png" alt="模型整体结构图" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/dnimo/img/master/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png" alt="模型整体结构图" style="zoom:50%;" /></p>
 <p>处理流程：</p>
 <ol type="1">
 <li>输入字id序列，然后通过字词混合Emdeding得到了对应的字向量序列，然后加上Position Embedding；</li>
