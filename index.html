@@ -186,10 +186,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-01-22 17:04:31 / Modified: 18:48:32" itemprop="dateCreated datePublished" datetime="2021-01-22T17:04:31+08:00">2021-01-22</time>
+              <time title="Created: 2021-01-22 17:04:31" itemprop="dateCreated datePublished" datetime="2021-01-22T17:04:31+08:00">2021-01-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-03 22:12:04" itemprop="dateModified" datetime="2021-02-03T22:12:04+08:00">2021-02-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -223,22 +229,14 @@
 <p>也就是说，我们可以先预测s，然后传入s来预测该s对应的o，然后传入s、o来预测所传入的s、o的关系p，实际应用中，我们还可以把o、p的预测合并成一步，所以总的步骤只需要两步：先预测s，然后传入s来预测该s所对应的o及p。</p>
 <p>理论上，上述模型只能抽取单一一个三元组，所以为了处理多个s、多个o甚至多个p的情况，我们全部使用“半指针-半标注”结构。</p>
 </blockquote>
-<h4 id="模型整体结构">模型整体结构</h4>
-<blockquote>
-<p>模型使用了CNN+Attention的结构（为加一个短序列LSTM，由于序列很短，所以即使有循环也不影响效率），CNN使用了DGCNN，Attention是用了Google的Self- Attention。</p>
-<p><img src="/Users/yumasano/workspace/img/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png" alt="模型整体结构图" style="zoom:50%;" /></p>
-<p>处理流程：</p>
-<ol type="1">
-<li>输入字id序列，然后通过字词混合Emdeding得到了对应的字向量序列，然后加上Position Embedding；</li>
-<li>将得到“字+词+位置Embedding”输入到12层DGCNN中进行编码，然后得到编码后的序列（H）</li>
-<li>将H传入一层Self- Attention后，将输出结果与先验特征进行拼接</li>
-<li>将拼接后的结果传入CNN、Dense，用“半指针-半标注”结构预测s的首、尾位置；</li>
-<li>训练时随机采样一个标注的s（预测时逐一遍历所有的s），然后将H对应此s的子序列传入到一个双向LSTM中，得到s的编码向量，然后加上相对位置的Position Embedding，得到一个与输入序列等长的向量序列；</li>
-<li>将H传入另一层Self-Attention后，将输出结果与第5步输出的向量序列、先验特征进行拼接（先验特征可加可不加）；</li>
-<li>将拼接结果传入CNN、Dense，对于每一种p，都构建一个“半指针-半标注”结构来预测对应的o的首、尾位置，这样就同时把o、p都预测出来；</li>
-</ol>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
