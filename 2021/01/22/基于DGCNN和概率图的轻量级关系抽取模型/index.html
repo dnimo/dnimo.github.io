@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/dnimo/img/master/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png">
 <meta property="article:published_time" content="2021-01-22T09:04:31.000Z">
-<meta property="article:modified_time" content="2021-03-26T12:14:38.228Z">
+<meta property="article:modified_time" content="2021-03-26T12:37:12.334Z">
 <meta property="article:author" content="Masano Yu">
 <meta property="article:tag" content="DGCNN">
 <meta property="article:tag" content="关系抽取">
@@ -204,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-26 20:14:38" itemprop="dateModified" datetime="2021-03-26T20:14:38+08:00">2021-03-26</time>
+                <time title="Modified: 2021-03-26 20:37:12" itemprop="dateModified" datetime="2021-03-26T20:37:12+08:00">2021-03-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,8 +265,8 @@
 <h4 id="概率图思想中的sigmod函数----双标注函数">概率图思想中的Sigmod函数----双标注函数</h4>
 <blockquote>
 <p>因为一个答案可能对应多个结果，要想使模型将这些不同的词都有同样的标注结果，比较困难，所以我们使用两次标注的方式，来分别标注答案的开始位置和终止位置。</p>
-<p>$ p_i<sup>{start}=(</sup>T_1 Act(W_1 x_i+b)+_1)$</p>
-<p>$ p_i<sup>{end}=(</sup>T_2 Act(W_2 x_i +b_2)+_2)$</p>
+<p><span class="math inline">\(p_i^{start}=\sigma(\alpha^T_1 Act(W_1 x_i+b)+\beta_1)\)</span></p>
+<p><span class="math inline">\(p_i^{end}=\sigma(\alpha^T_2 Act(W_2 x_i +b_2)+\beta_2)\)</span></p>
 <p>由此，模型的输出设计跟指针方式和纯序列标注都不一样，或者说是两者的简化及融合。</p>
 </blockquote>
 <h5 id="解码策略">解码策略</h5>
