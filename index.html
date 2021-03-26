@@ -163,6 +163,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Masano Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">优化器算法Optimizer详解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-26 19:29:28 / Modified: 19:31:37" itemprop="dateCreated datePublished" datetime="2021-03-26T19:29:28+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/11/tensorflow-gpu%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -186,10 +254,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-03-11 09:47:41 / Modified: 10:08:35" itemprop="dateCreated datePublished" datetime="2021-03-11T09:47:41+08:00">2021-03-11</time>
+              <time title="Created: 2021-03-11 09:47:41" itemprop="dateCreated datePublished" datetime="2021-03-11T09:47:41+08:00">2021-03-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-26 19:26:09" itemprop="dateModified" datetime="2021-03-26T19:26:09+08:00">2021-03-26</time>
+              </span>
 
           
 
@@ -332,7 +406,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-19 14:39:00" itemprop="dateModified" datetime="2021-02-19T14:39:00+08:00">2021-02-19</time>
+                <time title="Modified: 2021-03-26 19:25:01" itemprop="dateModified" datetime="2021-03-26T19:25:01+08:00">2021-03-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -360,10 +434,10 @@
 <p>一种比较基准的思想是先进行实体识别，然后对识别出的实体进行关系分类，但这种思路无法很好的处理同一组（subject，object）对应多个predicative的情况，同时会存在采样效率的问题；另一种思路是作为一个整体的序列标注，但是这种设计不能很好地处理同食多个s、多个o的情况，需要采取丑陋的“就近原则”；强化学习也不是一个好的解决方法。</p>
 <p>在苏剑林大佬提出使用类似seq2seq的概率图思路。</p>
 <p>seq2seq的解码器：</p>
-<p><span class="math display">\[P(y_1,y_2,\dots,y_n|x)=P(y_1|x)P(y_2|x,y_1)\dots P(y_n|x,y_1,y_2,\dots,y_{n-1})\]</span></p>
+<p><span class="math inline">\(P(y_1,y_2,\dots,y_n|x)=P(y_1|x)P(y_2|x,y_1)\dots P(y_n|x,y_1,y_2,\dots,y_{n-1})\)</span></p>
 <p>上述公式的意思是：先通过x来预测第一个单词，然后假设第一个单词已知来预测第二个单词，以此类推，直到出现结束标记。</p>
 <p>抽取三元组时参考这个思路，则会变成：</p>
-<p><span class="math display">\[P(s,p,o)=P(s)P(o|s)P(p|s,o)\]</span></p>
+<p><span class="math inline">\(P(s,p,o)=P(s)P(o|s)P(p|s,o)\)</span></p>
 <p>也就是说，我们可以先预测s，然后传入s来预测该s对应的o，然后传入s、o来预测所传入的s、o的关系p，实际应用中，我们还可以把o、p的预测合并成一步，所以总的步骤只需要两步：先预测s，然后传入s来预测该s所对应的o及p。</p>
 <p>理论上，上述模型只能抽取单一一个三元组，所以为了处理多个s、多个o甚至多个p的情况，我们全部使用“半指针-半标注”结构。</p>
 </blockquote>
@@ -424,7 +498,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-21 18:31:16" itemprop="dateModified" datetime="2021-01-21T18:31:16+08:00">2021-01-21</time>
+                <time title="Modified: 2021-03-26 19:27:24" itemprop="dateModified" datetime="2021-03-26T19:27:24+08:00">2021-03-26</time>
               </span>
 
           
@@ -837,87 +911,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/18/Parallel-Computing-for-Machine-Learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/18/Parallel-Computing-for-Machine-Learning/" class="post-title-link" itemprop="url">Parallel Computing for Machine Learning</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-12-18 20:01:36" itemprop="dateCreated datePublished" datetime="2020-12-18T20:01:36+08:00">2020-12-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-29 23:11:34" itemprop="dateModified" datetime="2020-12-29T23:11:34+08:00">2020-12-29</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="why-paralle-computing-for-ml">why paralle computing for ML?</h3>
-<ul>
-<li>Deep learning models are big: ResNet-50 has 25M parameters.</li>
-<li>Big models are trained on big data, e.g., Imagenet has 14M images.</li>
-<li>Big models + big data --&gt; Big computation cost</li>
-<li>Parallel computing: using multiple processors to make the computation faster(in terms of wall-clock time)</li>
-</ul>
-<blockquote>
-<p>通过并行计算只能减少钟表时间，不能减少CPU时间和GPU时间</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/18/Parallel-Computing-for-Machine-Learning/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -989,7 +982,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1002,7 +995,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
