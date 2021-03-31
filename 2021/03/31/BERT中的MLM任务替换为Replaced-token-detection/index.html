@@ -20,15 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Masano&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/page/2/index.html">
+  <meta name="description" content="Masked language-model &amp; Replaced token detection 简介 回顾Bert中，模型会替换掉传入句子中15%的token，其中Masked掉80%，10%随机替换，10%保持不变，随后将替换的句子输入到BERT中用于预测被替换的token。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BERT中的MLM任务替换为Replaced token detection">
+<meta property="og:url" content="http://example.com/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/index.html">
 <meta property="og:site_name" content="Masano&#39;s Blog">
+<meta property="og:description" content="Masked language-model &amp; Replaced token detection 简介 回顾Bert中，模型会替换掉传入句子中15%的token，其中Masked掉80%，10%随机替换，10%保持不变，随后将替换的句子输入到BERT中用于预测被替换的token。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-31T08:14:37.000Z">
+<meta property="article:modified_time" content="2021-03-31T09:29:57.989Z">
 <meta property="article:author" content="Masano Yu">
+<meta property="article:tag" content="BERT">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/page/2/">
+<link rel="canonical" href="http://example.com/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/">
 
 
 <script id="page-configurations">
@@ -36,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | Masano's Blog</title>
+  <title>BERT中的MLM任务替换为Replaced token detection | Masano's Blog</title>
   
 
 
@@ -159,179 +164,130 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Masano Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Masano's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BERT中的MLM任务替换为Replaced token detection
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-31 16:14:37 / Modified: 17:29:57" itemprop="dateCreated datePublished" datetime="2021-03-31T16:14:37+08:00">2021-03-31</time>
+            </span>
+
+          
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 17 posts in total. Keep on posting.</span>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-12-27T14:30:07+08:00"
-              content="2020-12-27">
-          12-27
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/12/27/MultModal-%E5%A4%9A%E6%A8%A1%E6%80%81%E4%B8%ADNLP%E4%B8%8ECV%E8%9E%8D%E5%90%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E5%BC%8F/" itemprop="url">
-            <span itemprop="name">MultModal:多模态中NLP与CV融合的一些方式</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-12-20T20:08:12+08:00"
-              content="2020-12-20">
-          12-20
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/12/20/Parallel-Computing-in-TensorFlow/" itemprop="url">
-            <span itemprop="name">Parallel Computing in TensorFlow</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-12-18T20:01:36+08:00"
-              content="2020-12-18">
-          12-18
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/12/18/Parallel-Computing-for-Machine-Learning/" itemprop="url">
-            <span itemprop="name">Parallel Computing for Machine Learning</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-12-18T14:28:10+08:00"
-              content="2020-12-18">
-          12-18
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/12/18/Bert-%E4%B8%BA%E4%BD%95%E5%AE%9A%E4%B9%89%E4%B8%BA%E5%8F%8C%E5%90%91%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%9F/" itemprop="url">
-            <span itemprop="name">Bert:为何定义为双向语言模型？</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-12-14T16:08:11+08:00"
-              content="2020-12-14">
-          12-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/12/14/Tools-kafka%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url">
-            <span itemprop="name">Tools:kafka分布式消息中间件</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-12-14T15:23:38+08:00"
-              content="2020-12-14">
-          12-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/12/14/Stanford-Machine-Learning-open-course/" itemprop="url">
-            <span itemprop="name">Stanford:Machine Learning open course</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-12-11T21:11:03+08:00"
-              content="2020-12-11">
-          12-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/12/11/NLP-%E5%B1%82%E7%BA%A7%E6%80%A7%E5%A4%9A%E5%85%83%E6%A0%87%E7%AD%BE%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/" itemprop="url">
-            <span itemprop="name">NLP:层级性多元标签文本分类</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <h4 id="masked-language-model-replaced-token-detection">Masked language-model &amp; Replaced token detection</h4>
+<h5 id="简介">简介</h5>
+<p>回顾Bert中，模型会替换掉传入句子中15%的token，其中Masked掉80%，10%随机替换，10%保持不变，随后将替换的句子输入到BERT中用于预测被替换的token。</p>
+<a id="more"></a>
+<p><a href="https://link.zhihu.com/?target=https%3A//openreview.net/pdf%3Fid%3Dr1xMH1BtvB">ELECTRA: Pre-training Text Encoders as Discriminators Rather Than Generators</a> 的作者认为只学习15%的token浪费算力，同时存在Mask不会在实际任务中出现的问题。于是，文章提出了新的训练任务：replaced token detection，即首先使用一个生成器预测句子中被mask掉的token，接下来使用预测的token代替句子中的Mask标记，然后使用一个判别器区分句子中的每个token是原始的还是替换后的。</p>
+<p>在预训练后，将判别器用于下游任务。作者认为Replaced token detection任务让模型（判别器）可以在所有的token上学习，而不是那些仅仅被mask掉的token，这使得计算机效率更高。</p>
+<h4 id="生成器与判别器">生成器与判别器</h4>
+<p>生成器输入token序列<span class="math inline">\(x=[x_1,\dots,x_n]\)</span>，经过编码得到<span class="math inline">\(h_G(x)=[h_1^G,\dots,h_n^G]\)</span>。于是，生成器在位置t上输出token<span class="math inline">\(x\)</span>的概率为： <span class="math display">\[
+p_G(x|X)=softmask(e(x)^T h_t^D)
+\]</span> 其中，<span class="math inline">\(e(\cdot)\)</span>表示token的embedding。而对于判别器，输入token序列<span class="math inline">\(x=[x_1,\dots,x_n]\)</span>，经过编码得到<span class="math inline">\(h_D(x)=[h_1^D,\dots,h_n^D]\)</span>，于是判别器预测位置<span class="math inline">\(t\)</span>的token被替换掉的概率为 <span class="math display">\[
+D(x,t)=sigmoid(w^Th_t^D)
+\]</span> 其中，<span class="math inline">\(w\)</span>是模型的参数。</p>
+<h4 id="损失函数">损失函数</h4>
+<p>假设被mask掉的token位置为<span class="math inline">\(m=[m_1,\dots,m_k]\)</span>，假设最初的句子为<span class="math inline">\(x=[x_1,\dots,x_n]\)</span>，mask后的句子为<span class="math inline">\(x^{masked}\)</span>，替换后的句子为<span class="math inline">\(x^{corrupt}\)</span>，那么mask和替换过程可以形式化为： <span class="math display">\[
+m_i \sim unif\{1,n\}for i = 1 to k \\
+x^{masked}=REPLACE(x,m,[MASK]) \\
+\hat{x}_i \sim p_G(x_i|x^{masked})for\space i\in m\\
+x^{corrupt}=REPLACE(x,m,\hat{x})
+\]</span> 于是损失函数为： <span class="math display">\[
+L_{MLM}(x,\theta_G)=\mathbb{E}(\sum_{i\in m}-logp_G(x_i|x^{maskd})) \\
+L_{Dise}(x,\theta_D)=\mathbb{E}(\sum^n_{t=1}\mathbb{I}(x_t^{corrupt}=x_t)logD(x^{corrupt},t)+\mathbb{I}(x_t^{corrupt}\ne x_t)log(1-D(x^{corrupt},t)))
+\]</span></p>
+<p>文章指出虽然上面的两个损失函数看起来像GAN，但二者还是有很大区别：</p>
+<ol type="1">
+<li>如果生成器恰好将masked掉的token预测为真正的token，那么这个token将会被认为是没有被替换过，作者发现这样为有益于下游任务</li>
+<li>生成器通过最大似然估计来训练，而不是对抗地愚弄判别器，因为对抗训练对生成器来说仍然是一个挑战，毕竟梯度没办法回传。</li>
+</ol>
+<p>最终的优化目标： <span class="math display">\[
+\min_{\theta_G,\theta_D}\sum_{x \in \chi}L_{MLM}(x,\theta_G)+L_{Disc}(x,\theta_D)
+\]</span> 其中<span class="math inline">\(\chi\)</span>是一个大型的语料库</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BERT/" rel="tag"># BERT</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/29/batch%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%AF%B9%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E7%9A%84%E5%BD%B1%E5%93%8D/" rel="prev" title="batch的大小对学习效果的影响">
+      <i class="fa fa-chevron-left"></i> batch的大小对学习效果的影响
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
   
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-  </nav>
+  
+  
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -378,6 +334,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#masked-language-model-replaced-token-detection"><span class="nav-number">1.</span> <span class="nav-text">Masked language-model &amp; Replaced token detection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%99%A8%E4%B8%8E%E5%88%A4%E5%88%AB%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">生成器与判别器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">损失函数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
