@@ -20,28 +20,33 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Masano&#39;s Blog">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="条件概率分布  条件概率表示在条件Y&#x3D;bY&#x3D;bY&#x3D;b成立的情况下，X&#x3D;aX&#x3D;aX&#x3D;a的概率，记作P(X&#x3D;a∣Y&#x3D;b)orP(a∣b)P(X&#x3D;a|Y&#x3D;b)\quad or \quad P(a|b)P(X&#x3D;a∣Y&#x3D;b)orP(a∣b)，它具有如下性质： “在条件Y&#x3D;bY&#x3D;bY&#x3D;b下XXX的条件分布“也是一种”XXX的概率分布“，因此穷举XXX的可取值之后，所有这些值对应的概率之和为1即： ∑aP(X">
+<meta property="og:type" content="article">
+<meta property="og:title" content="条件概率分布与联合概率分布及边缘概率分布、信息熵">
+<meta property="og:url" content="http://example.com/2021/04/20/%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%8E%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E3%80%81%E4%BF%A1%E6%81%AF%E7%86%B5/index.html">
 <meta property="og:site_name" content="Masano&#39;s Blog">
+<meta property="og:description" content="条件概率分布  条件概率表示在条件Y&#x3D;bY&#x3D;bY&#x3D;b成立的情况下，X&#x3D;aX&#x3D;aX&#x3D;a的概率，记作P(X&#x3D;a∣Y&#x3D;b)orP(a∣b)P(X&#x3D;a|Y&#x3D;b)\quad or \quad P(a|b)P(X&#x3D;a∣Y&#x3D;b)orP(a∣b)，它具有如下性质： “在条件Y&#x3D;bY&#x3D;bY&#x3D;b下XXX的条件分布“也是一种”XXX的概率分布“，因此穷举XXX的可取值之后，所有这些值对应的概率之和为1即： ∑aP(X">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-20T08:44:47.000Z">
+<meta property="article:modified_time" content="2021-04-20T09:56:00.928Z">
 <meta property="article:author" content="Masano Yu">
+<meta property="article:tag" content="统计学">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2021/04/20/%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%8E%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E3%80%81%E4%BF%A1%E6%81%AF%E7%86%B5/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Masano's Blog</title>
+  <title>条件概率分布与联合概率分布及边缘概率分布、信息熵 | Masano's Blog</title>
   
 
 
@@ -159,9 +164,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -177,10 +183,9 @@
       <meta itemprop="name" content="Masano's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/20/%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%8E%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E3%80%81%E4%BF%A1%E6%81%AF%E7%86%B5/" class="post-title-link" itemprop="url">条件概率分布与联合概率分布及边缘概率分布、信息熵</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          条件概率分布与联合概率分布及边缘概率分布、信息熵
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -218,7 +223,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="条件概率分布"><a class="markdownIt-Anchor" href="#条件概率分布"></a> 条件概率分布</h2>
+        <h2 id="条件概率分布"><a class="markdownIt-Anchor" href="#条件概率分布"></a> 条件概率分布</h2>
 <blockquote>
 <p>条件概率表示在条件<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>Y</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">Y=b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.22222em;">Y</span><span class="mrel">=</span><span class="mord mathit">b</span></span></span></span>成立的情况下，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>X</mi><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">X=a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.07847em;">X</span><span class="mrel">=</span><span class="mord mathit">a</span></span></span></span>的概率，记作<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>X</mi><mo>=</mo><mi>a</mi><mi mathvariant="normal">∣</mi><mi>Y</mi><mo>=</mo><mi>b</mi><mo>)</mo><mspace width="1em"></mspace><mi>o</mi><mi>r</mi><mspace width="1em"></mspace><mi>P</mi><mo>(</mo><mi>a</mi><mi mathvariant="normal">∣</mi><mi>b</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(X=a|Y=b)\quad or \quad P(a|b)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.07847em;">X</span><span class="mrel">=</span><span class="mord mathit">a</span><span class="mord mathrm">∣</span><span class="mord mathit" style="margin-right:0.22222em;">Y</span><span class="mrel">=</span><span class="mord mathit">b</span><span class="mclose">)</span><span class="mord mspace quad"></span><span class="mord mathit">o</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mord mspace quad"></span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">a</span><span class="mord mathrm">∣</span><span class="mord mathit">b</span><span class="mclose">)</span></span></span></span>，它具有如下性质：</p>
 <p>“在条件<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>Y</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">Y=b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.22222em;">Y</span><span class="mrel">=</span><span class="mord mathit">b</span></span></span></span>下<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.07847em;">X</span></span></span></span>的条件分布“也是一种”<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.07847em;">X</span></span></span></span>的概率分布“，因此穷举<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.07847em;">X</span></span></span></span>的可取值之后，所有这些值对应的概率之和为<code>1</code>即：</p>
@@ -309,900 +314,40 @@ I(X;Y)=&H(X)-H(X|Y)\\
 <p>互信息度量的是两个随机变量之间的统计相关性，是从随机变量整体角度，在平均的意义上观察问题，因此通称为平均互信息。</p>
 <p>==在自然语言处理中通常利用这一测度判断两个对象之间的关系，如根据主题类型与词汇之间的互信息大小进行特征词抽取。==</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6/" rel="tag"># 统计学</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/%E5%85%B3%E4%BA%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%8B%E7%BB%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/18/%E5%85%B3%E4%BA%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">关于多模态机器学习的介绍</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-18 13:51:46 / Modified: 16:07:50" itemprop="dateCreated datePublished" datetime="2021-04-18T13:51:46+08:00">2021-04-18</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/04/18/%E5%85%B3%E4%BA%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%8B%E7%BB%8D/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/18/%E5%85%B3%E4%BA%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%8B%E7%BB%8D/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="介绍"><a class="markdownIt-Anchor" href="#介绍"></a> 介绍</h2>
-<blockquote>
-<p>模态（Modality）的定义：</p>
-<p>每一种信息的来源或形式，都可以称为一种模态。例如，人有触觉，听觉，视觉，嗅觉；信息的媒介，有语音、视频、文字等；多种多样的传感器，如雷达、红外、加速度计等。以上的每一种都可以称为一种模态。</p>
-</blockquote>
-<p>同时，模态也可以有非常广泛的定义，比如我们可以把两种不同的语言当作是两种模态，甚至在两种不同情况下采集到的数据集，亦可认为是两种模态。</p>
-<p>因此，多模态机器学习，英文全称MultiModel Machine Learning（MMML），旨在通过机器学习的方法实现处理和理解多源模态信息的能力。目前比较热门的研究方向是图像、视频、饮品、语义之间的多模态学习。</p>
-<h2 id="多模态学习的分类"><a class="markdownIt-Anchor" href="#多模态学习的分类"></a> 多模态学习的分类</h2>
-<p>多模态学习可以划分为以下五个研究方向；</p>
-<ol>
-<li>多模态表示学习 Multimodal Representation</li>
-<li>模态转化 Translation</li>
-<li>对齐 Alignment</li>
-<li>多模态融合 Multimodal Fusion</li>
-<li>协同学习Co-learning</li>
-</ol>
-<h3 id="多模态表示学习-multimodal-representation"><a class="markdownIt-Anchor" href="#多模态表示学习-multimodal-representation"></a> 多模态表示学习 Multimodal Representation</h3>
-<p>单模态的表示学习负责将信息表示为计算机可以处理的数值向量或者进一步抽象为更高层的特征向量，而多模态表示学习是指通过利用多模态之间的互补性，剔除模态间的冗余性，从而学习到更好的特征表示。</p>
-<p>主要包括两大研究方向：联合表示（Joint Representation）和协同表示（Coordinated Representation）。</p>
-<ol>
-<li>联合表示将多个模态的信息一起映射到一个统一的多模态向量空间；</li>
-<li>协同表示负责将多模态中的每个模态分别映射到各自的表示空间，但映射后的向量之间满足一定的相关性约束（例如线性相关）。</li>
-</ol>
-<p>利用多模态表示学习到的特征可以用来做信息检索，也可以用于分类/回归任务。下面列举几个经典的应用。</p>
-<p>在来自NIPS 2012 的《Multimodal learning with deep Boltzmann machines》一文中提出将<code>deep boltzmann machines (DBM)</code>结构扩充到多模态领域，通过<code>Multimodal DBM</code>，可以学习到多模态的联合概率分布。</p>
-<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpnwqrm779j30wc0lo4f7.jpg" alt="摘自Boltzmann Machines原文" /></p>
-<p>论文中的实验通过Bimodal DBM，学习图片和文本的联合概率分布<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>i</mi><mi>m</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo separator="true">,</mo><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(image,text)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">i</span><span class="mord mathit">m</span><span class="mord mathit">a</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mord mathit">e</span><span class="mpunct">,</span><span class="mord mathit">t</span><span class="mord mathit">e</span><span class="mord mathit">x</span><span class="mord mathit">t</span><span class="mclose">)</span></span></span></span>。在应用阶段，输入图片，利用条件概率<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi><mi mathvariant="normal">∣</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(text|image)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">t</span><span class="mord mathit">e</span><span class="mord mathit">x</span><span class="mord mathit">t</span><span class="mord mathrm">∣</span><span class="mord mathit">i</span><span class="mord mathit">m</span><span class="mord mathit">a</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mord mathit">e</span><span class="mclose">)</span></span></span></span>，生成文本特征，可以得到图片相应的文本描述；而输入文本，利用条件概率<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>i</mi><mi>m</mi><mi>a</mi><mi>g</mi><mi>e</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(image|text)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">i</span><span class="mord mathit">m</span><span class="mord mathit">a</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mord mathit">e</span><span class="mord mathrm">∣</span><span class="mord mathit">t</span><span class="mord mathit">e</span><span class="mord mathit">x</span><span class="mord mathit">t</span><span class="mclose">)</span></span></span></span>，可以生成图片特征，通过检索出最靠近该特征向量的两个图片实例，可以得到符合文本描述的图片。如上图。</p>
-<p>协同表示学习一个比较经典的应用来自于《Unifying Visual-Semantic Embeddings with Multimodal Neural Language Models》这篇文章，利用协同学习到的特征向量之间满足加减运算这一特性，可以搜索出与给定图片满足“指定的转换语义”的图片。例如：</p>
-<blockquote>
-<p>狗的图片特征向量-狗的文本特征向量+猫的文本特征向量=猫的图片特征向量-&gt;在特征向量空间，根据最近邻距离，检索得到猫的图片</p>
-</blockquote>
-<h3 id="转化-translation映射-mapping"><a class="markdownIt-Anchor" href="#转化-translation映射-mapping"></a> 转化 Translation/映射 Mapping</h3>
-<p>转化也称映射，负责将一个模态的信息转换成为另一个模态的信息。常见的信息包括：</p>
-<p>机器翻译（Machine Translation）：将输入的语言A（即时）翻译为另一种语言B。类似的还有唇读（Lip Reading）和语音翻译（Speech Translation），分别将唇部视觉和语音信息转换为文本信息。</p>
-<p>图片描述（Image captioning）或者视频描述（Video captioning）：对给定的图片/视频形成文字描述，以表达图片/视频内容。</p>
-<p>语音合成（Speech Synthesis）：根据输入的文本信息，自动合成一段语音信息号。</p>
-<p>模态间的转换主要有两个难点，一个是<code>open-ended</code>，即未知结束位，例如实时翻译中，在还未得到句尾的情况下，必须实时的对句子进行翻译；另一个是<code>subjective</code>，即主观评判性，是指很多模态转换问题的效果没有一个比较客观的评价标准，也就是说目标函数的确定是非常主观的。例如，在图片描述中，形成怎样的一段话才算是对图片好的诠释？</p>
-<h3 id="对齐alignment"><a class="markdownIt-Anchor" href="#对齐alignment"></a> 对齐Alignment</h3>
-<p>多模态的对齐负责对来自同一个实例的不同模态信息的子分支/元素寻找对应关系。这个对应关系可以是事件维度的，比如下图所示的<code>Temporal sequence alignment</code>，将一组动作对应的视频流同骨骼图片对齐。类似的还有电影画面-语音-字幕的自动对齐。</p>
-<p>对齐又可以是空间维度的，比如图片语义分割（Image Semantic Segmentation）：尝试将图片的每个像素对应到某一种类型标签，实现视觉-词汇对齐。</p>
-<h3 id="多模态融合-multimodal-fusion"><a class="markdownIt-Anchor" href="#多模态融合-multimodal-fusion"></a> 多模态融合 Multimodal Fusion</h3>
-<p>多模态融合（Multimodal Fusion）负责联合多个模态的信息，进行目标检测（分类或者回归），输入MMML最早的研究方向之一，也是目前应用最广的方向，它还存在其他常见的别名，例如多源信息融合（Multi-source Information Fusion）、多传感器融合（Multi-sensor Fusion）。</p>
-<p>按照融合的层次，可以将多模态融合分为<code>pixel level、feature level and decision level</code>三类，分别对应对原始数据进行融合、对抽象特征进行融合和对决策结果进行融合。而<code>feature level</code>又可以分为<code>early</code>和<code>late</code>两个大类，代表了融合发生在特征抽取的早期和晚期。当然还有将多种荣恶化层次混合的<code>hybrid</code>方法。</p>
-<p>多模态情感分析（<code>Multimodal Sentiment Analysis</code>）：综合利用多个模态的数据（例如下图中的文字、面部表情、声音），通过互补，消除歧义和不确定性，得到更加准确的情感类型判断结果。</p>
-<h3 id="协同学习-co-learning"><a class="markdownIt-Anchor" href="#协同学习-co-learning"></a> 协同学习 Co- learning</h3>
-<p>协同学习是指使用一个资源丰富的模态信息来辅助另一个资源相对贫瘠的模态进行学习。</p>
-<p>比如迁移学习（<code>Transfer Learning</code>）就是属于这个范畴，绝大多熟迈入深度学习的初学者尝试做的一项工作就是将ImageNet数据集上学习到的权重，在自己的目标数据集上进行微调。</p>
-<p>迁移学习比较常探讨的方面目前集中在领域适应性（<code>Domain Adaptation</code>）问题上，即如何将<code>train domain</code>上学习到的模型应用到<code>application domain</code>。</p>
-<p>迁移学习领域著名的还有零样本学习（<code>Zero-Shot Learning</code>）和一样本学习（<code>One-Shot learning</code>），很多相关的方法也会用到领域适应性的相关知识。</p>
-<p><code>Co-learning</code>中还有一类工作叫做协同训练（<code>Co-training</code>），它负责研究如何在多模态数据中将少量的标注进行扩充，得到更多的标注嘻嘻。</p>
-<p>==系统学习是与需要解决的任务无关的，因此它可以用于辅助多模态映射、融合及对齐等问题的研究。==</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/" class="post-title-link" itemprop="url">量子化的变分自编码机</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-17 15:57:25 / Modified: 21:12:00" itemprop="dateCreated datePublished" datetime="2021-04-17T15:57:25+08:00">2021-04-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="量子化的变分自编码机-vector-quantized-vae-vq-vae"><a class="markdownIt-Anchor" href="#量子化的变分自编码机-vector-quantized-vae-vq-vae"></a> 量子化的变分自编码机 Vector Quantized VAE (VQ-VAE)</h1>
-<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
-<p>变分自编码机（VAE）是一种非监督学习方法，它属于一个AutoEncoder的一个变种。一个AutoEncoder模型包含两个部分，一个编码器Encoder，一个解码器Decoder。前者将高维输入图像x压缩到一个低维潜变量<code>z</code>，后者将<code>z</code>解码，重建<code>x</code>。计算重构误差并反向传播，即可学习编码器与解码器的神经网络权重。成功训练之后，编码器和解码器分别学习到了两个概率：</p>
-<p>Encoder：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>z</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(z|x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mord mathrm">∣</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span> 给定输入<code>x</code>，判别得到潜在变量z的条件概率</p>
-<p>Decoder：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x|z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord mathrm">∣</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span> 给定潜变量<code>z</code>，生成图像<code>x</code>的条件概率</p>
-<p>这两个概率就是贝叶斯公式中最重要的两个条件概率：</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>z</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo>(</mo><mi>z</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo>)</mo><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>P</mi><mo>(</mo><mi>z</mi><mo>)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">P(x|z)=\frac{P(z|x)P(x)}{P(z)}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.427em;"></span><span class="strut bottom" style="height:2.363em;vertical-align:-0.936em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord mathrm">∣</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.686em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span><span style="top:-0.2300000000000001em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mord mathrm">∣</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span></span></p>
-<p>PS：联合概率<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>P</mi><mo>(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>z</mi><mo>)</mo><mi>P</mi><mo>(</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>P</mi><mo>(</mo><mi>z</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo>)</mo><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x,z)=P(x|z)P(z)=P(z|x)P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord mathrm">∣</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mord mathrm">∣</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/" class="post-title-link" itemprop="url">Word2Vec的本质</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-06 19:38:08 / Modified: 21:02:44" itemprop="dateCreated datePublished" datetime="2021-04-06T19:38:08+08:00">2021-04-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="简介">简介</h4>
-<p>NLP处理中，最细粒度的是词语，词语组成句子，句子再组成段落、篇章、文档。所以处理NLP的问题，首先就是要处理词语。</p>
-<p>例如：判断一个词的词性，是动词还是名词。用机器学习的思路，我们有一系列样本(x, y)，这里x是词语，y是它们的词性，我们要构建F(x)--&gt;y的映射，但这里的数学模型F(比如神经网路、SVM)只接受数值型输入，而NLP里的词语，是人类的抽象总结，是符号形式的(比如中文、英文、拉丁文等等)，所以我们要把他们转换成数值形式，或者说——嵌入到一个数学空间里，这种嵌入方式，就叫词嵌入(word embedding)，而Word2Vec，就是词嵌入(word embedding)的一种。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/18/%E5%85%B3%E4%BA%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%8B%E7%BB%8D/" rel="prev" title="关于多模态机器学习的介绍">
+      <i class="fa fa-chevron-left"></i> 关于多模态机器学习的介绍
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/" class="post-title-link" itemprop="url">BERT中的MLM任务替换为Replaced token detection</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-31 16:14:37 / Modified: 17:38:20" itemprop="dateCreated datePublished" datetime="2021-03-31T16:14:37+08:00">2021-03-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="masked-language-model-replaced-token-detection">Masked language-model &amp; Replaced token detection</h4>
-<h5 id="简介">简介</h5>
-<p>回顾Bert中，模型会替换掉传入句子中15%的token，其中Masked掉80%，10%随机替换，10%保持不变，随后将替换的句子输入到BERT中用于预测被替换的token。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/29/batch%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%AF%B9%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E7%9A%84%E5%BD%B1%E5%93%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/29/batch%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%AF%B9%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E7%9A%84%E5%BD%B1%E5%93%8D/" class="post-title-link" itemprop="url">batch的大小对学习效果的影响</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-29 12:04:19 / Modified: 16:19:35" itemprop="dateCreated datePublished" datetime="2021-03-29T12:04:19+08:00">2021-03-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/03/29/batch%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%AF%B9%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E7%9A%84%E5%BD%B1%E5%93%8D/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/29/batch%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%AF%B9%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E7%9A%84%E5%BD%B1%E5%93%8D/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="简介">简介</h4>
-<p>目前深度学习模型多采用批量随机梯度下降算法进行优化，随机梯度下降算的原理： <span class="math display">\[
-w_{t+1}=w_t - \eta\frac{1}{n}\sum_{x\in B}\bigtriangledown l(x,w_t)
-\]</span> n是批量大小（batch_size），<span class="math inline">\(\eta\)</span> 是学习率（learning rate）。可知道除了梯度本身，这两个因子直接决定了模型的权重更新，从优化本身来看它们是影响模型性能收敛最重要的参数。</p>
-<p>学习率直接影响模型的收敛状态，batch_size则影响模型的泛化性能，两者又是分子分母的直接关系，相互也可影响，因此这一次来详述它们对模型性能的影响。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/29/batch%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%AF%B9%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E7%9A%84%E5%BD%B1%E5%93%8D/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">优化器算法Optimizer详解</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-03-26 19:29:28" itemprop="dateCreated datePublished" datetime="2021-03-26T19:29:28+08:00">2021-03-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-28 12:41:37" itemprop="dateModified" datetime="2021-03-28T12:41:37+08:00">2021-03-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="简介">简介</h4>
-<p>在机器学习中使用的优化算法除了常见的梯度下降，还有Adadelta、Adagrad、RMSProp等几种优化器</p>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1609.04747.pdf">Sebastian Ruder 的这篇论文中给出了常用优化器的比较</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/11/tensorflow-gpu%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/11/tensorflow-gpu%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">tensorflow-gpu的远程开发环境配置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-03-11 09:47:41" itemprop="dateCreated datePublished" datetime="2021-03-11T09:47:41+08:00">2021-03-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-26 19:26:09" itemprop="dateModified" datetime="2021-03-26T19:26:09+08:00">2021-03-26</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/03/11/tensorflow-gpu%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/11/tensorflow-gpu%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="各个软件包的版本">各个软件包的版本</h4>
-<ol type="1">
-<li>tensoflow-gpu==2.2.0</li>
-<li>Cuda10.2</li>
-<li>Cudnn-v8.0.5.39</li>
-<li>Nividia-driver 450</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/11/tensorflow-gpu%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/19/sigmoid%E5%87%BD%E6%95%B0%E5%9C%A8%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E6%84%8F%E4%B9%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/19/sigmoid%E5%87%BD%E6%95%B0%E5%9C%A8%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E6%84%8F%E4%B9%89/" class="post-title-link" itemprop="url">sigmoid函数在神经网络中的意义</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-02-19 14:41:28 / Modified: 15:06:23" itemprop="dateCreated datePublished" datetime="2021-02-19T14:41:28+08:00">2021-02-19</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/02/19/sigmoid%E5%87%BD%E6%95%B0%E5%9C%A8%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E6%84%8F%E4%B9%89/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/02/19/sigmoid%E5%87%BD%E6%95%B0%E5%9C%A8%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E6%84%8F%E4%B9%89/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="神经网络背后的数学原理">神经网络背后的数学原理</h4>
-<blockquote>
-<p>任何连续的多元函数都能被一组一元函数的有限次叠加而成，其中每个医院函数的自变量都是一组连续单变量函数的有限次加权叠加。而这内层的每个单变量函数的自变量都是一个（一维）变量。</p>
-<p>两层有限次叠加足够准确表达任何多元函数。这比多项式逼近要精确，用多项式去准确表示一个连续多元（非多项式）函数需要无穷多项。</p>
-<p>固定一种统一的有限层计算网络结构，调整每个节点的参数和每层节点之间叠加计算的权重，来一致逼近任意一个多元函数。更近一步，我们期望每个节点的一元函数都具有统一形式。</p>
-<p>Kurt Hornik指出如果仅考虑一致逼近，关键不在于sigmoidal-type的激活函数，而是多层网络的前馈结构。除了sigmoidal-type，还可以选择其他激活函数，只要他们在连续函数空间上稠密。</p>
-<p>sigmoid函数是高斯分布的和，而高斯又是随机变量的和，世界本源也是随机的，大量的随机似乎有时候又显示出一些规律，其实也是中心极限，这也是最大信息熵的来源。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">基于DGCNN和概率图的轻量级关系抽取模型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-22 17:04:31" itemprop="dateCreated datePublished" datetime="2021-01-22T17:04:31+08:00">2021-01-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-26 20:37:12" itemprop="dateModified" datetime="2021-03-26T20:37:12+08:00">2021-03-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="概率图思想">概率图思想</h4>
-<blockquote>
-<p>一种比较基准的思想是先进行实体识别，然后对识别出的实体进行关系分类，但这种思路无法很好的处理同一组（subject，object）对应多个predicative的情况，同时会存在采样效率的问题；另一种思路是作为一个整体的序列标注，但是这种设计不能很好地处理同食多个s、多个o的情况，需要采取丑陋的“就近原则”；强化学习也不是一个好的解决方法。</p>
-<p>在苏剑林大佬提出使用类似seq2seq的概率图思路。</p>
-<p>seq2seq的解码器：</p>
-<p><span class="math inline">\(P(y_1,y_2,\dots,y_n|x)=P(y_1|x)P(y_2|x,y_1)\dots P(y_n|x,y_1,y_2,\dots,y_{n-1})\)</span></p>
-<p>上述公式的意思是：先通过x来预测第一个单词，然后假设第一个单词已知来预测第二个单词，以此类推，直到出现结束标记。</p>
-<p>抽取三元组时参考这个思路，则会变成：</p>
-<p><span class="math inline">\(P(s,p,o)=P(s)P(o|s)P(p|s,o)\)</span></p>
-<p>也就是说，我们可以先预测s，然后传入s来预测该s对应的o，然后传入s、o来预测所传入的s、o的关系p，实际应用中，我们还可以把o、p的预测合并成一步，所以总的步骤只需要两步：先预测s，然后传入s来预测该s所对应的o及p。</p>
-<p>理论上，上述模型只能抽取单一一个三元组，所以为了处理多个s、多个o甚至多个p的情况，我们全部使用“半指针-半标注”结构。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -1249,6 +394,7 @@ w_{t+1}=w_t - \eta\frac{1}{n}\sum_{x\in B}\bigtriangledown l(x,w_t)
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83"><span class="nav-number">1.</span> <span class="nav-text"> 条件概率分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87"><span class="nav-number">2.</span> <span class="nav-text"> 联合概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87"><span class="nav-number">3.</span> <span class="nav-text"> 边缘概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E4%B8%8E%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">4.</span> <span class="nav-text"> 联合概率与边缘概率的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%85%AC%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text"> 贝叶斯公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E8%AE%BA"><span class="nav-number">6.</span> <span class="nav-text"> 信息论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%86%B5"><span class="nav-number">6.1.</span> <span class="nav-text"> 熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%86%B5%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">6.2.</span> <span class="nav-text"> 熵的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%86%B5%E5%92%8C%E6%9D%A1%E4%BB%B6%E7%86%B5"><span class="nav-number">6.3.</span> <span class="nav-text"> 联合熵和条件熵</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%86%B5"><span class="nav-number">6.3.1.</span> <span class="nav-text"> 联合熵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%86%B5"><span class="nav-number">6.3.2.</span> <span class="nav-text"> 条件熵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%92%E4%BF%A1%E6%81%AF"><span class="nav-number">6.3.3.</span> <span class="nav-text"> 互信息</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
