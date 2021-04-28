@@ -20,22 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="简介 NLP处理中，最细粒度的是词语，词语组成句子，句子再组成段落、篇章、文档。所以处理NLP的问题，首先就是要处理词语。 例如：判断一个词的词性，是动词还是名词。用机器学习的思路，我们有一系列样本(x, y)，这里x是词语，y是它们的词性，我们要构建F(x)--&gt;y的映射，但这里的数学模型F(比如神经网路、SVM)只接受数值型输入，而NLP里的词语，是人类的抽象总结，是符号形式的(比如中文">
+  <meta name="description" content="关于医疗信息化 由于我个人对这方面比较感兴趣，一直以来我都十分注重收集该领域的信息，但是由于医疗数据的隐私安全性，所以个人或未经授权的组织很难拿到有价值的医疗信息，这就造成了开源社区很少有比较详细的参考资料，只有通过政府关系拿到医疗数据的知名企业为宣传自己的产品断断续续放出一些产品介绍，我们只能根据这些资料粗略的了解目前的发展路线以后的实际应用场景。 医疗服务信息化是国际发展趋势（突入其来的疫情使">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Word2Vec的本质">
-<meta property="og:url" content="http://example.com/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/index.html">
+<meta property="og:title" content="下一个阶段的医疗信息化">
+<meta property="og:url" content="http://example.com/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/index.html">
 <meta property="og:site_name" content="Masano&#39;s Blog">
-<meta property="og:description" content="简介 NLP处理中，最细粒度的是词语，词语组成句子，句子再组成段落、篇章、文档。所以处理NLP的问题，首先就是要处理词语。 例如：判断一个词的词性，是动词还是名词。用机器学习的思路，我们有一系列样本(x, y)，这里x是词语，y是它们的词性，我们要构建F(x)--&gt;y的映射，但这里的数学模型F(比如神经网路、SVM)只接受数值型输入，而NLP里的词语，是人类的抽象总结，是符号形式的(比如中文">
+<meta property="og:description" content="关于医疗信息化 由于我个人对这方面比较感兴趣，一直以来我都十分注重收集该领域的信息，但是由于医疗数据的隐私安全性，所以个人或未经授权的组织很难拿到有价值的医疗信息，这就造成了开源社区很少有比较详细的参考资料，只有通过政府关系拿到医疗数据的知名企业为宣传自己的产品断断续续放出一些产品介绍，我们只能根据这些资料粗略的了解目前的发展路线以后的实际应用场景。 医疗服务信息化是国际发展趋势（突入其来的疫情使">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpabcbepm3j314g0lwjyi.jpg">
-<meta property="article:published_time" content="2021-04-06T11:38:08.000Z">
-<meta property="article:modified_time" content="2021-04-06T13:02:44.186Z">
+<meta property="article:published_time" content="2021-04-27T11:36:41.000Z">
+<meta property="article:modified_time" content="2021-04-28T05:37:05.172Z">
 <meta property="article:author" content="Masano Yu">
-<meta property="article:tag" content="语言模型">
+<meta property="article:tag" content="医疗信息化">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpabcbepm3j314g0lwjyi.jpg">
 
-<link rel="canonical" href="http://example.com/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/">
+<link rel="canonical" href="http://example.com/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/">
 
 
 <script id="page-configurations">
@@ -48,7 +46,7 @@
   };
 </script>
 
-  <title>Word2Vec的本质 | Masano's Blog</title>
+  <title>下一个阶段的医疗信息化 | Masano's Blog</title>
   
 
 
@@ -173,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -186,7 +184,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Word2Vec的本质
+          下一个阶段的医疗信息化
         </h1>
 
         <div class="post-meta">
@@ -195,17 +193,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-04-06 19:38:08 / Modified: 21:02:44" itemprop="dateCreated datePublished" datetime="2021-04-06T19:38:08+08:00">2021-04-06</time>
+              <time title="Created: 2021-04-27 19:36:41" itemprop="dateCreated datePublished" datetime="2021-04-27T19:36:41+08:00">2021-04-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-28 13:37:05" itemprop="dateModified" datetime="2021-04-28T13:37:05+08:00">2021-04-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
+                  <a href="/categories/%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">原创</span></a>
                 </span>
             </span>
 
@@ -218,8 +222,8 @@
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -234,35 +238,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="简介">简介</h4>
-<p>NLP处理中，最细粒度的是词语，词语组成句子，句子再组成段落、篇章、文档。所以处理NLP的问题，首先就是要处理词语。</p>
-<p>例如：判断一个词的词性，是动词还是名词。用机器学习的思路，我们有一系列样本(x, y)，这里x是词语，y是它们的词性，我们要构建F(x)--&gt;y的映射，但这里的数学模型F(比如神经网路、SVM)只接受数值型输入，而NLP里的词语，是人类的抽象总结，是符号形式的(比如中文、英文、拉丁文等等)，所以我们要把他们转换成数值形式，或者说——嵌入到一个数学空间里，这种嵌入方式，就叫词嵌入(word embedding)，而Word2Vec，就是词嵌入(word embedding)的一种。</p>
-<a id="more"></a>
-<h4 id="参考资料">参考资料</h4>
+        <h2 id="关于医疗信息化">关于医疗信息化</h2>
+<p>由于我个人对这方面比较感兴趣，一直以来我都十分注重收集该领域的信息，但是由于医疗数据的隐私安全性，所以个人或未经授权的组织很难拿到有价值的医疗信息，这就造成了开源社区很少有比较详细的参考资料，只有通过政府关系拿到医疗数据的知名企业为宣传自己的产品断断续续放出一些产品介绍，我们只能根据这些资料粗略的了解目前的发展路线以后的实际应用场景。</p>
+<p>医疗服务信息化是国际发展趋势（突入其来的疫情使其更加明显）。随着信息技术的快速发展，国内越来越多的医院正加速实施基于信息化平台、HIS系统的整体建设，以提高医院的服务水平与核心竞争力。信息化不仅提升了医生的工作效率（其实只是优化了看病流程，我并不认为是提升了“医生的工作效率”），使医生有更多的时间为患者服务、更提高了患者的满意度和信任度，无形之中树立起了医院的科技形象。因此，医疗业务应用于基础网络平台的逐步融合正曾为国内医院，尤其是大中型医院信息化发展的方向。</p>
+<p>其实医疗信息化这个议题已经提了好多年，政府部门也有诸多措施，最早可以追溯到上世纪80年代。</p>
+<ol type="1">
+<li>1998年起：管理信息化阶段，建设以财务为核心的HIS系统，目标是实现管理的规范化</li>
+<li>2010年起：临床信息化阶段，建立以医嘱为驱动的CIS系统，目标是提高医疗服务质量和患者安全</li>
+<li>2015年：集成平台话阶段，建设以数据/集成中心为核心的HIE平台，目标是实现院内业务集成交互和数据共享</li>
+<li>2018年以来：区域医疗互联互通阶段，建设以数据应用为导向的AIS系统，目标是实现信息共享以及数据融合。</li>
+</ol>
+<p>就以上信息来开，中国医疗信息化起步并不晚，但是工程建设质量并不理想，以我自己平时去医院看病为例，我们的确实现了预约、挂号、住院、付款的线上处理，看上去好像非常现代化，但是实际上呢？就我自己来讲，我觉得体验一般，看病流程的线上处理和以前的人工处理并没有对病人看病带来服务体验上的提升，同时预约挂号的复杂操作反而对不会使用手机的老年人造成了十分大的困扰，且本来去看病的人群众就以老年人居多，所以医院不得不另设人工窗口，这就操成了资源浪费。明明花费了几百万去实现信息化，但实际带来的收益却并没有设想的那么理想。这就造成了大多数医院的信息化只是为了应对领导检查的形式工程。所以我个人的观点认为，中国医疗信息化正式起步应该始于2018年前后，在这之前的所有工程并没有带来预期的收益，只能说揭露了信息化道路上的各种各样的亟待解决的问题。</p>
+<p>我认为2018年前后才是中国医疗化真正起步的主要原因是，云计算概念的出现。在这之前，所有的医疗信息化系统的后台及软件都是医院独自出资购买，并设置在医院内部，然而医院的体系结构中并没有设立软件事业部，常规操作是将整个信息化工程进行外包，这就导致了一个十分致命的问题：系统标准不统一，一千家医院的系统，有一千种技术标准。并且大多数医院系统都只是企业系统的套用，并没有实地调查过医院实际的业务流程，根据实际的业务流程去设计系统服务。同时，外包的工程，往往会伴随运维困难的难题，有的时候换一家外包公司，业务系统就要重做，导致原来积累的病例数据一并被删，医疗信息化最大的目的功亏一篑。但是，云计算概念的出现，打破了局面。</p>
+<p>云计算的推过大幅拉低了医院信息化工程的两个门槛：</p>
+<ol type="1">
+<li>购买硬件及外包软件系统的高额花费</li>
+<li>系统部署之后，运维的技术难度</li>
+</ol>
+<p>这两个门槛的降低，使得开发医疗信息化系统的软件公司，可以更专心于系统业务逻辑的设计，同时诸如阿里巴巴、腾讯、百度等大公司的进场，也倒逼该行业的传统公司更加注重用户体验和技术研发投入。</p>
 <blockquote>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&gt;1. Mikolov 两篇原论文：</span><br><span class="line">&gt;『Distributed Representations of Sentences and Documents』</span><br><span class="line">     贡献：在前人基础上提出更精简的语言模型（language model）框架并用于生成词向量，这个框架就是 Word2vec</span><br><span class="line">&gt;『Efficient estimation of word representations in vector space』</span><br><span class="line">     贡献：专门讲训练 Word2vec 中的两个trick：hierarchical softmax 和 negative sampling</span><br><span class="line">&gt;优点：Word2vec 开山之作，两篇论文均值得一读</span><br><span class="line">&gt;缺点：只见树木，不见森林和树叶，读完不得要义。</span><br><span class="line">     这里『森林』指 word2vec 模型的理论基础——即 以神经网络形式表示的语言模型</span><br><span class="line">     『树叶』指具体的神经网络形式、理论推导、hierarchical softmax 的实现细节等等</span><br><span class="line"></span><br><span class="line">&gt;2. 北漂浪子的博客：『深度学习word2vec 笔记之基础篇』</span><br><span class="line">&gt;优点：非常系统，结合源码剖析，语言平实易懂</span><br><span class="line">&gt;缺点：太啰嗦，有点抓不住精髓</span><br><span class="line"></span><br><span class="line">&gt;3. Yoav Goldberg 的论文：『word2vec Explained- Deriving Mikolov et al.’s Negative-Sampling Word-Embedding Method』</span><br><span class="line">&gt;优点：对 negative-sampling 的公式推导非常完备</span><br><span class="line">&gt;缺点：不够全面，而且都是公式，没有图示，略显干枯</span><br><span class="line"></span><br><span class="line">&gt;4. Xin Rong 的论文：『word2vec Parameter Learning Explained』：</span><br><span class="line">&gt;！重点推荐！</span><br><span class="line">&gt;理论完备由浅入深非常好懂，且直击要害，既有 high-level 的 intuition 的解释，也有细节的推导过程</span><br><span class="line">&gt;一定要看这篇paper！一定要看这篇paper！一定要看这篇paper！</span><br><span class="line"></span><br><span class="line">&gt;5. 来斯惟的博士论文『基于神经网络的词和文档语义向量表示方法研究』以及他的博客（网名：licstar）</span><br><span class="line">&gt;可以作为更深入全面的扩展阅读，这里不仅仅有 word2vec，而是把词嵌入的所有主流方法通通梳理了一遍</span><br><span class="line"></span><br><span class="line">&gt;6. 几位大牛在知乎的回答：『word2vec 相比之前的 Word Embedding 方法好在什么地方？』</span><br><span class="line">&gt;刘知远、邱锡鹏、李韶华等知名学者从不同角度发表对 Word2vec 的看法，非常值得一看</span><br><span class="line"></span><br><span class="line">&gt;7. Sebastian 的博客：『On word embeddings - Part 2: Approximating the Softmax』</span><br><span class="line">&gt;详细讲解了 softmax 的近似方法，Word2vec 的 hierarchical softmax 只是其中一种</span><br></pre></td></tr></table></figure>
-<p>在NLP中，把x看做一个句子里的词语，y是这个句子的上下文词语，那么这里的f，便是NLP中经常出现的(language model)，这个模型的目的，就是判断(x, y)这个样本，是否符合自然语言法则，更通俗点说就是：词语x和词语y放在一起，是不是人话。</p>
+<p>根据<code>沙利文</code>机构的调研报告2015年至2019年，中国医疗信息化市场规模从54.0亿元人民币增长至120.0亿元人民币，年复合增长率为22.1%；2020年受COVID-19疫情影响，医疗信息化建设再次受到各级医疗机构及医疗监管部门的重视，未来随着电子病历的普及，科研临床对于数据需求持续增长、新兴医疗信息化市场的发展，市场对于医疗信息化产品的需求将得到持续，预计到2024年会增长至365.6亿元人民币，年复合增长率为25.0%。</p>
 </blockquote>
-<p>word2vec源于这个思想，但它的最终目的，不是要把f训练的完美，而是只关心模型训练后的副产物——模型参数（这里特指神经网络的权重），并将这些参数，作为输入x的某种向量化表示，这个向量变叫做——词向量。</p>
-<h4 id="skip-gram和cbow的简单形式">Skip-gram和CBOW的简单形式</h4>
-<p>上面说到，y是x的上下文，所以y只取上下文里一个词语的时候，语言模型就变成：</p>
+<p>同时，近些年机器学习技术的突破，和人工智能项目的落地，更加推动了医疗信息化的进程。目前，有诸多试运行的人工智能项目真正做到了<code>提升医生的工作效率</code>。例如：</p>
+<ol type="1">
+<li><p>IBM Watson临床实验匹配（Watson for Clincal Trial Matching）</p>
+<p>Watson能够帮助确认临床实验匹配的潜在人选。利用认知计算，Watson能够分析临床实验潜在人选的特征，通过评估这些候选人对于相关条件的符合程度，来帮助临床医生，更快速有效的选择临床实验的合适人选。通过提高潜在人选筛选的效果，来帮助提升临床实验的成功率。</p></li>
+<li><p>IBM Watson肿瘤治疗（Watson for Oncology）</p>
+<p>Watson通过MSK外科医生的专业培训后，将为临床医师提供以证据为基础的治疗方案。不论是社区医院还是全球顶级医院，肿瘤专家像所有临床医生一样，都在通过大量的研究成果、医疗记录和临床实验来了解、学习该学科的最新动态。Watson结合重要的知识，协助肿瘤专家解决问题。现在，通过IBM和MSK之间的合作，Watson利用世界知名的MSK公司的专业知识，深度评估和分析每一个病人的具体情况。</p></li>
+</ol>
+<h2 id="microsoft关于ai医疗的探索">Microsoft关于AI医疗的探索</h2>
 <blockquote>
-<p>用当前词x预测它的下一个词y</p>
+<p>接下来的内容基本摘自msra.com，自从我加入Microsoft Learn Student Ambassadors Program之后，我开始渐渐了解到微软在AI医疗上的探索性工作，在我有限的了解中，我觉得微软可能是做的比较出色的公司，故我将一些零零散散的文章拼凑一下，以后我会逐渐更新关于AI医疗的技术型文章，这篇文章，只是管中窥豹的了解什么是医疗信息化和下一个阶段的医疗信息化。</p>
 </blockquote>
-<p>一般的数学模型只接受数值类型输入，这里的x应该如何表示？显然不能使用Word2Vec，因为这是我们训练完模型的产物，现在我们想要的是x的一个原始输入形式。</p>
-<p>所以，我们要使用one-hot encoder</p>
-<p>所谓one-hot encoder，其思想跟特征工程里处理类别变量的one-hot一样。例如：假设全世界所有的词语总共有V个，这V个词语有自己的先后顺序，假设(吴彦祖)这个词是第一个词，(我)是第二个词，那么吴彦祖就可以表示为一个V维全零向量，把第一个位置的0变为1，同样，(我)也是V维，把第二个位置的0变为1.这样，每个词语都可以找到属于自己的唯一表示。</p>
-<h5 id="skip-gram网络结构">Skip-gram网络结构</h5>
-<figure>
-<img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpabcbepm3j314g0lwjyi.jpg" alt="image-20210406204858538" /><figcaption aria-hidden="true">image-20210406204858538</figcaption>
-</figure>
-<blockquote>
-<p>x就是上面提到的one-hot encoder形式的输入，y是在这个V个词上输出的概率，我们期望跟真实的y的one-hot encoder一样。</p>
-<p>需要说明的是：隐含层的激活函数其实是线性的，相当于没有做任何处理(这也是word2vec简化之前语言模型的独到之处)，我们要训练这个神经网络，用反向传播算法，本质是链式求导。</p>
-</blockquote>
-<p>当模型训练完之后，最后得到的是==神经网络的权重==，例如现在输入一个x的one-hot encoder:[1, 0, 0, ..., 0]，对应刚说的那个词语(吴彦祖)，则在输入层到隐含层的权重里，只有对应<code>1</code>这个位置的权重被激活，这些权重的个数，跟隐含层节点数是一致的，从而这些权重组成一个向量vx来表示x，而因为每个词语的one-hot encoder里面<code>1</code>的位置是不同的，所以，这个向量vx就可以用来唯一表示x。</p>
-<p>另外，输出y也是用V个节点表示，对应V个词语，所以其实，我们把输出节点设置成[1, 0, 0, ..., 0]，他也能表示(吴彦祖)这个单词，但是激活的是隐含层到输出层的权重，这些权重的个数，跟隐含层一样，也可以组成一个向量vy，跟上面提到的vx的维度一样，并且可以看作是(吴彦祖)这个词的另一种词向量。而这两种词向量vx和vy，正是Mikolov在论文里所提到的，(输入向量)和(输出向量）。</p>
-<p>这个词向量的维度（与隐含层节点数一致）一般情况下要远远小于词语总数 V 的大小，所以 Word2vec 本质上是一种<strong>降维</strong>操作——把词语从 one-hot encoder 形式的表示降维到 Word2vec 形式的表示。</p>
+<h3 id="ai医疗的无穷可能">AI医疗的无穷可能</h3>
+<p>当医生抽取你的血液后，就拥有了大约100万个T细胞，它们是身体自然免疫系统的样本，每个T细胞的特异性，是由胞外受体（或称T细胞受体）的遗传学机理决定的，因此目前有很多研究试图大批量地解码这些基因所传递的信息。如果能够做到这一点，就可以映射出人体内的T细胞图谱，诊断出发生在人们身上的传染病、癌症、自身免疫性疾病等。这也将成为通用型基于血液的诊断方法的基础。</p>
+<p>目前，微软正在与西雅图的一家生物技术公司Adaptive Biotechnologies进行这方面的合作，其独有的免疫测序技术，可以快速读取血样中大约100万个T细胞，其中涵盖的大量信息，可以用来了解人体免疫系统正在应对的传染病、癌症或其他免疫疾病等。关键在于，能否解码这些信息？这正是AI与机器学习发挥作用的地方。微软一直通过机器学习技术对这些输出内容进行处理，试图将T细胞基因受体语言转换为抗原语言，再利用机器学习进一步探查这些免疫引擎，寻找身体正在对抗哪些疾病。</p>
+<p>双方合作的终极梦想，是采用简易、通用的方法，基于血液检测出任何一种传染病，并且可以对任何癌症进行早期诊断，判断患者可能有哪些免疫性疾病。</p>
+<p>新的理念正在引发无穷的可能，而 AI 等技术在精准医学中的应用，只是未来医疗的一小部分。</p>
+<p>除了面向未来的研究，AI 对于当下诊疗过程的优化也很重要。医生过劳现象在很多国家都很常见，通常医生将更多关注放在计算机屏幕上而不是患者。医疗诊断记录如今都已经实现数字化，但问题是，数字化带来的重担完全落在了医生和护士身上。多项研究表明，目前临床医生要花费超过40％的工作时间在数据录入上，创建临床文档的负担，成为医生过劳的主要原因之一。甚至在许多国家，医生是自杀率最高的职业之一。</p>
+<p>微软与合作伙伴 Nuance 携手开发了一款名为 Dragon Ambient eXperience 的产品，它能够观察并聆听医患之间的对话，然后自动构建绝大部分的诊疗记录。在早期的部署中，医生对它的满意度很高，患者对于聆听对话并帮助医生的机器也给予了良好的信任。</p>
+<h2 id="总结">总结</h2>
+<p>我们通过第一部分，简要了解什么是医疗信息化，以及在过去的二十年中我国医疗信息化的发展，以及我个人针对医疗信息化的一些个人观点（如若有错误的地方，请您斧正）。</p>
+<p>第二部分也是我最感兴趣的部分，由于我目前只是一名本科生，能够了解到的信息有限，主要以最为了解的微软为主要介绍对象，通过微软的工作，我认为目前来看下一阶段的医疗信息化方向已经十分明晰，各大高校以及公司都正在加大对该领域的投入，未来该领域所带来的经济收益以及社会效益十分巨大。</p>
 
     </div>
 
@@ -272,7 +289,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" rel="tag"># 语言模型</a>
+              <a href="/tags/%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/" rel="tag"># 医疗信息化</a>
           </div>
 
         
@@ -281,13 +298,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/" rel="prev" title="BERT中的MLM任务替换为Replaced token detection">
-      <i class="fa fa-chevron-left"></i> BERT中的MLM任务替换为Replaced token detection
+    <a href="/2021/04/20/%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%8E%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E3%80%81%E4%BF%A1%E6%81%AF%E7%86%B5/" rel="prev" title="条件概率分布与联合概率分布及边缘概率分布、信息熵">
+      <i class="fa fa-chevron-left"></i> 条件概率分布与联合概率分布及边缘概率分布、信息熵
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/" rel="next" title="量子化的变分自编码机">
-      量子化的变分自编码机 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -347,7 +361,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#skip-gram%E5%92%8Ccbow%E7%9A%84%E7%AE%80%E5%8D%95%E5%BD%A2%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">Skip-gram和CBOW的简单形式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#skip-gram%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">Skip-gram网络结构</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">关于医疗信息化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#microsoft%E5%85%B3%E4%BA%8Eai%E5%8C%BB%E7%96%97%E7%9A%84%E6%8E%A2%E7%B4%A2"><span class="nav-number">2.</span> <span class="nav-text">Microsoft关于AI医疗的探索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ai%E5%8C%BB%E7%96%97%E7%9A%84%E6%97%A0%E7%A9%B7%E5%8F%AF%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text">AI医疗的无穷可能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
