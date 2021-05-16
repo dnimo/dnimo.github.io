@@ -24,13 +24,13 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="张俊林：对比学习研究进展">
 <meta property="og:url" content="http://example.com/2021/05/07/%E5%BC%A0%E4%BF%8A%E6%9E%97%EF%BC%9A%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E7%A0%94%E7%A9%B6%E8%BF%9B%E5%B1%95/index.html">
-<meta property="og:site_name" content="Masano&#39;s Blog">
+<meta property="og:site_name" content="Komon&#39;s Studio">
 <meta property="og:description" content="简介 对比学习（Contrastive Learning）最近一年比较火，各路大神例如Hinton、Yann LeCun、Kaiming He及一流研究机构比如Facebook、Google、DeepMind，都投入其中并快速提出各种改进模型：Moco系列、SimCLR系列、BYOL、SwAV…，各种方法相互借鉴，又各有创新。对比学习属于无监督或自监督学习，但是目前多个模型的效果已经超越了有监督">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gqee62vy8oj311y0lon8m.jpg">
 <meta property="article:published_time" content="2021-05-07T01:49:28.000Z">
-<meta property="article:modified_time" content="2021-05-11T11:11:00.806Z">
-<meta property="article:author" content="Masano Yu">
+<meta property="article:modified_time" content="2021-05-14T06:38:48.357Z">
+<meta property="article:author" content="Komon Yu">
 <meta property="article:tag" content="对比学习">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gqee62vy8oj311y0lon8m.jpg">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>张俊林：对比学习研究进展 | Masano's Blog</title>
+  <title>张俊林：对比学习研究进展 | Komon's Studio</title>
   
 
 
@@ -104,9 +104,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Masano's Blog</h1>
+      <h1 class="site-title">Komon's Studio</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">NLP/Medical Information</p>
   </div>
 
   <div class="site-nav-right">
@@ -182,12 +183,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Masano Yu">
+      <meta itemprop="name" content="Komon Yu">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Masano's Blog">
+      <meta itemprop="name" content="Komon's Studio">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -208,7 +209,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-11 19:11:00" itemprop="dateModified" datetime="2021-05-11T19:11:00+08:00">2021-05-11</time>
+                <time title="Modified: 2021-05-14 14:38:48" itemprop="dateModified" datetime="2021-05-14T14:38:48+08:00">2021-05-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -270,7 +271,7 @@
 <p>其中，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>&lt;</mo><msub><mi>z</mi><mi>i</mi></msub><mo separator="true">,</mo><msubsup><mi>z</mi><mi>i</mi><mo>+</mo></msubsup><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">&lt;z_i,z_i^+&gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.811462em;"></span><span class="strut bottom" style="height:1.088326em;vertical-align:-0.276864em;"></span><span class="base textstyle uncramped"><span class="mrel">&lt;</span><span class="mord"><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.04398em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mpunct">,</span><span class="mord"><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="vlist"><span style="top:0.276864em;margin-left:-0.04398em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span style="top:-0.403131em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord">+</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">&gt;</span></span></span></span>代表两个正例相应的表示向量。从<code>InfoNCE</code>可以看出，这个函数的分子部分鼓励正例相似度越高越好，也就是在表示空间内距离越近越好；而分母部分，则鼓励任意负例之间的向量相似度越低越好，也就是距离越远越好。这样，在优化过程中，通过<code>InfoNCE</code>损失函数指引，就能训练模型，以达成我们期望的目标。</p>
 <p>上面介绍了SimCLR的关键做法，本身这个过程，其实是标准的预训练模式；利用海量的无标注图像数据，根据对比学习指导原则，学习出好的Encoder模型以及它对应产生的特征表示。所谓好的Encoder，就是说输入图像，它能学会并抽取出关键特征，这个过程跟Bert模型通过MLM自监督预训练其实目的相同，只是做法有差异。学好Encoder后，可以在解决下游具体任务的时候，用学到的参数初始化Encoder中的ResNet模型，用下游任务标注数据来Fine-tuning模型参数，期待预训练阶段学到的知识对下游任务有迁移作用。</p>
 <blockquote>
-<p>在将增强图像投影到表示空间过程中，我们做了两次飞线性映射，分别是Encoder和Projector，为什么要做两次投影变换呢？</p>
+<p>在将增强图像投影到表示空间过程中，我们做了两次非线性映射，分别是Encoder和Projector，为什么要做两次投影变换呢？</p>
 </blockquote>
 <p>Moco在做特征表示投影时只有基于ResNet的Encoder，并未后跟Projector，其实这么做才是复合直觉的做法，而Projector是在后续的SimCLR模型中提出的。实验证明，加上这个Projector对于提升模型效果改进很明显，这从经验角度说明两次投影变换是必须的。</p>
 <p>SimCLR论文中，对于Projector和Encoder的编码差异进行了对比实验，结论是：Encoder后的特征表示，会有更多包含图像增强信息在内的细节特征，而这些细节信息经过Projector后，很多被过滤掉了。虽然为何需要两次非线性变换，目前只有实验结果，并未有理论解释。我个人猜测，可能是如下原因：我们知道，一般的特征抽取器，在做特征提取的时候，底层偏向抽取通用的底层特征，往往与任务无关，通用性强；接近比如分类任务的高层网络结构，更偏向编码任务相关的高阶特征信息。想来，Encoder和Projector也应该如此，也就是说，在接近任务的高层网络，也就是Projector，会编码更多跟对比学习任务相关的信息，底层就是Encoder，会编码更多跟任务无关的通用信息。对于下游任务，这种对比学习训练任务相关的特征，可能会带来负面影响。如果映射网络只包含ENcoder的话，那么特征表示里会有很多预训练任务相关特征，会影响下游任务效果；而加上Projector，等于增加了网络层深，这些任务相关特征就聚集在Projector，此时Encoder则不再包含预训练任务相关特征，只包含更通用的细节特征。</p>
@@ -325,7 +326,10 @@
     <a href="/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/" rel="prev" title="下一个阶段的医疗信息化">
       <i class="fa fa-chevron-left"></i> 下一个阶段的医疗信息化
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/16/Introduce-crossentropy/" rel="next" title="Introduce crossentropy">
+      Introduce crossentropy <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -391,9 +395,9 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Masano Yu"
+    <img class="site-author-image" itemprop="image" alt="Komon Yu"
       src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">Masano Yu</p>
+  <p class="site-author-name" itemprop="name">Komon Yu</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -401,7 +405,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -414,7 +418,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -430,7 +434,7 @@
         <a href="https://twitter.com/dnimo3" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;dnimo3" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://stackoverflow.com/dnimo" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;dnimo" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+        <a href="https://stackoverflow.com/Masano%20Yu" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;Masano Yu" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
       </span>
   </div>
 
@@ -459,7 +463,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Masano Yu</span>
+  <span class="author" itemprop="copyrightHolder">Komon Yu</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
