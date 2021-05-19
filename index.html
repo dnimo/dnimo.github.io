@@ -171,6 +171,170 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/19/%E8%83%B6%E5%9B%8A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Komon Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Komon's Studio">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/19/%E8%83%B6%E5%9B%8A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">胶囊神经网络</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-05-19 10:05:22 / Modified: 15:41:02" itemprop="dateCreated datePublished" datetime="2021-05-19T10:05:22+08:00">2021-05-19</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2021/05/19/%E8%83%B6%E5%9B%8A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/19/%E8%83%B6%E5%9B%8A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="背景"><a class="markdownIt-Anchor" href="#背景"></a> 背景</h1>
+<p>Geoffrey Hinton是深度学习的开创者之一，反向传播等神经网络经典算法发明人，他和他的团队提出一种全新的神经网络，这种网络基于一种称为胶囊（Capsule）的结构，并且还发表了用来训练胶囊网络的囊间动态路由算法。</p>
+<h1 id="研究问题"><a class="markdownIt-Anchor" href="#研究问题"></a> 研究问题</h1>
+<p>传统的CNN存在着缺陷，如何考虑解决CNN的不足，Hinton提出了一种对于图像处理更加有效的网络——胶囊网络，其综合了CNN的优点的同时，考虑了CNN缺失的相对位置，角度等其它信息，从而使得识别效果有所提升。</p>
+<h1 id="研究动机"><a class="markdownIt-Anchor" href="#研究动机"></a> 研究动机</h1>
+<h2 id="cnn的缺陷"><a class="markdownIt-Anchor" href="#cnn的缺陷"></a> CNN的缺陷</h2>
+<p>CNN着力于检测图像像素种的重要特征。考虑简单的人脸检测任务，一张脸是由代表脸型的椭圆、两只眼睛、一个鼻子和一个嘴巴组成。而基于CNN的原理，只要存在这些对象就有一个很强的刺激，因此这些对象空间关系反而没有那么重要。</p>
+<p>换句话说，CNN并不==特别==关注特征的空间位置。</p>
+<p>重新审视CNN的工作方式，高层特征是底层特征组合的加权和，前一层的激活与下一层神经元的权重相乘并且相加，接着通过非线性激活函数进行激活。在这么一个架构中，高层特征和低层特征之间的位置关系变得模糊。而CNN解决这个问题的方法是通过最大池化层或者或许的卷积层来扩大下续卷积核的视野。</p>
+<h2 id="逆图形法"><a class="markdownIt-Anchor" href="#逆图形法"></a> 逆图形法</h2>
+<p>计算机图形学是基于几何数据内部的分层表示来构造可视图像，其结构考虑带了对象的相对位置，几何化的对象间的相对位置关系和朝向以矩阵表示，特定的软件接受这些表示作为输入并将它们转化为屏幕上的图像（渲染）。</p>
+<p>Hinton受此启发，认为大脑所做的和渲染正好相反，称为逆图像，从眼睛接受的视觉信息中，大脑解析出其所在世界的Hinton受此启发，认为大脑所做的和渲染正好相反，称为逆图形，从眼睛接受的视觉信息中，大脑解析出其所在世界的分层表示，并尝试匹配学习到的模式和存储在大脑中的关系，从而有了辨识，注意到，大脑中的物体表示并不依赖视角。</p>
+<p>因此，现在要考虑的是如何在神经网络中建模这些分层关系。在计算机图形学中，三维图形中的三维对象之间的关系可以用位姿表示，位姿的本质是平移和旋转。Hinton提出，保留对象部件之间的分层位姿关系对于正确分类和辨识对象来说很重要。胶囊网络结合了对象之间的相对关系，在数值上表示位4维位姿矩阵。当模型有了位姿信息之后，可以很容易地理解它看到的是以前看到的东西而只是改变了视角而已。</p>
+<h2 id="胶囊网络的优点"><a class="markdownIt-Anchor" href="#胶囊网络的优点"></a> 胶囊网络的优点</h2>
+<ul>
+<li>由于胶囊网络集合了位姿信息，因此其可以通过一小部分数据即学习出很好的表示效果，所以这一点也是相对于CNN的一大提升。</li>
+<li>更加贴近人脑的思维方式，更好地建模神经网络内部知识表示的分层关系，胶囊背后的直觉非常简单优雅。</li>
+</ul>
+<h2 id="胶囊网络缺点"><a class="markdownIt-Anchor" href="#胶囊网络缺点"></a> 胶囊网络缺点</h2>
+<ul>
+<li>胶囊网络的当前实现比其它现代深度学习模型慢很多，有可能是更新耦合系数以及卷积层叠加影响的。</li>
+</ul>
+<h1 id="研究内容"><a class="markdownIt-Anchor" href="#研究内容"></a> 研究内容</h1>
+<h2 id="胶囊是什么"><a class="markdownIt-Anchor" href="#胶囊是什么"></a> 胶囊是什么</h2>
+<blockquote>
+<p>人工神经网络不应当追求“神经元”活动中的视角不变性（使用单一的标量输出来总结一个局部池中的重复特征检测器的活动），而应当使用局部的“胶囊”，这些胶囊对其输入执行一些相当复杂的内部计算，然后将这些计算的结果封装成一个包含信息丰富的输出的小向量。每个胶囊学习辨识一个有限的观察条件和变形范围内隐式定义的视觉实体，并输出实体在有限范围内存在的概率及一组“实例参数”，实例参数可能包括相对这个视觉实体的隐式定义的典型版本的精确的位姿、照明条件和变形信息。当胶囊工作正常时，视觉实体存在的概率具有局部不变性——当实体在胶囊覆盖的有限范围内的外观流形上移动时，实例参数也会相应地变化，因为实例参数表示实体在外观流行上的内在坐标。</p>
+</blockquote>
+<p>简单来说，可以理解成：</p>
+<ul>
+<li>人造神经元输出单个标量。卷积网络运用了卷积核从而使得将同个卷积核对于二维矩阵的各个区域计算出来的结果堆叠在一起形成了卷积层的输出。</li>
+<li>通过最大池化方法来实现视角不变性，因为最大池持续搜寻二维矩阵的区域，选取区域中最大的数字，所以满足了我们想要的活动不变性（即我们略微调整输入，输出仍然一样），换句话说，在输入图像上我们稍微变换一下我们想要检测的对象，模型仍然能够检测到对象</li>
+<li>池化层损失了有价值的信息，同时也没有考虑到编码特征间的相对空间关系，因此我们应该使用胶囊，所有胶囊检测中的特征的状态的重要信息，都将以向量形式被胶囊封装（神经元是标量）</li>
+</ul>
+<h2 id="囊间动态路由器算法"><a class="markdownIt-Anchor" href="#囊间动态路由器算法"></a> 囊间动态路由器算法</h2>
+<p>低层胶囊/需要决定如何将其输出向量发送给高层胶囊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.65952em;"></span><span class="strut bottom" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span>。低层胶囊改变标量权重<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>，输出向量乘以该权重后，发送给高层胶囊，作为高层胶囊的输入。关于权重<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>，需要知道：</p>
+<ol>
+<li>权重均为非负标量</li>
+<li>对每个低层胶囊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.65952em;"></span><span class="strut bottom" style="height:0.65952em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">i</span></span></span></span>而言，所有权重<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>的总和等于<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span></li>
+<li>对每个低层胶囊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.65952em;"></span><span class="strut bottom" style="height:0.65952em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">i</span></span></span></span>而言，权重的数量等于高层胶囊的数量</li>
+<li>这些权重由迭代动态路由算法确定</li>
+</ol>
+<p>低层胶囊将其输出发送给对此表示“同意”的高层胶囊。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnp812asij319u0d4qdt.jpg" alt="算法伪代码" /></p>
+<p>权重更新图：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnp9a2tm2j30ww0rke29.jpg" alt="权重更新直观图" /></p>
+<p>其中两个高层胶囊的输出用紫色向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">v_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">v_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>表示，橙色向量表示接受自某个低层胶囊的输入，其他黑色向量表示接受其他低层胶囊的输入。左边的紫色输出<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">v_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>和橙色输入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>u</mi><mrow><mn>1</mn><mi mathvariant="normal">∣</mi><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">u_{1|1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.7857599999999999em;vertical-align:-0.3551999999999999em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">u</span><span class="vlist"><span style="top:0.18019999999999992em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">1</span><span class="mord mathrm">∣</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>指向相反的方向，所以它们并不相似，这意味着它们点积是负数，更新路由系数的时候将会减少<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mn>1</mn><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">c_{11}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>。右边的紫色输出<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">v_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>和橙色输入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>u</mi><mrow><mn>2</mn><mi mathvariant="normal">∣</mi><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">u_{2|1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.7857599999999999em;vertical-align:-0.3551999999999999em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">u</span><span class="vlist"><span style="top:0.18019999999999992em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">2</span><span class="mord mathrm">∣</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>指向相同方向，它们是相似的，因此更新参数的时候路由系数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mn>1</mn><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">c_{12}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">1</span><span class="mord mathrm">2</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>会增加。在所有高层胶囊及其所有输入上重复应用该过程，得到一个路由参数集合，达到来自低层胶囊的输出和高层胶囊输出的最佳匹配。</p>
+<h1 id="整体框架"><a class="markdownIt-Anchor" href="#整体框架"></a> 整体框架</h1>
+<p>CapsNet由两部分组成：编码器和解码器。前3层是编码器，后3层是解码器：</p>
+<ul>
+<li>第一层：卷积层</li>
+<li>第二层：PrimaryCaps</li>
+<li>第三层：DigitCaps</li>
+<li>第四层：第一个全链接层</li>
+<li>第五层：第二个全链接层</li>
+<li>第六层：第三个全链接层</li>
+</ul>
+<h2 id="编码器"><a class="markdownIt-Anchor" href="#编码器"></a> 编码器</h2>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnptevi7pj31b80eudof.jpg" alt="胶囊网络编码器结构" /></p>
+<p>编码器接受一张<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>8</mn><mo>∗</mo><mn>2</mn><mn>8</mn></mrow><annotation encoding="application/x-tex">28*28</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">8</span></span></span></span>的<code>MINIST</code>数字图像作为输入，将它编码为实例参数构成的16维向量。</p>
+<p>这里的16维，表示从32个PrimaryCaps中抽取16个维度组成DigitCaps的特征矩阵。</p>
+<h3 id="卷积层"><a class="markdownIt-Anchor" href="#卷积层"></a> 卷积层</h3>
+<ol>
+<li>输入：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>8</mn><mo>∗</mo><mn>2</mn><mn>8</mn></mrow><annotation encoding="application/x-tex">28*28</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">8</span></span></span></span>图像（单色）</li>
+<li>输出：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">20*20*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>张量</li>
+<li>卷积核：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>个步长为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9</mn><mo>∗</mo><mn>9</mn><mo>∗</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">9*9*1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">1</span></span></span></span>的核</li>
+<li>激活函数：ReLU</li>
+</ol>
+<blockquote>
+<p>卷积层检测2D图像的基本特征。在CapsNet中，卷积层有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>个步长为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9</mn><mo>∗</mo><mn>9</mn><mo>∗</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">9*9*1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">1</span></span></span></span>核，使用ReLU激活。</p>
+</blockquote>
+<h3 id="primarycaps"><a class="markdownIt-Anchor" href="#primarycaps"></a> PrimaryCaps</h3>
+<ol>
+<li>输入：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">20*20*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>张量</li>
+<li>输出：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*8*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>张量（共有32个胶囊）</li>
+<li>卷积核：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span></span></span></span>个步长为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9</mn><mo>∗</mo><mn>9</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">9*9*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>的核</li>
+</ol>
+<blockquote>
+<p>这一层包含32个主胶囊，接受卷积层检测到的基本特征，生成特征的组合。这一层的32个主胶囊本质上和卷积层很相似。每个胶囊将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span></span></span></span>个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9</mn><mo>∗</mo><mn>9</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">9*9*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>卷积核应用到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">20*20*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>输入张量，因而生成<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">6*6*8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span></span></span></span>输出张量。由于总共有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>个胶囊，输出为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*8*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>张量。</p>
+</blockquote>
+<h3 id="digitcaps"><a class="markdownIt-Anchor" href="#digitcaps"></a> DigitCaps</h3>
+<ol>
+<li>输入：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*8*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>张量</li>
+<li>输出：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>6</mn><mo>∗</mo><mn>1</mn><mn>0</mn></mrow><annotation encoding="application/x-tex">16*10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">1</span><span class="mord mathrm">0</span></span></span></span>矩阵</li>
+</ol>
+<blockquote>
+<p>这一层包含10个数字胶囊，每个胶囊对应一个数字。每个胶囊接受一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*8*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>张量作为输入。可以把它看成<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span></span></span></span>维向量，也就是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>5</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">1152</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mord mathrm">5</span><span class="mord mathrm">2</span></span></span></span>输入向量。在胶囊内部，每个输入向量通过<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn><mo>∗</mo><mn>1</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">8*16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">1</span><span class="mord mathrm">6</span></span></span></span>权重矩阵将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span></span></span></span>维胶囊映射到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">6</span></span></span></span>维胶囊输出空间。因此，每个胶囊有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>5</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">1152</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mord mathrm">5</span><span class="mord mathrm">2</span></span></span></span>矩阵，以及用于动态路由的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>5</mn><mn>2</mn><mi>c</mi></mrow><annotation encoding="application/x-tex">1152 c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mord mathrm">5</span><span class="mord mathrm">2</span><span class="mord mathit">c</span></span></span></span>系数和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>5</mn><mn>2</mn><mi>b</mi></mrow><annotation encoding="application/x-tex">1152b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mord mathrm">5</span><span class="mord mathrm">2</span><span class="mord mathit">b</span></span></span></span>系数。</p>
+</blockquote>
+<h3 id="损失函数"><a class="markdownIt-Anchor" href="#损失函数"></a> 损失函数</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnrqxm4sij31cg0fsk6o.jpg" alt="损失函数" /></p>
+<h3 id="解码器"><a class="markdownIt-Anchor" href="#解码器"></a> 解码器</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnru39oypj315s0gggs8.jpg" alt="解码器" /></p>
+<p>解码器从正确的DigitCap中接受一个16维向量，并学习将其解码为数字图像，它在训练时仅使用正确的DigitCap向量，忽略不正确的DigitCap。解码器被用来作为正则子，它接受正确的DigitCap的输出作为输入，并学习重建一张28×28像素的图像，损失函数为重建图像与输入图像之间的欧氏距离。解码器强制胶囊学习对重建原始图像有用的特征。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1214,97 +1378,6 @@ I(X;Y)=&amp;H(X)-H(X|Y)\\
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Komon Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Komon's Studio">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/" class="post-title-link" itemprop="url">BERT中的MLM任务替换为Replaced token detection</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-31 16:14:37 / Modified: 17:38:20" itemprop="dateCreated datePublished" datetime="2021-03-31T16:14:37+08:00">2021-03-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/" itemprop="url" rel="index"><span itemprop="name">非原创</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="masked-language-model-replaced-token-detection">Masked language-model &amp; Replaced token detection</h4>
-<h5 id="简介">简介</h5>
-<p>回顾Bert中，模型会替换掉传入句子中15%的token，其中Masked掉80%，10%随机替换，10%保持不变，随后将替换的句子输入到BERT中用于预测被替换的token。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1376,7 +1449,7 @@ I(X;Y)=&amp;H(X)-H(X|Y)\\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1389,7 +1462,7 @@ I(X;Y)=&amp;H(X)-H(X|Y)\\
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
