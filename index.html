@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -194,10 +194,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-05-19 10:05:22 / Modified: 15:41:02" itemprop="dateCreated datePublished" datetime="2021-05-19T10:05:22+08:00">2021-05-19</time>
+              <time title="Created: 2021-05-19 10:05:22" itemprop="dateCreated datePublished" datetime="2021-05-19T10:05:22+08:00">2021-05-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-23 08:56:23" itemprop="dateModified" datetime="2021-06-23T08:56:23+08:00">2021-06-23</time>
+              </span>
 
           
   
@@ -224,99 +230,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="背景"><a class="markdownIt-Anchor" href="#背景"></a> 背景</h1>
+          <h1 id="背景">背景</h1>
 <p>Geoffrey Hinton是深度学习的开创者之一，反向传播等神经网络经典算法发明人，他和他的团队提出一种全新的神经网络，这种网络基于一种称为胶囊（Capsule）的结构，并且还发表了用来训练胶囊网络的囊间动态路由算法。</p>
-<h1 id="研究问题"><a class="markdownIt-Anchor" href="#研究问题"></a> 研究问题</h1>
-<p>传统的CNN存在着缺陷，如何考虑解决CNN的不足，Hinton提出了一种对于图像处理更加有效的网络——胶囊网络，其综合了CNN的优点的同时，考虑了CNN缺失的相对位置，角度等其它信息，从而使得识别效果有所提升。</p>
-<h1 id="研究动机"><a class="markdownIt-Anchor" href="#研究动机"></a> 研究动机</h1>
-<h2 id="cnn的缺陷"><a class="markdownIt-Anchor" href="#cnn的缺陷"></a> CNN的缺陷</h2>
-<p>CNN着力于检测图像像素种的重要特征。考虑简单的人脸检测任务，一张脸是由代表脸型的椭圆、两只眼睛、一个鼻子和一个嘴巴组成。而基于CNN的原理，只要存在这些对象就有一个很强的刺激，因此这些对象空间关系反而没有那么重要。</p>
-<p>换句话说，CNN并不==特别==关注特征的空间位置。</p>
-<p>重新审视CNN的工作方式，高层特征是底层特征组合的加权和，前一层的激活与下一层神经元的权重相乘并且相加，接着通过非线性激活函数进行激活。在这么一个架构中，高层特征和低层特征之间的位置关系变得模糊。而CNN解决这个问题的方法是通过最大池化层或者或许的卷积层来扩大下续卷积核的视野。</p>
-<h2 id="逆图形法"><a class="markdownIt-Anchor" href="#逆图形法"></a> 逆图形法</h2>
-<p>计算机图形学是基于几何数据内部的分层表示来构造可视图像，其结构考虑带了对象的相对位置，几何化的对象间的相对位置关系和朝向以矩阵表示，特定的软件接受这些表示作为输入并将它们转化为屏幕上的图像（渲染）。</p>
-<p>Hinton受此启发，认为大脑所做的和渲染正好相反，称为逆图像，从眼睛接受的视觉信息中，大脑解析出其所在世界的Hinton受此启发，认为大脑所做的和渲染正好相反，称为逆图形，从眼睛接受的视觉信息中，大脑解析出其所在世界的分层表示，并尝试匹配学习到的模式和存储在大脑中的关系，从而有了辨识，注意到，大脑中的物体表示并不依赖视角。</p>
-<p>因此，现在要考虑的是如何在神经网络中建模这些分层关系。在计算机图形学中，三维图形中的三维对象之间的关系可以用位姿表示，位姿的本质是平移和旋转。Hinton提出，保留对象部件之间的分层位姿关系对于正确分类和辨识对象来说很重要。胶囊网络结合了对象之间的相对关系，在数值上表示位4维位姿矩阵。当模型有了位姿信息之后，可以很容易地理解它看到的是以前看到的东西而只是改变了视角而已。</p>
-<h2 id="胶囊网络的优点"><a class="markdownIt-Anchor" href="#胶囊网络的优点"></a> 胶囊网络的优点</h2>
-<ul>
-<li>由于胶囊网络集合了位姿信息，因此其可以通过一小部分数据即学习出很好的表示效果，所以这一点也是相对于CNN的一大提升。</li>
-<li>更加贴近人脑的思维方式，更好地建模神经网络内部知识表示的分层关系，胶囊背后的直觉非常简单优雅。</li>
-</ul>
-<h2 id="胶囊网络缺点"><a class="markdownIt-Anchor" href="#胶囊网络缺点"></a> 胶囊网络缺点</h2>
-<ul>
-<li>胶囊网络的当前实现比其它现代深度学习模型慢很多，有可能是更新耦合系数以及卷积层叠加影响的。</li>
-</ul>
-<h1 id="研究内容"><a class="markdownIt-Anchor" href="#研究内容"></a> 研究内容</h1>
-<h2 id="胶囊是什么"><a class="markdownIt-Anchor" href="#胶囊是什么"></a> 胶囊是什么</h2>
-<blockquote>
-<p>人工神经网络不应当追求“神经元”活动中的视角不变性（使用单一的标量输出来总结一个局部池中的重复特征检测器的活动），而应当使用局部的“胶囊”，这些胶囊对其输入执行一些相当复杂的内部计算，然后将这些计算的结果封装成一个包含信息丰富的输出的小向量。每个胶囊学习辨识一个有限的观察条件和变形范围内隐式定义的视觉实体，并输出实体在有限范围内存在的概率及一组“实例参数”，实例参数可能包括相对这个视觉实体的隐式定义的典型版本的精确的位姿、照明条件和变形信息。当胶囊工作正常时，视觉实体存在的概率具有局部不变性——当实体在胶囊覆盖的有限范围内的外观流形上移动时，实例参数也会相应地变化，因为实例参数表示实体在外观流行上的内在坐标。</p>
-</blockquote>
-<p>简单来说，可以理解成：</p>
-<ul>
-<li>人造神经元输出单个标量。卷积网络运用了卷积核从而使得将同个卷积核对于二维矩阵的各个区域计算出来的结果堆叠在一起形成了卷积层的输出。</li>
-<li>通过最大池化方法来实现视角不变性，因为最大池持续搜寻二维矩阵的区域，选取区域中最大的数字，所以满足了我们想要的活动不变性（即我们略微调整输入，输出仍然一样），换句话说，在输入图像上我们稍微变换一下我们想要检测的对象，模型仍然能够检测到对象</li>
-<li>池化层损失了有价值的信息，同时也没有考虑到编码特征间的相对空间关系，因此我们应该使用胶囊，所有胶囊检测中的特征的状态的重要信息，都将以向量形式被胶囊封装（神经元是标量）</li>
-</ul>
-<h2 id="囊间动态路由器算法"><a class="markdownIt-Anchor" href="#囊间动态路由器算法"></a> 囊间动态路由器算法</h2>
-<p>低层胶囊/需要决定如何将其输出向量发送给高层胶囊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.65952em;"></span><span class="strut bottom" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span>。低层胶囊改变标量权重<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>，输出向量乘以该权重后，发送给高层胶囊，作为高层胶囊的输入。关于权重<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>，需要知道：</p>
-<ol>
-<li>权重均为非负标量</li>
-<li>对每个低层胶囊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.65952em;"></span><span class="strut bottom" style="height:0.65952em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">i</span></span></span></span>而言，所有权重<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">c_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>的总和等于<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span></li>
-<li>对每个低层胶囊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.65952em;"></span><span class="strut bottom" style="height:0.65952em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">i</span></span></span></span>而言，权重的数量等于高层胶囊的数量</li>
-<li>这些权重由迭代动态路由算法确定</li>
-</ol>
-<p>低层胶囊将其输出发送给对此表示“同意”的高层胶囊。</p>
-<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnp812asij319u0d4qdt.jpg" alt="算法伪代码" /></p>
-<p>权重更新图：</p>
-<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnp9a2tm2j30ww0rke29.jpg" alt="权重更新直观图" /></p>
-<p>其中两个高层胶囊的输出用紫色向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">v_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">v_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>表示，橙色向量表示接受自某个低层胶囊的输入，其他黑色向量表示接受其他低层胶囊的输入。左边的紫色输出<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">v_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>和橙色输入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>u</mi><mrow><mn>1</mn><mi mathvariant="normal">∣</mi><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">u_{1|1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.7857599999999999em;vertical-align:-0.3551999999999999em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">u</span><span class="vlist"><span style="top:0.18019999999999992em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">1</span><span class="mord mathrm">∣</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>指向相反的方向，所以它们并不相似，这意味着它们点积是负数，更新路由系数的时候将会减少<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mn>1</mn><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">c_{11}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>。右边的紫色输出<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">v_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>和橙色输入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>u</mi><mrow><mn>2</mn><mi mathvariant="normal">∣</mi><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">u_{2|1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.7857599999999999em;vertical-align:-0.3551999999999999em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">u</span><span class="vlist"><span style="top:0.18019999999999992em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">2</span><span class="mord mathrm">∣</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>指向相同方向，它们是相似的，因此更新参数的时候路由系数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mrow><mn>1</mn><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">c_{12}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">1</span><span class="mord mathrm">2</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>会增加。在所有高层胶囊及其所有输入上重复应用该过程，得到一个路由参数集合，达到来自低层胶囊的输出和高层胶囊输出的最佳匹配。</p>
-<h1 id="整体框架"><a class="markdownIt-Anchor" href="#整体框架"></a> 整体框架</h1>
-<p>CapsNet由两部分组成：编码器和解码器。前3层是编码器，后3层是解码器：</p>
-<ul>
-<li>第一层：卷积层</li>
-<li>第二层：PrimaryCaps</li>
-<li>第三层：DigitCaps</li>
-<li>第四层：第一个全链接层</li>
-<li>第五层：第二个全链接层</li>
-<li>第六层：第三个全链接层</li>
-</ul>
-<h2 id="编码器"><a class="markdownIt-Anchor" href="#编码器"></a> 编码器</h2>
-<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnptevi7pj31b80eudof.jpg" alt="胶囊网络编码器结构" /></p>
-<p>编码器接受一张<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>8</mn><mo>∗</mo><mn>2</mn><mn>8</mn></mrow><annotation encoding="application/x-tex">28*28</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">8</span></span></span></span>的<code>MINIST</code>数字图像作为输入，将它编码为实例参数构成的16维向量。</p>
-<p>这里的16维，表示从32个PrimaryCaps中抽取16个维度组成DigitCaps的特征矩阵。</p>
-<h3 id="卷积层"><a class="markdownIt-Anchor" href="#卷积层"></a> 卷积层</h3>
-<ol>
-<li>输入：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>8</mn><mo>∗</mo><mn>2</mn><mn>8</mn></mrow><annotation encoding="application/x-tex">28*28</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">8</span></span></span></span>图像（单色）</li>
-<li>输出：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">20*20*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>张量</li>
-<li>卷积核：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>个步长为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9</mn><mo>∗</mo><mn>9</mn><mo>∗</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">9*9*1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">1</span></span></span></span>的核</li>
-<li>激活函数：ReLU</li>
-</ol>
-<blockquote>
-<p>卷积层检测2D图像的基本特征。在CapsNet中，卷积层有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>个步长为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9</mn><mo>∗</mo><mn>9</mn><mo>∗</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">9*9*1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">1</span></span></span></span>核，使用ReLU激活。</p>
-</blockquote>
-<h3 id="primarycaps"><a class="markdownIt-Anchor" href="#primarycaps"></a> PrimaryCaps</h3>
-<ol>
-<li>输入：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">20*20*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>张量</li>
-<li>输出：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*8*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>张量（共有32个胶囊）</li>
-<li>卷积核：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span></span></span></span>个步长为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9</mn><mo>∗</mo><mn>9</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">9*9*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>的核</li>
-</ol>
-<blockquote>
-<p>这一层包含32个主胶囊，接受卷积层检测到的基本特征，生成特征的组合。这一层的32个主胶囊本质上和卷积层很相似。每个胶囊将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span></span></span></span>个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9</mn><mo>∗</mo><mn>9</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">9*9*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">9</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>卷积核应用到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>0</mn><mo>∗</mo><mn>2</mn><mn>5</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">20*20*256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">0</span><span class="mbin">∗</span><span class="mord mathrm">2</span><span class="mord mathrm">5</span><span class="mord mathrm">6</span></span></span></span>输入张量，因而生成<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">6*6*8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span></span></span></span>输出张量。由于总共有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>个胶囊，输出为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*8*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>张量。</p>
-</blockquote>
-<h3 id="digitcaps"><a class="markdownIt-Anchor" href="#digitcaps"></a> DigitCaps</h3>
-<ol>
-<li>输入：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*8*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>张量</li>
-<li>输出：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>6</mn><mo>∗</mo><mn>1</mn><mn>0</mn></mrow><annotation encoding="application/x-tex">16*10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">1</span><span class="mord mathrm">0</span></span></span></span>矩阵</li>
-</ol>
-<blockquote>
-<p>这一层包含10个数字胶囊，每个胶囊对应一个数字。每个胶囊接受一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>8</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*8*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>张量作为输入。可以把它看成<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>∗</mo><mn>6</mn><mo>∗</mo><mn>3</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">6*6*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">6</span><span class="mbin">∗</span><span class="mord mathrm">3</span><span class="mord mathrm">2</span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span></span></span></span>维向量，也就是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>5</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">1152</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mord mathrm">5</span><span class="mord mathrm">2</span></span></span></span>输入向量。在胶囊内部，每个输入向量通过<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn><mo>∗</mo><mn>1</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">8*16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span><span class="mbin">∗</span><span class="mord mathrm">1</span><span class="mord mathrm">6</span></span></span></span>权重矩阵将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">8</span></span></span></span>维胶囊映射到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">6</span></span></span></span>维胶囊输出空间。因此，每个胶囊有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>5</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">1152</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mord mathrm">5</span><span class="mord mathrm">2</span></span></span></span>矩阵，以及用于动态路由的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>5</mn><mn>2</mn><mi>c</mi></mrow><annotation encoding="application/x-tex">1152 c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mord mathrm">5</span><span class="mord mathrm">2</span><span class="mord mathit">c</span></span></span></span>系数和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>1</mn><mn>5</mn><mn>2</mn><mi>b</mi></mrow><annotation encoding="application/x-tex">1152b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mord mathrm">5</span><span class="mord mathrm">2</span><span class="mord mathit">b</span></span></span></span>系数。</p>
-</blockquote>
-<h3 id="损失函数"><a class="markdownIt-Anchor" href="#损失函数"></a> 损失函数</h3>
-<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnrqxm4sij31cg0fsk6o.jpg" alt="损失函数" /></p>
-<h3 id="解码器"><a class="markdownIt-Anchor" href="#解码器"></a> 解码器</h3>
-<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnru39oypj315s0gggs8.jpg" alt="解码器" /></p>
-<p>解码器从正确的DigitCap中接受一个16维向量，并学习将其解码为数字图像，它在训练时仅使用正确的DigitCap向量，忽略不正确的DigitCap。解码器被用来作为正则子，它接受正确的DigitCap的输出作为输入，并学习重建一张28×28像素的图像，损失函数为重建图像与输入图像之间的欧氏距离。解码器强制胶囊学习对重建原始图像有用的特征。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/19/%E8%83%B6%E5%9B%8A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -366,7 +289,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-18 10:18:31" itemprop="dateModified" datetime="2021-05-18T10:18:31+08:00">2021-05-18</time>
+                <time title="Modified: 2021-06-23 08:56:01" itemprop="dateModified" datetime="2021-06-23T08:56:01+08:00">2021-06-23</time>
               </span>
 
           
@@ -401,72 +324,14 @@
 </blockquote>
 <p>矩阵的稀疏性可以用一个得分来量化，也就是矩阵中零值的个数除以矩阵中元素的总数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sparsity = count zero elements / total elements</span><br></pre></td></tr></table></figure>
-<h2 id="矩阵稀疏会带来的问题">矩阵稀疏会带来的问题</h2>
-<blockquote>
-<p>稀疏矩阵会导致空间复杂度和时间复杂度的问题</p>
-</blockquote>
-<h3 id="空间复杂度">空间复杂度</h3>
-<p>非常大的矩阵需要大量的内存，而我们想要处理的一些非常大的矩阵是稀疏的。</p>
-<blockquote>
-<p>在实践中，大多数大型矩阵都是稀疏的——几乎所有的项都为零。</p>
-</blockquote>
-<p>一个非常大的矩阵的例子是，因为它太大而不能存储在内存中，这是一个显示从一个网站到另一个网站的链接的链接矩阵。一个更小的稀疏矩阵的例子可能是一个单词或术语的出现矩阵，在一本书中与所有已知的英语单词对应。</p>
-<p>在这两种情况下，所包含的矩阵都是稀疏的，其零值比数据值要多。将这些稀疏矩阵表示为稠密矩阵的问题是对内存的要求，并且必须为矩阵中的每个32位或64位零值做出分配。</p>
-<p>这显然是对内存资源的浪费，因为这些零值不包含任何信息。</p>
-<h3 id="时间复杂度">时间复杂度</h3>
-<p>假设一个非常大的稀疏矩阵可以是适应内存，我们将需要对这个矩阵执行操作。</p>
-<p>简单地说，如果矩阵包含了大部分零值，也就是没有数据，那么在这个矩阵中执行操作可能需要很长时间，其中的大部分计算都需要或将零值相加或相乘。</p>
-<blockquote>
-<p>在这样的问题上使用线性代数的一般方法是很浪费的，因为大多数<span class="math inline">\(O(N^3)\)</span>算数运算都用于求解方程组或反转<code>invert</code>包含零操作数的矩阵。</p>
-</blockquote>
-<p>这是矩阵运算的时间复杂度增加的问题，随着矩阵的大小而增加。</p>
-<p>当我们考虑到即使是琐碎的机器学习方法可能需要对每一行、列甚至整个矩阵进行许多操作时，这个问题也 会变得更加复杂，从而导致执行时间大大延长。</p>
-<h3 id="机器学习中的稀疏矩阵">机器学习中的稀疏矩阵</h3>
-<p>稀疏矩阵在应用机器学习中经常出现。</p>
-<h4 id="数据">数据</h4>
-<p>稀疏矩阵在某些特定类型的数据中出现，最值得注意的是记录活动的发生或计数的观察。</p>
-<ul>
-<li>用户是否在一个电影目录中有曾经看过的电影</li>
-<li>用户是否在一个产品目录中有已经购买过的产品</li>
-<li>在一个歌曲目录中数出听过的歌曲的数量</li>
-</ul>
-<h4 id="数据准备">数据准备</h4>
-<p>在准备数据时，稀疏矩阵会出现在编码方案中。</p>
-<ul>
-<li>one-hot编码，用来表示分类数据为稀疏的二进制向量。</li>
-<li>计数编码，用于表示文档中词汇的频率。</li>
-<li>TF-IDF编码，用于表示词汇中标准化的单词频率得分。</li>
-</ul>
-<h4 id="领域研究">领域研究</h4>
-<p>机器学习中的一些领域必须开发专门的方法来解决稀疏问题，因为输入的数据几乎总是稀疏的。</p>
-<ul>
-<li>用于处理文本文档的自然语言处理。</li>
-<li>推荐系统在一个目录中进行产品使用。</li>
-<li>当处理图像时计算机视觉包含许多黑色像素（black pixel）。</li>
-</ul>
-<blockquote>
-<p>如果在语言模型中有100,000个单词，那么特征向量长度为100,000，但是对于一个简短的电子邮件来说，几乎所有特征都是0。</p>
-</blockquote>
-<h4 id="处理稀疏矩阵">处理稀疏矩阵</h4>
-<p>表示和处理稀疏矩阵的解决方案是使用另一个数据结构来表示稀疏数据。</p>
-<p>零值可以被忽略，只有在稀疏矩阵中的数据或非零值需要被存储或执行。</p>
-<p>多个数据结构可以用来有效地构造一个稀疏矩阵；</p>
-<ul>
-<li>Dictionary of Keys。在将行和列索引映射到值时使用字典。</li>
-<li>List of Lists。矩阵的每一行存储为一个列表，每个子列表包含列索引和值。</li>
-<li>Coordinate List。一个元组的列表存储在每个元组中，其中包含行索引、列索引和值。</li>
-</ul>
-<p>还有一些更适合执行搞笑操作的数据结构；</p>
-<ul>
-<li>压缩的稀疏行。稀疏矩阵用三个一维数组表示非零值、行的范围和列索引。</li>
-<li>压缩的稀疏列。与压缩的稀疏行方法相同，除了列索引外，在行索引之前被压缩和读取。</li>
-</ul>
-<p>被压缩的稀疏行，也称为CSR，通常被用来表示机器学习中的稀疏矩阵，因为它支持的是有效 的访问和矩阵乘法。</p>
-<h4 id="python中稀疏矩阵">Python中稀疏矩阵</h4>
-<p><code>SciPy</code>提供了使用多种数据结构创建稀疏矩阵的工具，以及将稠密矩阵转换为稀疏矩阵的工具。</p>
-<p>许多在NumPy阵列上运行的线性代数NumPy和SciPy函数可以透明地操作SciPy稀疏数组。此外，使用NumPy数据结构的机器学习库也可以在SciPy稀疏数组上透明地进行操作：Scikit-learn和Keras。</p>
-<p>存储在NumPy数组中的稠密矩阵可以通过调用<code>csr_matrix()</code>函数将其转换为一个稀疏矩阵。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -580,10 +445,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-05-16 14:22:51 / Modified: 15:28:00" itemprop="dateCreated datePublished" datetime="2021-05-16T14:22:51+08:00">2021-05-16</time>
+              <time title="Created: 2021-05-16 14:22:51" itemprop="dateCreated datePublished" datetime="2021-05-16T14:22:51+08:00">2021-05-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-23 08:54:53" itemprop="dateModified" datetime="2021-06-23T08:54:53+08:00">2021-06-23</time>
+              </span>
 
           
   
@@ -610,11 +481,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="熵"><a class="markdownIt-Anchor" href="#熵"></a> 熵</h1>
+          <h1 id="熵">熵</h1>
 <p>交叉熵是信息论中的一个概念，为了理解交叉熵，我们需要介绍一下信息量、熵、相对散度（KL散度）的概念。</p>
-<h2 id="信息量"><a class="markdownIt-Anchor" href="#信息量"></a> 信息量</h2>
+<h2 id="信息量">信息量</h2>
 <p>如果我们同时收到连个消息：</p>
-<ol>
+<ol type="1">
 <li>巴西队进入了2018世界杯决赛圈。</li>
 <li>中国队进入了2018世界杯决赛圈。</li>
 </ol>
@@ -622,39 +493,17 @@
 <blockquote>
 <p>当越不可能的事件发生了，我们获得的信息量就越大。越可能发生的事件发生了，我们获取到的信息量就越小。</p>
 </blockquote>
-<p>假设<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.07847em;">X</span></span></span></span>是一个离散型随机变量，其取值集合为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi mathvariant="script">X</mi></mrow></mrow><annotation encoding="application/x-tex">\mathcal{X}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathcal" style="margin-right:0.14643em;">X</span></span></span></span></span>，概率分布函数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>P</mi><mi>r</mi><mo>(</mo><mi>X</mi><mo>=</mo><mi>x</mi><mo>)</mo><mo separator="true">,</mo><mi>x</mi><mo>∈</mo><mrow><mi mathvariant="script">X</mi></mrow></mrow><annotation encoding="application/x-tex">p(x)=Pr(X=x),x\in \mathcal{X}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.07847em;">X</span><span class="mrel">=</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mord mathit">x</span><span class="mrel">∈</span><span class="mord textstyle uncramped"><span class="mord mathcal" style="margin-right:0.14643em;">X</span></span></span></span></span>，则定义事件<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>X</mi><mo>=</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">X=x_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.07847em;">X</span><span class="mrel">=</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>的信息量为：</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>=</mo><mo>−</mo><mi>log</mi><mo>(</mo><mi>p</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">I(x_0)=-\log(p(x_0))
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.07847em;">I</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span><span class="mrel">=</span><span class="mord">−</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
-<h2 id="熵-2"><a class="markdownIt-Anchor" href="#熵-2"></a> 熵</h2>
-<p>如果对于某个事件，有<code>n</code>种可能，每一种可能性都有一个概率<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">p(x_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span></span></span></span>，这样就可以计算出某一种可能性的信息量。</p>
-<p>在信息论中，熵就是用来表示所有信息的期望，即：</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>H</mi><mo>(</mo><mi>X</mi><mo>)</mo><mo>=</mo><mo>−</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mi>p</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo><mi>log</mi><mo>(</mo><mi>p</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">H(X)=-\sum_{i-1}^np(x_i)\log(p(x_i))
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.6513970000000002em;"></span><span class="strut bottom" style="height:2.9873970000000005em;vertical-align:-1.336em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord">−</span><span class="mop op-limits"><span class="vlist"><span style="top:1.177669em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span style="top:-0.000005000000000032756em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.250005em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">n</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
-<p>其中<code>n</code>代表所有的<code>n</code>种可能性。</p>
-<p>针对<code>二项分布</code>的特殊形式，对于这类问题，熵的计算方法可以简化为如下公式:</p>
-\begin{align} H(X)=&-\sum^n_{i=1}p(x_i)\log(p(x_i)) \\
-=&-p(x)\log(p(x))-(1-p(x))\log(1-p(x))\end{align}
-
-<h2 id="相对熵kl散度"><a class="markdownIt-Anchor" href="#相对熵kl散度"></a> 相对熵（KL散度）</h2>
-<p>相对熵又叫做KL散度，如果我们对于同一个随机变量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span>有两个单独的概率分布<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi mathvariant="normal">&amp;</mi><mi>Q</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x)\&amp;Q(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mord mathrm">&amp;</span><span class="mord mathit">Q</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>，我们可以使用KL散度（Kullback-Leibler（KL）divergence）来衡量这两个分布的差异。</p>
-<p>即如果用<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>来描述目标问题，而不是用<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>Q</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">Q(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">Q</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>来描述目标问题，得到的信息增量。</p>
-<p>在机器学习中，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>往往用来表示样本的真实分布，比如<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>[</mo><mn>1</mn><mo separator="true">,</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo>]</mo></mrow><annotation encoding="application/x-tex">[1,0,0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mopen">[</span><span class="mord mathrm">1</span><span class="mpunct">,</span><span class="mord mathrm">0</span><span class="mpunct">,</span><span class="mord mathrm">0</span><span class="mclose">]</span></span></span></span>表示样本属于第一类。<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>Q</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">Q(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">Q</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>用来表示模型所预测的分布，比如<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>[</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>7</mn><mo separator="true">,</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>2</mn><mo separator="true">,</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>1</mn><mo>]</mo></mrow><annotation encoding="application/x-tex">[0.7,0.2,0.1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mopen">[</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">7</span><span class="mpunct">,</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">2</span><span class="mpunct">,</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">1</span><span class="mclose">]</span></span></span></span>。</p>
-<p>直观的理解就是如果用<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>来描述样本，那么就完美。而用<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>Q</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">Q(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">Q</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>来描述样本，虽然可以大致描述，但是不那么完美，信息量不足，需要额外的一些“信息增量”才能达到和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>一样完美的描述。</p>
-<p>KL散度的计算公式；</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>D</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub><mo>(</mo><mi>p</mi><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi>q</mi><mo>)</mo><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mi>p</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo><mi>log</mi><mo>(</mo><mfrac><mrow><mi>p</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo></mrow><mrow><mi>q</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo></mrow></mfrac><mo>)</mo></mrow><annotation encoding="application/x-tex">D_{KL}(p||q)=\sum^n_{i=1}p(x_i)\log(\frac{p(x_i)}{q(x_i)})
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.6513970000000002em;"></span><span class="strut bottom" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.02778em;">D</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.02778em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit" style="margin-right:0.07153em;">K</span><span class="mord mathit">L</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mopen">(</span><span class="mord mathit">p</span><span class="mord mathrm">∣</span><span class="mord mathrm">∣</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mclose">)</span><span class="mrel">=</span><span class="mop op-limits"><span class="vlist"><span style="top:1.1776689999999999em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mrel">=</span><span class="mord mathrm">1</span></span></span></span><span style="top:-0.000005000000000143778em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.2500050000000003em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">n</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.686em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span></span></span></span><span style="top:-0.2300000000000001em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span><span class="mclose">)</span></span></span></span></span></p>
-<p><code>n</code>为事件的所有可能性，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>D</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub></mrow><annotation encoding="application/x-tex">D_{KL}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.02778em;">D</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.02778em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit" style="margin-right:0.07153em;">K</span><span class="mord mathit">L</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>的值越小，表示真实分布和预测分布约接近。</p>
-<h2 id="交叉熵"><a class="markdownIt-Anchor" href="#交叉熵"></a> 交叉熵</h2>
-<p>对KL散度的公式，我们可以变形得到：</p>
-\begin{align}D_{KL}(p||q)=&\sum^n_{i=1}p(x_i)\log(p(x_i))-\sum^n_{i=1}p(x_i)\log(q(x_i))\\
-=& -H(p(x))+[-\sum^n_{i=1}p(x_i)\log(q(x_i))]
-\end{align}
-
-<p>等式的前一部分就是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span>的熵，等式的后一部分，就是交叉熵：</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>H</mi><mo>(</mo><mi>p</mi><mo separator="true">,</mo><mi>q</mi><mo>)</mo><mo>=</mo><mo>−</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mi>p</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo><mi>log</mi><mo>(</mo><mi>q</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">H(p,q)=-\sum^n_{i=1}p(x_i)\log(q(x_i))
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.6513970000000002em;"></span><span class="strut bottom" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathit">p</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord">−</span><span class="mop op-limits"><span class="vlist"><span style="top:1.1776689999999999em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mrel">=</span><span class="mord mathrm">1</span></span></span></span><span style="top:-0.000005000000000143778em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.2500050000000003em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">n</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
-<p>在机器学习中我们需要评估<code>label</code>和<code>predicts</code>之间的差距，使用KL散度刚好，由于KL散度中的前一步<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>−</mo><mi>H</mi><mo>(</mo><mi>p</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">-H(p(x))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord">−</span><span class="mord mathit" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathit">p</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>不变，故在优化过程中，只需要关注交叉熵就可以了。</p>
-
+<p>假设<span class="math inline">\(X\)</span>是一个离散型随机变量，其取值集合为<span class="math inline">\(\mathcal{X}\)</span>，概率分布函数<span class="math inline">\(p(x)=Pr(X=x),x\in \mathcal{X}\)</span>，则定义事件<span class="math inline">\(X=x_0\)</span>的信息量为： <span class="math display">\[
+I(x_0)=-\log(p(x_0))
+\]</span></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/16/Introduce-crossentropy/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -800,7 +649,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-28 13:37:05" itemprop="dateModified" datetime="2021-04-28T13:37:05+08:00">2021-04-28</time>
+                <time title="Modified: 2021-06-23 08:55:24" itemprop="dateModified" datetime="2021-06-23T08:55:24+08:00">2021-06-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -839,47 +688,14 @@
       
           <h2 id="关于医疗信息化">关于医疗信息化</h2>
 <p>由于我个人对这方面比较感兴趣，一直以来我都十分注重收集该领域的信息，但是由于医疗数据的隐私安全性，所以个人或未经授权的组织很难拿到有价值的医疗信息，这就造成了开源社区很少有比较详细的参考资料，只有通过政府关系拿到医疗数据的知名企业为宣传自己的产品断断续续放出一些产品介绍，我们只能根据这些资料粗略的了解目前的发展路线以后的实际应用场景。</p>
-<p>医疗服务信息化是国际发展趋势（突入其来的疫情使其更加明显）。随着信息技术的快速发展，国内越来越多的医院正加速实施基于信息化平台、HIS系统的整体建设，以提高医院的服务水平与核心竞争力。信息化不仅提升了医生的工作效率（其实只是优化了看病流程，我并不认为是提升了“医生的工作效率”），使医生有更多的时间为患者服务、更提高了患者的满意度和信任度，无形之中树立起了医院的科技形象。因此，医疗业务应用于基础网络平台的逐步融合正曾为国内医院，尤其是大中型医院信息化发展的方向。</p>
-<p>其实医疗信息化这个议题已经提了好多年，政府部门也有诸多措施，最早可以追溯到上世纪80年代。</p>
-<ol type="1">
-<li>1998年起：管理信息化阶段，建设以财务为核心的HIS系统，目标是实现管理的规范化</li>
-<li>2010年起：临床信息化阶段，建立以医嘱为驱动的CIS系统，目标是提高医疗服务质量和患者安全</li>
-<li>2015年：集成平台话阶段，建设以数据/集成中心为核心的HIE平台，目标是实现院内业务集成交互和数据共享</li>
-<li>2018年以来：区域医疗互联互通阶段，建设以数据应用为导向的AIS系统，目标是实现信息共享以及数据融合。</li>
-</ol>
-<p>就以上信息来开，中国医疗信息化起步并不晚，但是工程建设质量并不理想，以我自己平时去医院看病为例，我们的确实现了预约、挂号、住院、付款的线上处理，看上去好像非常现代化，但是实际上呢？就我自己来讲，我觉得体验一般，看病流程的线上处理和以前的人工处理并没有对病人看病带来服务体验上的提升，同时预约挂号的复杂操作反而对不会使用手机的老年人造成了十分大的困扰，且本来去看病的人群众就以老年人居多，所以医院不得不另设人工窗口，这就操成了资源浪费。明明花费了几百万去实现信息化，但实际带来的收益却并没有设想的那么理想。这就造成了大多数医院的信息化只是为了应对领导检查的形式工程。所以我个人的观点认为，中国医疗信息化正式起步应该始于2018年前后，在这之前的所有工程并没有带来预期的收益，只能说揭露了信息化道路上的各种各样的亟待解决的问题。</p>
-<p>我认为2018年前后才是中国医疗化真正起步的主要原因是，云计算概念的出现。在这之前，所有的医疗信息化系统的后台及软件都是医院独自出资购买，并设置在医院内部，然而医院的体系结构中并没有设立软件事业部，常规操作是将整个信息化工程进行外包，这就导致了一个十分致命的问题：系统标准不统一，一千家医院的系统，有一千种技术标准。并且大多数医院系统都只是企业系统的套用，并没有实地调查过医院实际的业务流程，根据实际的业务流程去设计系统服务。同时，外包的工程，往往会伴随运维困难的难题，有的时候换一家外包公司，业务系统就要重做，导致原来积累的病例数据一并被删，医疗信息化最大的目的功亏一篑。但是，云计算概念的出现，打破了局面。</p>
-<p>云计算的推过大幅拉低了医院信息化工程的两个门槛：</p>
-<ol type="1">
-<li>购买硬件及外包软件系统的高额花费</li>
-<li>系统部署之后，运维的技术难度</li>
-</ol>
-<p>这两个门槛的降低，使得开发医疗信息化系统的软件公司，可以更专心于系统业务逻辑的设计，同时诸如阿里巴巴、腾讯、百度等大公司的进场，也倒逼该行业的传统公司更加注重用户体验和技术研发投入。</p>
-<blockquote>
-<p>根据<code>沙利文</code>机构的调研报告2015年至2019年，中国医疗信息化市场规模从54.0亿元人民币增长至120.0亿元人民币，年复合增长率为22.1%；2020年受COVID-19疫情影响，医疗信息化建设再次受到各级医疗机构及医疗监管部门的重视，未来随着电子病历的普及，科研临床对于数据需求持续增长、新兴医疗信息化市场的发展，市场对于医疗信息化产品的需求将得到持续，预计到2024年会增长至365.6亿元人民币，年复合增长率为25.0%。</p>
-</blockquote>
-<p>同时，近些年机器学习技术的突破，和人工智能项目的落地，更加推动了医疗信息化的进程。目前，有诸多试运行的人工智能项目真正做到了<code>提升医生的工作效率</code>。例如：</p>
-<ol type="1">
-<li><p>IBM Watson临床实验匹配（Watson for Clincal Trial Matching）</p>
-<p>Watson能够帮助确认临床实验匹配的潜在人选。利用认知计算，Watson能够分析临床实验潜在人选的特征，通过评估这些候选人对于相关条件的符合程度，来帮助临床医生，更快速有效的选择临床实验的合适人选。通过提高潜在人选筛选的效果，来帮助提升临床实验的成功率。</p></li>
-<li><p>IBM Watson肿瘤治疗（Watson for Oncology）</p>
-<p>Watson通过MSK外科医生的专业培训后，将为临床医师提供以证据为基础的治疗方案。不论是社区医院还是全球顶级医院，肿瘤专家像所有临床医生一样，都在通过大量的研究成果、医疗记录和临床实验来了解、学习该学科的最新动态。Watson结合重要的知识，协助肿瘤专家解决问题。现在，通过IBM和MSK之间的合作，Watson利用世界知名的MSK公司的专业知识，深度评估和分析每一个病人的具体情况。</p></li>
-</ol>
-<h2 id="microsoft关于ai医疗的探索">Microsoft关于AI医疗的探索</h2>
-<blockquote>
-<p>接下来的内容基本摘自msra.com，自从我加入Microsoft Learn Student Ambassadors Program之后，我开始渐渐了解到微软在AI医疗上的探索性工作，在我有限的了解中，我觉得微软可能是做的比较出色的公司，故我将一些零零散散的文章拼凑一下，以后我会逐渐更新关于AI医疗的技术型文章，这篇文章，只是管中窥豹的了解什么是医疗信息化和下一个阶段的医疗信息化。</p>
-</blockquote>
-<h3 id="ai医疗的无穷可能">AI医疗的无穷可能</h3>
-<p>当医生抽取你的血液后，就拥有了大约100万个T细胞，它们是身体自然免疫系统的样本，每个T细胞的特异性，是由胞外受体（或称T细胞受体）的遗传学机理决定的，因此目前有很多研究试图大批量地解码这些基因所传递的信息。如果能够做到这一点，就可以映射出人体内的T细胞图谱，诊断出发生在人们身上的传染病、癌症、自身免疫性疾病等。这也将成为通用型基于血液的诊断方法的基础。</p>
-<p>目前，微软正在与西雅图的一家生物技术公司Adaptive Biotechnologies进行这方面的合作，其独有的免疫测序技术，可以快速读取血样中大约100万个T细胞，其中涵盖的大量信息，可以用来了解人体免疫系统正在应对的传染病、癌症或其他免疫疾病等。关键在于，能否解码这些信息？这正是AI与机器学习发挥作用的地方。微软一直通过机器学习技术对这些输出内容进行处理，试图将T细胞基因受体语言转换为抗原语言，再利用机器学习进一步探查这些免疫引擎，寻找身体正在对抗哪些疾病。</p>
-<p>双方合作的终极梦想，是采用简易、通用的方法，基于血液检测出任何一种传染病，并且可以对任何癌症进行早期诊断，判断患者可能有哪些免疫性疾病。</p>
-<p>新的理念正在引发无穷的可能，而 AI 等技术在精准医学中的应用，只是未来医疗的一小部分。</p>
-<p>除了面向未来的研究，AI 对于当下诊疗过程的优化也很重要。医生过劳现象在很多国家都很常见，通常医生将更多关注放在计算机屏幕上而不是患者。医疗诊断记录如今都已经实现数字化，但问题是，数字化带来的重担完全落在了医生和护士身上。多项研究表明，目前临床医生要花费超过40％的工作时间在数据录入上，创建临床文档的负担，成为医生过劳的主要原因之一。甚至在许多国家，医生是自杀率最高的职业之一。</p>
-<p>微软与合作伙伴 Nuance 携手开发了一款名为 Dragon Ambient eXperience 的产品，它能够观察并聆听医患之间的对话，然后自动构建绝大部分的诊疗记录。在早期的部署中，医生对它的满意度很高，患者对于聆听对话并帮助医生的机器也给予了良好的信任。</p>
-<h2 id="总结">总结</h2>
-<p>我们通过第一部分，简要了解什么是医疗信息化，以及在过去的二十年中我国医疗信息化的发展，以及我个人针对医疗信息化的一些个人观点（如若有错误的地方，请您斧正）。</p>
-<p>第二部分也是我最感兴趣的部分，由于我目前只是一名本科生，能够了解到的信息有限，主要以最为了解的微软为主要介绍对象，通过微软的工作，我认为目前来看下一阶段的医疗信息化方向已经十分明晰，各大高校以及公司都正在加大对该领域的投入，未来该领域所带来的经济收益以及社会效益十分巨大。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -929,7 +745,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-21 09:39:08" itemprop="dateModified" datetime="2021-04-21T09:39:08+08:00">2021-04-21</time>
+                <time title="Modified: 2021-06-23 08:56:14" itemprop="dateModified" datetime="2021-06-23T08:56:14+08:00">2021-06-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -972,87 +788,14 @@
 <p>“在条件<span class="math inline">\(Y=b\)</span>下<span class="math inline">\(X\)</span>的条件分布“也是一种”<span class="math inline">\(X\)</span>的概率分布“，因此穷举<span class="math inline">\(X\)</span>的可取值之后，所有这些值对应的概率之和为<code>1</code>即：</p>
 <p><span class="math inline">\(\sum_aP(X=a|Y=b)=1\)</span></p>
 </blockquote>
-<h2 id="联合概率">联合概率</h2>
-<blockquote>
-<p>联合概率指的是包含多个条件且所有条件同时成立的概率，记作<span class="math inline">\(P(X=a,Y=b)\quad or \quad P(a,b)\)</span>，有的书上会记作<span class="math inline">\(P(ab)\)</span></p>
-</blockquote>
-<h2 id="边缘概率">边缘概率</h2>
-<blockquote>
-<p>边缘概率是与联合概率对应的，<span class="math inline">\(P(X=a)\quad or \quad P(Y=b)\)</span>，这类仅与单个随机变量有关的概率称为边缘概率</p>
-</blockquote>
-<h2 id="联合概率与边缘概率的关系">联合概率与边缘概率的关系</h2>
-<blockquote>
-<p><span class="math inline">\(P(X=a)=\sum_bP(X=a,Y=b)\)</span></p>
-<p><span class="math inline">\(P(Y=b)=\sum_aP(X=a,Y=b)\)</span></p>
-<p><span class="math inline">\(P(X=a,Y=b)=\sum_a\sum_bP(X=a,Y=b)\)</span></p>
-</blockquote>
-<p>求和符号表示穷举所有的<span class="math inline">\(Y(or \quad X)\)</span>所能取得<span class="math inline">\(b(or\quad a)\)</span>后，所有对应的值相加得到的和</p>
-<h2 id="贝叶斯公式">贝叶斯公式</h2>
-<blockquote>
-<p>先验概率：知道原因推结果，P(原因)、P(结果｜原因)</p>
-<p>后验概率：根据结果推原因，P(原因｜结果)</p>
-</blockquote>
-<p>贝叶斯公式解决的是一些原因x无法直接观测、测量，而我们希望通过其结果Y来反推出原因X的问题，==也就是知道一部分先验概率，来求后验概率的问题。==</p>
-<h2 id="信息论">信息论</h2>
-<h3 id="熵">熵</h3>
-<p>香农于1948年6月和10月，在贝尔实验室《贝尔系统技术》杂志上发表的文章《通信的数学原理》奠定了信息论的基础。熵是信息论的基本概念。</p>
-<blockquote>
-<p>如果<span class="math inline">\(X\)</span>是一个离散型随机变量，取值空间为<span class="math inline">\(\mathbb{R}\)</span>，其概率分布为<span class="math inline">\(p(x)=P(X=x),x\in\mathbb{R}\)</span>。那么<span class="math inline">\(X\)</span>的熵<span class="math inline">\(H(X)\)</span>定义为： <span class="math display">\[
-H(x)=-\sum_{x\in \mathbb{R}}p(x)log_2p(x)
-\]</span> 其中约定<span class="math inline">\(0log0=0\)</span>。</p>
-</blockquote>
-<p>熵又称为自信息（self-information），可以视为描述一个随机变量的不确定性的数量（感觉和热力学的熵类似）。熵的变化符合下述规律：</p>
-<ol type="1">
-<li>随机变量的熵越大，它的不确定性越大，那么，正确估计其值的可能性就越小。</li>
-<li>越不确定的随机变量越需要大的信息量用以确定其值。</li>
-</ol>
-<h3 id="熵的应用">熵的应用</h3>
-<blockquote>
-<p>在只掌握关于未知分布的部分知识的情况下，符合已知知识的概率分布可能有多个，但使熵值最大的概率分布最真实地反应了时间的分布情况，因为熵定义了随机变量的不确定性，当熵值最大时，随机变量最不确定，最难准确预测其行为。</p>
-</blockquote>
-<p>上述文本所描述的实际意义应该是：</p>
-<p>我们所掌握的样本必然是远远小于总体样本，所以依照我们所掌握的样本很难找到真实的概率分布，但是我想无限接近真实的概率分布，那么如何衡量我们是否尽可能的接近真实的概率分布呢？</p>
-<p>故，在已掌握部分知识的前提下，关于未知分布最合理的推断应该是符合已知知识最不确定或最大随机的推断。换句话说，如果我们根据有限的数据所做的推断的熵值很小，那必然是局部最优解。</p>
-<h3 id="联合熵和条件熵">联合熵和条件熵</h3>
-<h4 id="联合熵">联合熵</h4>
-<blockquote>
-<p>如果<span class="math inline">\(X,Y\)</span>是一对离散型随机变量<span class="math inline">\(X,Y\sim p(x,y),X,Y\)</span>的联合熵（joint entropy）<span class="math inline">\(H(X,Y)\)</span>定义为： <span class="math display">\[
-H(X,Y)=-\sum_{x\in X}\sum_{y\in Y}p(x,y)log_2p(x,y)
-\]</span> 联合熵实际上就是描述一对随机变量平均所需要的信息量。</p>
-</blockquote>
-<h4 id="条件熵">条件熵</h4>
-<blockquote>
-<p>给定随机变量<span class="math inline">\(X\)</span>的情况下，随机变量<span class="math inline">\(Y\)</span>的条件熵（conditional entropy）定义： <span class="math display">\[
-\begin{align}
-H(Y|X)=&amp;\sum_{x\in X}p(x)H(Y|X=x)\\
-=&amp; \sum_{x\in X}p(x)[-\sum_{y\in Y}p(y|x)log_2p(y|x)]\\
-=&amp; -\sum_{x\in X}\sum_{y\in Y}p(x,y)log_2p(y|x)
-\end{align}
-\]</span> 熵的连锁规则：</p>
-<p><span class="math inline">\(H(X,Y)=H(X)+H(Y|X)\)</span></p>
-</blockquote>
-<h4 id="互信息">互信息</h4>
-<blockquote>
-<p>根据熵的连锁规则：</p>
-<p><span class="math inline">\(H(X,Y)=H(X)+H(Y|X)=H(Y)+H(X|Y)\)</span></p>
-<p>因此：</p>
-<p><span class="math inline">\(H(X)-H(X|Y)=H(Y)-H(Y|X)\)</span></p>
-<p>这个差值叫做<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>的互信息（mutual information, MI），记作<span class="math inline">\(I(X;Y)\)</span></p>
-<p>互信息反应的是在知道了<span class="math inline">\(Y\)</span>值以后<span class="math inline">\(X\)</span>的不确定性的减少量。也可以理解为Y的值透露了多少关于<span class="math inline">\(X\)</span>的信息量。</p>
-</blockquote>
-<p>互信息基础公式推导： <span class="math display">\[
-\begin{align}
-I(X;Y)=&amp;H(X)-H(X|Y)\\
-=&amp; H(X)+H(Y)-H(X,Y)\\
-=&amp; \sum_xp(x)log_2\frac{1}{p(x)}+\sum_yp(y)log_2\frac{1}{p(y)}+\sum_{x,y}p(x,y)log_2p(x,y)\\
-=&amp;\sum_xp(x|y)p(y)log_2\frac{1}{p(x)}+\sum_yp(y|x)p(x)log_2\frac{1}{p(y)}+\sum_{x,y}p(x,y)log_2p(x,y)\\
-&amp;因为：p(x|y)=\frac{p(x,y)}{p(y)}(联合概率公式)\\
-=&amp;\sum_{x,y}p(x,y)log_2\frac{1}{p(x)}+\sum_{x,y}p(x,y)log_2\frac{1}{p(y)}+\sum_{x,y}p(x,y)log_2p(x,y)\\
-=&amp;\sum_{x,y}p(x,y)log_2\frac{P(x,y)}{p(x)p(y)}
-\end{align}
-\]</span> 互信息度量的是两个随机变量之间的统计相关性，是从随机变量整体角度，在平均的意义上观察问题，因此通称为平均互信息。</p>
-<p>==在自然语言处理中通常利用这一测度判断两个对象之间的关系，如根据主题类型与词汇之间的互信息大小进行特征词抽取。==</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/20/%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%8E%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E3%80%81%E4%BF%A1%E6%81%AF%E7%86%B5/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1094,10 +837,16 @@ I(X;Y)=&amp;H(X)-H(X|Y)\\
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-04-18 13:51:46 / Modified: 16:07:50" itemprop="dateCreated datePublished" datetime="2021-04-18T13:51:46+08:00">2021-04-18</time>
+              <time title="Created: 2021-04-18 13:51:46" itemprop="dateCreated datePublished" datetime="2021-04-18T13:51:46+08:00">2021-04-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-23 08:55:40" itemprop="dateModified" datetime="2021-06-23T08:55:40+08:00">2021-06-23</time>
+              </span>
 
           
   
@@ -1124,58 +873,21 @@ I(X;Y)=&amp;H(X)-H(X|Y)\\
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="介绍"><a class="markdownIt-Anchor" href="#介绍"></a> 介绍</h2>
+          <h2 id="介绍">介绍</h2>
 <blockquote>
 <p>模态（Modality）的定义：</p>
 <p>每一种信息的来源或形式，都可以称为一种模态。例如，人有触觉，听觉，视觉，嗅觉；信息的媒介，有语音、视频、文字等；多种多样的传感器，如雷达、红外、加速度计等。以上的每一种都可以称为一种模态。</p>
 </blockquote>
 <p>同时，模态也可以有非常广泛的定义，比如我们可以把两种不同的语言当作是两种模态，甚至在两种不同情况下采集到的数据集，亦可认为是两种模态。</p>
 <p>因此，多模态机器学习，英文全称MultiModel Machine Learning（MMML），旨在通过机器学习的方法实现处理和理解多源模态信息的能力。目前比较热门的研究方向是图像、视频、饮品、语义之间的多模态学习。</p>
-<h2 id="多模态学习的分类"><a class="markdownIt-Anchor" href="#多模态学习的分类"></a> 多模态学习的分类</h2>
-<p>多模态学习可以划分为以下五个研究方向；</p>
-<ol>
-<li>多模态表示学习 Multimodal Representation</li>
-<li>模态转化 Translation</li>
-<li>对齐 Alignment</li>
-<li>多模态融合 Multimodal Fusion</li>
-<li>协同学习Co-learning</li>
-</ol>
-<h3 id="多模态表示学习-multimodal-representation"><a class="markdownIt-Anchor" href="#多模态表示学习-multimodal-representation"></a> 多模态表示学习 Multimodal Representation</h3>
-<p>单模态的表示学习负责将信息表示为计算机可以处理的数值向量或者进一步抽象为更高层的特征向量，而多模态表示学习是指通过利用多模态之间的互补性，剔除模态间的冗余性，从而学习到更好的特征表示。</p>
-<p>主要包括两大研究方向：联合表示（Joint Representation）和协同表示（Coordinated Representation）。</p>
-<ol>
-<li>联合表示将多个模态的信息一起映射到一个统一的多模态向量空间；</li>
-<li>协同表示负责将多模态中的每个模态分别映射到各自的表示空间，但映射后的向量之间满足一定的相关性约束（例如线性相关）。</li>
-</ol>
-<p>利用多模态表示学习到的特征可以用来做信息检索，也可以用于分类/回归任务。下面列举几个经典的应用。</p>
-<p>在来自NIPS 2012 的《Multimodal learning with deep Boltzmann machines》一文中提出将<code>deep boltzmann machines (DBM)</code>结构扩充到多模态领域，通过<code>Multimodal DBM</code>，可以学习到多模态的联合概率分布。</p>
-<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpnwqrm779j30wc0lo4f7.jpg" alt="摘自Boltzmann Machines原文" /></p>
-<p>论文中的实验通过Bimodal DBM，学习图片和文本的联合概率分布<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>i</mi><mi>m</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo separator="true">,</mo><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(image,text)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">i</span><span class="mord mathit">m</span><span class="mord mathit">a</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mord mathit">e</span><span class="mpunct">,</span><span class="mord mathit">t</span><span class="mord mathit">e</span><span class="mord mathit">x</span><span class="mord mathit">t</span><span class="mclose">)</span></span></span></span>。在应用阶段，输入图片，利用条件概率<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi><mi mathvariant="normal">∣</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(text|image)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">t</span><span class="mord mathit">e</span><span class="mord mathit">x</span><span class="mord mathit">t</span><span class="mord mathrm">∣</span><span class="mord mathit">i</span><span class="mord mathit">m</span><span class="mord mathit">a</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mord mathit">e</span><span class="mclose">)</span></span></span></span>，生成文本特征，可以得到图片相应的文本描述；而输入文本，利用条件概率<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>i</mi><mi>m</mi><mi>a</mi><mi>g</mi><mi>e</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(image|text)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">i</span><span class="mord mathit">m</span><span class="mord mathit">a</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mord mathit">e</span><span class="mord mathrm">∣</span><span class="mord mathit">t</span><span class="mord mathit">e</span><span class="mord mathit">x</span><span class="mord mathit">t</span><span class="mclose">)</span></span></span></span>，可以生成图片特征，通过检索出最靠近该特征向量的两个图片实例，可以得到符合文本描述的图片。如上图。</p>
-<p>协同表示学习一个比较经典的应用来自于《Unifying Visual-Semantic Embeddings with Multimodal Neural Language Models》这篇文章，利用协同学习到的特征向量之间满足加减运算这一特性，可以搜索出与给定图片满足“指定的转换语义”的图片。例如：</p>
-<blockquote>
-<p>狗的图片特征向量-狗的文本特征向量+猫的文本特征向量=猫的图片特征向量-&gt;在特征向量空间，根据最近邻距离，检索得到猫的图片</p>
-</blockquote>
-<h3 id="转化-translation映射-mapping"><a class="markdownIt-Anchor" href="#转化-translation映射-mapping"></a> 转化 Translation/映射 Mapping</h3>
-<p>转化也称映射，负责将一个模态的信息转换成为另一个模态的信息。常见的信息包括：</p>
-<p>机器翻译（Machine Translation）：将输入的语言A（即时）翻译为另一种语言B。类似的还有唇读（Lip Reading）和语音翻译（Speech Translation），分别将唇部视觉和语音信息转换为文本信息。</p>
-<p>图片描述（Image captioning）或者视频描述（Video captioning）：对给定的图片/视频形成文字描述，以表达图片/视频内容。</p>
-<p>语音合成（Speech Synthesis）：根据输入的文本信息，自动合成一段语音信息号。</p>
-<p>模态间的转换主要有两个难点，一个是<code>open-ended</code>，即未知结束位，例如实时翻译中，在还未得到句尾的情况下，必须实时的对句子进行翻译；另一个是<code>subjective</code>，即主观评判性，是指很多模态转换问题的效果没有一个比较客观的评价标准，也就是说目标函数的确定是非常主观的。例如，在图片描述中，形成怎样的一段话才算是对图片好的诠释？</p>
-<h3 id="对齐alignment"><a class="markdownIt-Anchor" href="#对齐alignment"></a> 对齐Alignment</h3>
-<p>多模态的对齐负责对来自同一个实例的不同模态信息的子分支/元素寻找对应关系。这个对应关系可以是事件维度的，比如下图所示的<code>Temporal sequence alignment</code>，将一组动作对应的视频流同骨骼图片对齐。类似的还有电影画面-语音-字幕的自动对齐。</p>
-<p>对齐又可以是空间维度的，比如图片语义分割（Image Semantic Segmentation）：尝试将图片的每个像素对应到某一种类型标签，实现视觉-词汇对齐。</p>
-<h3 id="多模态融合-multimodal-fusion"><a class="markdownIt-Anchor" href="#多模态融合-multimodal-fusion"></a> 多模态融合 Multimodal Fusion</h3>
-<p>多模态融合（Multimodal Fusion）负责联合多个模态的信息，进行目标检测（分类或者回归），输入MMML最早的研究方向之一，也是目前应用最广的方向，它还存在其他常见的别名，例如多源信息融合（Multi-source Information Fusion）、多传感器融合（Multi-sensor Fusion）。</p>
-<p>按照融合的层次，可以将多模态融合分为<code>pixel level、feature level and decision level</code>三类，分别对应对原始数据进行融合、对抽象特征进行融合和对决策结果进行融合。而<code>feature level</code>又可以分为<code>early</code>和<code>late</code>两个大类，代表了融合发生在特征抽取的早期和晚期。当然还有将多种荣恶化层次混合的<code>hybrid</code>方法。</p>
-<p>多模态情感分析（<code>Multimodal Sentiment Analysis</code>）：综合利用多个模态的数据（例如下图中的文字、面部表情、声音），通过互补，消除歧义和不确定性，得到更加准确的情感类型判断结果。</p>
-<h3 id="协同学习-co-learning"><a class="markdownIt-Anchor" href="#协同学习-co-learning"></a> 协同学习 Co- learning</h3>
-<p>协同学习是指使用一个资源丰富的模态信息来辅助另一个资源相对贫瘠的模态进行学习。</p>
-<p>比如迁移学习（<code>Transfer Learning</code>）就是属于这个范畴，绝大多熟迈入深度学习的初学者尝试做的一项工作就是将ImageNet数据集上学习到的权重，在自己的目标数据集上进行微调。</p>
-<p>迁移学习比较常探讨的方面目前集中在领域适应性（<code>Domain Adaptation</code>）问题上，即如何将<code>train domain</code>上学习到的模型应用到<code>application domain</code>。</p>
-<p>迁移学习领域著名的还有零样本学习（<code>Zero-Shot Learning</code>）和一样本学习（<code>One-Shot learning</code>），很多相关的方法也会用到领域适应性的相关知识。</p>
-<p><code>Co-learning</code>中还有一类工作叫做协同训练（<code>Co-training</code>），它负责研究如何在多模态数据中将少量的标注进行扩充，得到更多的标注嘻嘻。</p>
-<p>==系统学习是与需要解决的任务无关的，因此它可以用于辅助多模态映射、融合及对齐等问题的研究。==</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/18/%E5%85%B3%E4%BA%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
