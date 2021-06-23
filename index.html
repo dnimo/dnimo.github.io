@@ -590,8 +590,8 @@ I(x_0)=-\log(p(x_0))
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
-<p>对比学习（Contrastive Learning）最近一年比较火，各路大神例如Hinton、Yann LeCun、Kaiming He及一流研究机构比如Facebook、Google、DeepMind，都投入其中并快速提出各种改进模型：Moco系列、SimCLR系列、BYOL、SwAV…，各种方法相互借鉴，又各有创新。对比学习属于无监督或自监督学习，但是目前多个模型的效果已经超越了有监督模型。</p>
+          <h2 id="简介">简介</h2>
+<p>对比学习（Contrastive Learning）最近一年比较火，各路大神例如Hinton、Yann LeCun、Kaiming He及一流研究机构比如Facebook、Google、DeepMind，都投入其中并快速提出各种改进模型：Moco系列、SimCLR系列、BYOL、SwAV......，各种方法相互借鉴，又各有创新。对比学习属于无监督或自监督学习，但是目前多个模型的效果已经超越了有监督模型。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/05/07/%E5%BC%A0%E4%BF%8A%E6%9E%97%EF%BC%9A%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E7%A0%94%E7%A9%B6%E8%BF%9B%E5%B1%95/#more" rel="contents">
@@ -929,10 +929,16 @@ I(x_0)=-\log(p(x_0))
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-04-17 15:57:25 / Modified: 21:12:00" itemprop="dateCreated datePublished" datetime="2021-04-17T15:57:25+08:00">2021-04-17</time>
+              <time title="Created: 2021-04-17 15:57:25" itemprop="dateCreated datePublished" datetime="2021-04-17T15:57:25+08:00">2021-04-17</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-23 08:56:30" itemprop="dateModified" datetime="2021-06-23T08:56:30+08:00">2021-06-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -968,15 +974,14 @@ I(x_0)=-\log(p(x_0))
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="量子化的变分自编码机-vector-quantized-vae-vq-vae"><a class="markdownIt-Anchor" href="#量子化的变分自编码机-vector-quantized-vae-vq-vae"></a> 量子化的变分自编码机 Vector Quantized VAE (VQ-VAE)</h1>
-<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+          <h1 id="量子化的变分自编码机-vector-quantized-vae-vq-vae">量子化的变分自编码机 Vector Quantized VAE (VQ-VAE)</h1>
+<h2 id="简介">简介</h2>
 <p>变分自编码机（VAE）是一种非监督学习方法，它属于一个AutoEncoder的一个变种。一个AutoEncoder模型包含两个部分，一个编码器Encoder，一个解码器Decoder。前者将高维输入图像x压缩到一个低维潜变量<code>z</code>，后者将<code>z</code>解码，重建<code>x</code>。计算重构误差并反向传播，即可学习编码器与解码器的神经网络权重。成功训练之后，编码器和解码器分别学习到了两个概率：</p>
-<p>Encoder：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>z</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(z|x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mord mathrm">∣</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span> 给定输入<code>x</code>，判别得到潜在变量z的条件概率</p>
-<p>Decoder：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x|z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord mathrm">∣</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span> 给定潜变量<code>z</code>，生成图像<code>x</code>的条件概率</p>
-<p>这两个概率就是贝叶斯公式中最重要的两个条件概率：</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>z</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo>(</mo><mi>z</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo>)</mo><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><mi>P</mi><mo>(</mo><mi>z</mi><mo>)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">P(x|z)=\frac{P(z|x)P(x)}{P(z)}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.427em;"></span><span class="strut bottom" style="height:2.363em;vertical-align:-0.936em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord mathrm">∣</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.686em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span><span style="top:-0.2300000000000001em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mord mathrm">∣</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span></span></p>
-<p>PS：联合概率<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>P</mi><mo>(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>z</mi><mo>)</mo><mi>P</mi><mo>(</mo><mi>z</mi><mo>)</mo><mo>=</mo><mi>P</mi><mo>(</mo><mi>z</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo>)</mo><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(x,z)=P(x|z)P(z)=P(z|x)P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord mathrm">∣</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mord mathrm">∣</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mord mathit" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span></p>
+<p>Encoder：<span class="math inline">\(P(z|x)\)</span> 给定输入<code>x</code>，判别得到潜在变量z的条件概率</p>
+<p>Decoder：<span class="math inline">\(P(x|z)\)</span> 给定潜变量<code>z</code>，生成图像<code>x</code>的条件概率</p>
+<p>这两个概率就是贝叶斯公式中最重要的两个条件概率： <span class="math display">\[
+P(x|z)=\frac{P(z|x)P(x)}{P(z)}
+\]</span> PS：联合概率<span class="math inline">\(P(x,z)=P(x|z)P(z)=P(z|x)P(x)\)</span></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/#more" rel="contents">
