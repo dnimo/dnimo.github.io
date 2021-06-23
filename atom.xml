@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Komon&#39;s Studio</title>
+  
+  <subtitle>NLP/Medical Information</subtitle>
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2021-06-23T00:56:23.908Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>Komon Yu</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>胶囊神经网络</title>
+    <link href="http://example.com/2021/05/19/%E8%83%B6%E5%9B%8A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
+    <id>http://example.com/2021/05/19/%E8%83%B6%E5%9B%8A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</id>
+    <published>2021-05-19T02:05:22.000Z</published>
+    <updated>2021-06-23T00:56:23.908Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景">背景</h1><p>Geoffrey Hinton是深度学习的开创者之一，反向传播等神经网络经典算法发明人，他和他的团队提出一种全新的神经网络，这种网络基于一种称为胶囊（Capsule）的结构，并且还发表了用来训练胶囊网络的囊间动态路由算法。</p><a id="more"></a><h1 id="研究问题">研究问题</h1><p>传统的CNN存在着缺陷，如何考虑解决CNN的不足，Hinton提出了一种对于图像处理更加有效的网络——胶囊网络，其综合了CNN的优点的同时，考虑了CNN缺失的相对位置，角度等其它信息，从而使得识别效果有所提升。</p><h1 id="研究动机">研究动机</h1><h2 id="cnn的缺陷">CNN的缺陷</h2><p>CNN着力于检测图像像素种的重要特征。考虑简单的人脸检测任务，一张脸是由代表脸型的椭圆、两只眼睛、一个鼻子和一个嘴巴组成。而基于CNN的原理，只要存在这些对象就有一个很强的刺激，因此这些对象空间关系反而没有那么重要。</p><p>换句话说，CNN并不==特别==关注特征的空间位置。</p><p>重新审视CNN的工作方式，高层特征是底层特征组合的加权和，前一层的激活与下一层神经元的权重相乘并且相加，接着通过非线性激活函数进行激活。在这么一个架构中，高层特征和低层特征之间的位置关系变得模糊。而CNN解决这个问题的方法是通过最大池化层或者或许的卷积层来扩大下续卷积核的视野。</p><h2 id="逆图形法">逆图形法</h2><p>计算机图形学是基于几何数据内部的分层表示来构造可视图像，其结构考虑带了对象的相对位置，几何化的对象间的相对位置关系和朝向以矩阵表示，特定的软件接受这些表示作为输入并将它们转化为屏幕上的图像（渲染）。</p><p>Hinton受此启发，认为大脑所做的和渲染正好相反，称为逆图像，从眼睛接受的视觉信息中，大脑解析出其所在世界的Hinton受此启发，认为大脑所做的和渲染正好相反，称为逆图形，从眼睛接受的视觉信息中，大脑解析出其所在世界的分层表示，并尝试匹配学习到的模式和存储在大脑中的关系，从而有了辨识，注意到，大脑中的物体表示并不依赖视角。</p><p>因此，现在要考虑的是如何在神经网络中建模这些分层关系。在计算机图形学中，三维图形中的三维对象之间的关系可以用位姿表示，位姿的本质是平移和旋转。Hinton提出，保留对象部件之间的分层位姿关系对于正确分类和辨识对象来说很重要。胶囊网络结合了对象之间的相对关系，在数值上表示位4维位姿矩阵。当模型有了位姿信息之后，可以很容易地理解它看到的是以前看到的东西而只是改变了视角而已。</p><h2 id="胶囊网络的优点">胶囊网络的优点</h2><ul><li>由于胶囊网络集合了位姿信息，因此其可以通过一小部分数据即学习出很好的表示效果，所以这一点也是相对于CNN的一大提升。</li><li>更加贴近人脑的思维方式，更好地建模神经网络内部知识表示的分层关系，胶囊背后的直觉非常简单优雅。</li></ul><h2 id="胶囊网络缺点">胶囊网络缺点</h2><ul><li>胶囊网络的当前实现比其它现代深度学习模型慢很多，有可能是更新耦合系数以及卷积层叠加影响的。</li></ul><h1 id="研究内容">研究内容</h1><h2 id="胶囊是什么">胶囊是什么</h2><blockquote><p>人工神经网络不应当追求“神经元”活动中的视角不变性（使用单一的标量输出来总结一个局部池中的重复特征检测器的活动），而应当使用局部的“胶囊”，这些胶囊对其输入执行一些相当复杂的内部计算，然后将这些计算的结果封装成一个包含信息丰富的输出的小向量。每个胶囊学习辨识一个有限的观察条件和变形范围内隐式定义的视觉实体，并输出实体在有限范围内存在的概率及一组“实例参数”，实例参数可能包括相对这个视觉实体的隐式定义的典型版本的精确的位姿、照明条件和变形信息。当胶囊工作正常时，视觉实体存在的概率具有局部不变性——当实体在胶囊覆盖的有限范围内的外观流形上移动时，实例参数也会相应地变化，因为实例参数表示实体在外观流行上的内在坐标。</p></blockquote><p>简单来说，可以理解成：</p><ul><li>人造神经元输出单个标量。卷积网络运用了卷积核从而使得将同个卷积核对于二维矩阵的各个区域计算出来的结果堆叠在一起形成了卷积层的输出。</li><li>通过最大池化方法来实现视角不变性，因为最大池持续搜寻二维矩阵的区域，选取区域中最大的数字，所以满足了我们想要的活动不变性（即我们略微调整输入，输出仍然一样），换句话说，在输入图像上我们稍微变换一下我们想要检测的对象，模型仍然能够检测到对象</li><li>池化层损失了有价值的信息，同时也没有考虑到编码特征间的相对空间关系，因此我们应该使用胶囊，所有胶囊检测中的特征的状态的重要信息，都将以向量形式被胶囊封装（神经元是标量）</li></ul><h2 id="囊间动态路由器算法">囊间动态路由器算法</h2><p>低层胶囊/需要决定如何将其输出向量发送给高层胶囊<span class="math inline">\(j\)</span>。低层胶囊改变标量权重<span class="math inline">\(c_{ij}\)</span>，输出向量乘以该权重后，发送给高层胶囊，作为高层胶囊的输入。关于权重<span class="math inline">\(c_{ij}\)</span>，需要知道：</p><ol type="1"><li>权重均为非负标量</li><li>对每个低层胶囊<span class="math inline">\(i\)</span>而言，所有权重<span class="math inline">\(c_{ij}\)</span>的总和等于<span class="math inline">\(1\)</span></li><li>对每个低层胶囊<span class="math inline">\(i\)</span>而言，权重的数量等于高层胶囊的数量</li><li>这些权重由迭代动态路由算法确定</li></ol><p>低层胶囊将其输出发送给对此表示“同意”的高层胶囊。</p><figure><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnp812asij319u0d4qdt.jpg" alt="算法伪代码" /><figcaption aria-hidden="true">算法伪代码</figcaption></figure><p>权重更新图：</p><figure><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnp9a2tm2j30ww0rke29.jpg" alt="权重更新直观图" /><figcaption aria-hidden="true">权重更新直观图</figcaption></figure><p>其中两个高层胶囊的输出用紫色向量<span class="math inline">\(v_1\)</span>和<span class="math inline">\(v_2\)</span>表示，橙色向量表示接受自某个低层胶囊的输入，其他黑色向量表示接受其他低层胶囊的输入。左边的紫色输出<span class="math inline">\(v_1\)</span>和橙色输入<span class="math inline">\(u_{1|1}\)</span>指向相反的方向，所以它们并不相似，这意味着它们点积是负数，更新路由系数的时候将会减少<span class="math inline">\(c_{11}\)</span>。右边的紫色输出<span class="math inline">\(v_2\)</span>和橙色输入<span class="math inline">\(u_{2|1}\)</span>指向相同方向，它们是相似的，因此更新参数的时候路由系数<span class="math inline">\(c_{12}\)</span>会增加。在所有高层胶囊及其所有输入上重复应用该过程，得到一个路由参数集合，达到来自低层胶囊的输出和高层胶囊输出的最佳匹配。</p><h1 id="整体框架">整体框架</h1><p>CapsNet由两部分组成：编码器和解码器。前3层是编码器，后3层是解码器：</p><ul><li>第一层：卷积层</li><li>第二层：PrimaryCaps</li><li>第三层：DigitCaps</li><li>第四层：第一个全链接层</li><li>第五层：第二个全链接层</li><li>第六层：第三个全链接层</li></ul><h2 id="编码器">编码器</h2><figure><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnptevi7pj31b80eudof.jpg" alt="胶囊网络编码器结构" /><figcaption aria-hidden="true">胶囊网络编码器结构</figcaption></figure><p>编码器接受一张<span class="math inline">\(28*28\)</span>的<code>MINIST</code>数字图像作为输入，将它编码为实例参数构成的16维向量。</p><p>这里的16维，表示从32个PrimaryCaps中抽取16个维度组成DigitCaps的特征矩阵。</p><h3 id="卷积层">卷积层</h3><ol type="1"><li>输入：<span class="math inline">\(28*28\)</span>图像（单色）</li><li>输出：<span class="math inline">\(20*20*256\)</span>张量</li><li>卷积核：<span class="math inline">\(256\)</span>个步长为<span class="math inline">\(1\)</span>的<span class="math inline">\(9*9*1\)</span>的核</li><li>激活函数：ReLU</li></ol><blockquote><p>卷积层检测2D图像的基本特征。在CapsNet中，卷积层有<span class="math inline">\(256\)</span>个步长为<span class="math inline">\(1\)</span>的<span class="math inline">\(9*9*1\)</span>核，使用ReLU激活。</p></blockquote><h3 id="primarycaps">PrimaryCaps</h3><ol type="1"><li>输入：<span class="math inline">\(20*20*256\)</span>张量</li><li>输出：<span class="math inline">\(6*6*8*32\)</span>张量（共有32个胶囊）</li><li>卷积核：<span class="math inline">\(8\)</span>个步长为<span class="math inline">\(1\)</span>的<span class="math inline">\(9*9*256\)</span>的核</li></ol><blockquote><p>这一层包含32个主胶囊，接受卷积层检测到的基本特征，生成特征的组合。这一层的32个主胶囊本质上和卷积层很相似。每个胶囊将<span class="math inline">\(8\)</span>个<span class="math inline">\(9*9*256\)</span>卷积核应用到<span class="math inline">\(20*20*256\)</span>输入张量，因而生成<span class="math inline">\(6*6*8\)</span>输出张量。由于总共有<span class="math inline">\(32\)</span>个胶囊，输出为<span class="math inline">\(6*6*8*32\)</span>张量。</p></blockquote><h3 id="digitcaps">DigitCaps</h3><ol type="1"><li>输入：<span class="math inline">\(6*6*8*32\)</span>张量</li><li>输出：<span class="math inline">\(16*10\)</span>矩阵</li></ol><blockquote><p>这一层包含10个数字胶囊，每个胶囊对应一个数字。每个胶囊接受一个<span class="math inline">\(6*6*8*32\)</span>张量作为输入。可以把它看成<span class="math inline">\(6*6*32\)</span>的<span class="math inline">\(8\)</span>维向量，也就是<span class="math inline">\(1152\)</span>输入向量。在胶囊内部，每个输入向量通过<span class="math inline">\(8*16\)</span>权重矩阵将<span class="math inline">\(8\)</span>维胶囊映射到<span class="math inline">\(16\)</span>维胶囊输出空间。因此，每个胶囊有<span class="math inline">\(1152\)</span>矩阵，以及用于动态路由的<span class="math inline">\(1152 c\)</span>系数和<span class="math inline">\(1152b\)</span>系数。</p></blockquote><h3 id="损失函数">损失函数</h3><figure><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnrqxm4sij31cg0fsk6o.jpg" alt="损失函数" /><figcaption aria-hidden="true">损失函数</figcaption></figure><h3 id="解码器">解码器</h3><figure><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqnru39oypj315s0gggs8.jpg" alt="解码器" /><figcaption aria-hidden="true">解码器</figcaption></figure><p>解码器从正确的DigitCap中接受一个16维向量，并学习将其解码为数字图像，它在训练时仅使用正确的DigitCap向量，忽略不正确的DigitCap。解码器被用来作为正则子，它接受正确的DigitCap的输出作为输入，并学习重建一张28×28像素的图像，损失函数为重建图像与输入图像之间的欧氏距离。解码器强制胶囊学习对重建原始图像有用的特征。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;背景&lt;/h1&gt;
+&lt;p&gt;Geoffrey Hinton是深度学习的开创者之一，反向传播等神经网络经典算法发明人，他和他的团队提出一种全新的神经网络，这种网络基于一种称为胶囊（Capsule）的结构，并且还发表了用来训练胶囊网络的囊间动态路由算法。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="胶囊神经网络" scheme="http://example.com/tags/%E8%83%B6%E5%9B%8A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>机器学习中的稀疏矩阵</title>
+    <link href="http://example.com/2021/05/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5/"/>
+    <id>http://example.com/2021/05/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5/</id>
+    <published>2021-05-17T12:32:56.000Z</published>
+    <updated>2021-06-23T00:56:01.628Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="稀疏矩阵">稀疏矩阵</h1><p>稀疏矩阵是一个几乎由零值组成的矩阵。稀疏矩阵与大多数非零值矩阵不同，非零值的矩阵被称为稠密矩阵。</p><blockquote><p>如果矩阵中的许多系数都为零，那么该矩阵就是稀疏的。对稀疏现象有兴趣是因为它的开发可以带来巨大的计算节省，并且在大多数的实践中都会出现矩阵稀疏问题。</p></blockquote><p>矩阵的稀疏性可以用一个得分来量化，也就是矩阵中零值的个数除以矩阵中元素的总数。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sparsity = count zero elements / total elements</span><br></pre></td></tr></table></figure><a id="more"></a><h2 id="矩阵稀疏会带来的问题">矩阵稀疏会带来的问题</h2><blockquote><p>稀疏矩阵会导致空间复杂度和时间复杂度的问题</p></blockquote><h3 id="空间复杂度">空间复杂度</h3><p>非常大的矩阵需要大量的内存，而我们想要处理的一些非常大的矩阵是稀疏的。</p><blockquote><p>在实践中，大多数大型矩阵都是稀疏的——几乎所有的项都为零。</p></blockquote><p>一个非常大的矩阵的例子是，因为它太大而不能存储在内存中，这是一个显示从一个网站到另一个网站的链接的链接矩阵。一个更小的稀疏矩阵的例子可能是一个单词或术语的出现矩阵，在一本书中与所有已知的英语单词对应。</p><p>在这两种情况下，所包含的矩阵都是稀疏的，其零值比数据值要多。将这些稀疏矩阵表示为稠密矩阵的问题是对内存的要求，并且必须为矩阵中的每个32位或64位零值做出分配。</p><p>这显然是对内存资源的浪费，因为这些零值不包含任何信息。</p><h3 id="时间复杂度">时间复杂度</h3><p>假设一个非常大的稀疏矩阵可以是适应内存，我们将需要对这个矩阵执行操作。</p><p>简单地说，如果矩阵包含了大部分零值，也就是没有数据，那么在这个矩阵中执行操作可能需要很长时间，其中的大部分计算都需要或将零值相加或相乘。</p><blockquote><p>在这样的问题上使用线性代数的一般方法是很浪费的，因为大多数<span class="math inline">\(O(N^3)\)</span>算数运算都用于求解方程组或反转<code>invert</code>包含零操作数的矩阵。</p></blockquote><p>这是矩阵运算的时间复杂度增加的问题，随着矩阵的大小而增加。</p><p>当我们考虑到即使是琐碎的机器学习方法可能需要对每一行、列甚至整个矩阵进行许多操作时，这个问题也 会变得更加复杂，从而导致执行时间大大延长。</p><h3 id="机器学习中的稀疏矩阵">机器学习中的稀疏矩阵</h3><p>稀疏矩阵在应用机器学习中经常出现。</p><h4 id="数据">数据</h4><p>稀疏矩阵在某些特定类型的数据中出现，最值得注意的是记录活动的发生或计数的观察。</p><ul><li>用户是否在一个电影目录中有曾经看过的电影</li><li>用户是否在一个产品目录中有已经购买过的产品</li><li>在一个歌曲目录中数出听过的歌曲的数量</li></ul><h4 id="数据准备">数据准备</h4><p>在准备数据时，稀疏矩阵会出现在编码方案中。</p><ul><li>one-hot编码，用来表示分类数据为稀疏的二进制向量。</li><li>计数编码，用于表示文档中词汇的频率。</li><li>TF-IDF编码，用于表示词汇中标准化的单词频率得分。</li></ul><h4 id="领域研究">领域研究</h4><p>机器学习中的一些领域必须开发专门的方法来解决稀疏问题，因为输入的数据几乎总是稀疏的。</p><ul><li>用于处理文本文档的自然语言处理。</li><li>推荐系统在一个目录中进行产品使用。</li><li>当处理图像时计算机视觉包含许多黑色像素（black pixel）。</li></ul><blockquote><p>如果在语言模型中有100,000个单词，那么特征向量长度为100,000，但是对于一个简短的电子邮件来说，几乎所有特征都是0。</p></blockquote><h4 id="处理稀疏矩阵">处理稀疏矩阵</h4><p>表示和处理稀疏矩阵的解决方案是使用另一个数据结构来表示稀疏数据。</p><p>零值可以被忽略，只有在稀疏矩阵中的数据或非零值需要被存储或执行。</p><p>多个数据结构可以用来有效地构造一个稀疏矩阵；</p><ul><li>Dictionary of Keys。在将行和列索引映射到值时使用字典。</li><li>List of Lists。矩阵的每一行存储为一个列表，每个子列表包含列索引和值。</li><li>Coordinate List。一个元组的列表存储在每个元组中，其中包含行索引、列索引和值。</li></ul><p>还有一些更适合执行搞笑操作的数据结构；</p><ul><li>压缩的稀疏行。稀疏矩阵用三个一维数组表示非零值、行的范围和列索引。</li><li>压缩的稀疏列。与压缩的稀疏行方法相同，除了列索引外，在行索引之前被压缩和读取。</li></ul><p>被压缩的稀疏行，也称为CSR，通常被用来表示机器学习中的稀疏矩阵，因为它支持的是有效 的访问和矩阵乘法。</p><h4 id="python中稀疏矩阵">Python中稀疏矩阵</h4><p><code>SciPy</code>提供了使用多种数据结构创建稀疏矩阵的工具，以及将稠密矩阵转换为稀疏矩阵的工具。</p><p>许多在NumPy阵列上运行的线性代数NumPy和SciPy函数可以透明地操作SciPy稀疏数组。此外，使用NumPy数据结构的机器学习库也可以在SciPy稀疏数组上透明地进行操作：Scikit-learn和Keras。</p><p>存储在NumPy数组中的稠密矩阵可以通过调用<code>csr_matrix()</code>函数将其转换为一个稀疏矩阵。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;稀疏矩阵&quot;&gt;稀疏矩阵&lt;/h1&gt;
+&lt;p&gt;稀疏矩阵是一个几乎由零值组成的矩阵。稀疏矩阵与大多数非零值矩阵不同，非零值的矩阵被称为稠密矩阵。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果矩阵中的许多系数都为零，那么该矩阵就是稀疏的。对稀疏现象有兴趣是因为它的开发可以带来巨大的计算节省，并且在大多数的实践中都会出现矩阵稀疏问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;矩阵的稀疏性可以用一个得分来量化，也就是矩阵中零值的个数除以矩阵中元素的总数。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sparsity = count zero elements / total elements&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    
+    <category term="稀疏矩阵" scheme="http://example.com/tags/%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GANs:对抗学习模型</title>
+    <link href="http://example.com/2021/05/17/GANs-%E5%AF%B9%E6%8A%97%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://example.com/2021/05/17/GANs-%E5%AF%B9%E6%8A%97%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B/</id>
+    <published>2021-05-17T12:11:40.000Z</published>
+    <updated>2021-05-17T12:11:40.769Z</updated>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+      
+      
+    <summary type="html">
+</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Introduce crossentropy</title>
+    <link href="http://example.com/2021/05/16/Introduce-crossentropy/"/>
+    <id>http://example.com/2021/05/16/Introduce-crossentropy/</id>
+    <published>2021-05-16T06:22:51.000Z</published>
+    <updated>2021-06-23T00:54:53.572Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="熵">熵</h1><p>交叉熵是信息论中的一个概念，为了理解交叉熵，我们需要介绍一下信息量、熵、相对散度（KL散度）的概念。</p><h2 id="信息量">信息量</h2><p>如果我们同时收到连个消息：</p><ol type="1"><li>巴西队进入了2018世界杯决赛圈。</li><li>中国队进入了2018世界杯决赛圈。</li></ol><p>显然第二个消息的信息量比第一个消息的信息量要大。因为，第一个消息发生的可能性很大，第二个消息发生的概率很小。故信息量的定义就是：</p><blockquote><p>当越不可能的事件发生了，我们获得的信息量就越大。越可能发生的事件发生了，我们获取到的信息量就越小。</p></blockquote><p>假设<span class="math inline">\(X\)</span>是一个离散型随机变量，其取值集合为<span class="math inline">\(\mathcal{X}\)</span>，概率分布函数<span class="math inline">\(p(x)=Pr(X=x),x\in \mathcal{X}\)</span>，则定义事件<span class="math inline">\(X=x_0\)</span>的信息量为： <span class="math display">\[I(x_0)=-\log(p(x_0))\]</span></p><a id="more"></a><h2 id="熵-1">熵</h2><p>如果对于某个事件，有<code>n</code>种可能，每一种可能性都有一个概率<span class="math inline">\(p(x_i)\)</span>，这样就可以计算出某一种可能性的信息量。</p><p>在信息论中，熵就是用来表示所有信息的期望，即： <span class="math display">\[H(X)=-\sum_{i-1}^np(x_i)\log(p(x_i))\]</span> 其中<code>n</code>代表所有的<code>n</code>种可能性。</p><p>针对<code>二项分布</code>的特殊形式，对于这类问题，熵的计算方法可以简化为如下公式: <span class="math display">\[\begin{align} H(X)=&amp;-\sum^n_{i=1}p(x_i)\log(p(x_i)) \\=&amp;-p(x)\log(p(x))-(1-p(x))\log(1-p(x))\end{align}\]</span></p><h2 id="相对熵kl散度">相对熵（KL散度）</h2><p>相对熵又叫做KL散度，如果我们对于同一个随机变量<span class="math inline">\(x\)</span>有两个单独的概率分布<span class="math inline">\(P(x)\&amp;Q(x)\)</span>，我们可以使用KL散度（Kullback-Leibler（KL）divergence）来衡量这两个分布的差异。</p><p>即如果用<span class="math inline">\(P(x)\)</span>来描述目标问题，而不是用<span class="math inline">\(Q(x)\)</span>来描述目标问题，得到的信息增量。</p><p>在机器学习中，<span class="math inline">\(P(x)\)</span>往往用来表示样本的真实分布，比如<span class="math inline">\([1,0,0]\)</span>表示样本属于第一类。<span class="math inline">\(Q(x)\)</span>用来表示模型所预测的分布，比如<span class="math inline">\([0.7,0.2,0.1]\)</span>。</p><p>直观的理解就是如果用<span class="math inline">\(P(x)\)</span>来描述样本，那么就完美。而用<span class="math inline">\(Q(x)\)</span>来描述样本，虽然可以大致描述，但是不那么完美，信息量不足，需要额外的一些“信息增量”才能达到和<span class="math inline">\(P(x)\)</span>一样完美的描述。</p><p>KL散度的计算公式； <span class="math display">\[D_{KL}(p||q)=\sum^n_{i=1}p(x_i)\log(\frac{p(x_i)}{q(x_i)})\]</span> <code>n</code>为事件的所有可能性，<span class="math inline">\(D_{KL}\)</span>的值越小，表示真实分布和预测分布约接近。</p><h2 id="交叉熵">交叉熵</h2><p>对KL散度的公式，我们可以变形得到： <span class="math display">\[\begin{align}D_{KL}(p||q)=&amp;\sum^n_{i=1}p(x_i)\log(p(x_i))-\sum^n_{i=1}p(x_i)\log(q(x_i))\\=&amp; -H(p(x))+[-\sum^n_{i=1}p(x_i)\log(q(x_i))]\end{align}\]</span> 等式的前一部分就是<span class="math inline">\(P(x)\)</span>的熵，等式的后一部分，就是交叉熵： <span class="math display">\[H(p,q)=-\sum^n_{i=1}p(x_i)\log(q(x_i))\]</span> 在机器学习中我们需要评估<code>label</code>和<code>predicts</code>之间的差距，使用KL散度刚好，由于KL散度中的前一步<span class="math inline">\(-H(p(x))\)</span>不变，故在优化过程中，只需要关注交叉熵就可以了。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;熵&quot;&gt;熵&lt;/h1&gt;
+&lt;p&gt;交叉熵是信息论中的一个概念，为了理解交叉熵，我们需要介绍一下信息量、熵、相对散度（KL散度）的概念。&lt;/p&gt;
+&lt;h2 id=&quot;信息量&quot;&gt;信息量&lt;/h2&gt;
+&lt;p&gt;如果我们同时收到连个消息：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;巴西队进入了2018世界杯决赛圈。&lt;/li&gt;
+&lt;li&gt;中国队进入了2018世界杯决赛圈。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;显然第二个消息的信息量比第一个消息的信息量要大。因为，第一个消息发生的可能性很大，第二个消息发生的概率很小。故信息量的定义就是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当越不可能的事件发生了，我们获得的信息量就越大。越可能发生的事件发生了，我们获取到的信息量就越小。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;假设&lt;span class=&quot;math inline&quot;&gt;\(X\)&lt;/span&gt;是一个离散型随机变量，其取值集合为&lt;span class=&quot;math inline&quot;&gt;\(\mathcal{X}\)&lt;/span&gt;，概率分布函数&lt;span class=&quot;math inline&quot;&gt;\(p(x)=Pr(X=x),x\in \mathcal{X}\)&lt;/span&gt;，则定义事件&lt;span class=&quot;math inline&quot;&gt;\(X=x_0\)&lt;/span&gt;的信息量为： &lt;span class=&quot;math display&quot;&gt;\[
+I(x_0)=-\log(p(x_0))
+\]&lt;/span&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="损失函数" scheme="http://example.com/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>张俊林：对比学习研究进展</title>
+    <link href="http://example.com/2021/05/07/%E5%BC%A0%E4%BF%8A%E6%9E%97%EF%BC%9A%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E7%A0%94%E7%A9%B6%E8%BF%9B%E5%B1%95/"/>
+    <id>http://example.com/2021/05/07/%E5%BC%A0%E4%BF%8A%E6%9E%97%EF%BC%9A%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E7%A0%94%E7%A9%B6%E8%BF%9B%E5%B1%95/</id>
+    <published>2021-05-07T01:49:28.000Z</published>
+    <updated>2021-05-14T06:38:48.357Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="简介">简介</h2><p>对比学习（Contrastive Learning）最近一年比较火，各路大神例如Hinton、Yann LeCun、Kaiming He及一流研究机构比如Facebook、Google、DeepMind，都投入其中并快速提出各种改进模型：Moco系列、SimCLR系列、BYOL、SwAV......，各种方法相互借鉴，又各有创新。对比学习属于无监督或自监督学习，但是目前多个模型的效果已经超越了有监督模型。</p><a id="more"></a><p>NLP领域的Bert模型，对于图像领域的对比学习热潮，是具有启发和推动作用的。我们知道，Bert预训练模型，通过MLM任务的自监督学习，充分挖掘了模型从海量无标注文本中学习通用知识的能力。而图像领域的预训练，往往是有监督的，就是用ImageNet来进行预训练，但是在下游任务中Fine-tuning的效果，跟Bert在NLP下游任务中带来的性能提升，是没法比较的。</p><p>有监督预训练的典型问题，我们知道，就是标注数据总是有限的，就算ImageNet已经很大，但是很难更大，那么它的天花板就摆在那，就是有限的数据总量。NLP领域目前的经验应该是：自监督预训练使用的数据量越大，模型越复杂，那么模型能够吸收的知识越多，对下游任务效果来说越好。这可能是自Bert出现以来，一再被反复证明的真理，如果它不是唯一的真理，那也肯定是更大的真理。图像领域如果技术想要有质的提升，可能也必须走这条路，就是：充分使用越来越大量的无标注数据，使用越来越复杂的模型，采用自监督预训练模式，来从中吸取图像本身的先验知识分布，在下游任务中通过Fine-tuning，来吧预训练过程习得的知识，迁移给并提升下游知识效果。</p><p>那么对比学习是要干什么呢？从目标来说，对比学习就是要干NLP领域类似Bert预训练的事情。</p><p>对比学习是自监督学习的一种，也就是说，不依赖标注数据，要从无标注图像中自己学习知识。我们知道，自监督学习其实在图像领域里已经被探索很久了。总体而言，图像领域里的自监督可以分为两种类型：生成式自监督学习，判别式自监督学习。VAE和GAN是生成式自监督学习的两种典型模型。即它要求模型重建图像或图形的一部分，这类类型的任务难度相对比较高，要求像素级的重构，中间的图像编码必须包含很多细节信息。对比学习则是典型的判别式自监督学习，相对生成式自监督学习，对比学习的任务难度要低一些。目前，对比学习貌似处于“无明确定义、有指导原则”的状态，它的指导原则是：通过自动构造相似实例和不相似实例，要求习得一个表示学习模型，通过这个模型，使得相似的实例在投影空间中比较接近，而不相似实例在投影空间中距离比较远。而如何构造相似实例，以及不相似实例，如何构造能够遵循上述指导原则的表示学习模型结构，以及如何防止模型坍塌（Model Collapse），这几个点是其中的关键。</p><p>目前出现的对比学习方法已经很多，如果从防止模型坍塌的不同方法角度，我们可大致把现有方法划分为：基于负例的对比学习方法、基于对比聚类的方法、基于不同对称网络结构的方法，以及基于冗余消除损失函数的方法。</p><h2 id="基于负例的对比学习以simclr为例">基于负例的对比学习：以SimCLR为例</h2><p>我首先以SimCLR为例来介绍一个比较“标准”的对比学习模型，其实，在SimCLR之前已经提出不少对比学习模型，例如Moco V1出现就比SimCLR早。我们之所以首先选择SimCLR来介绍，一方面是SimCLR的效果相对它提出之前的模型，效果好得比较明显；另外一方面SimCLR采取对称结构，整体相对简洁清晰，也比较容易说清楚。而且，它奠定的结构，已经成为其他对比学习模型的标准构成部分，搞明白了SimCLR，再理解其它模型，相对而言会更容易一些。</p><p>前面说过，对比学习是自监督学习，我们没有标注数据，所以需要自己构造相似数据（正例）以及不相似数据（负例），那么SimCLR如何构造正例和负例呢？</p><p>对于某张图片，我们从可能的增强操作集合<code>T</code>中，随机抽取两种：<span class="math inline">\(t_1 \sim T\)</span>及<span class="math inline">\(t_2\sim T\)</span>，分别作用在原始图像上，形成两张经过增强的新图像<span class="math inline">\(&lt;x_1,x_2&gt;\)</span>，两者互为正例。训练时，Batch内任意其它图像，都可做为<span class="math inline">\(x_1\)</span>或<span class="math inline">\(x_2\)</span>的负例。这样，对比学习希望习得某个表示模型，它能够将图片映射到某个投影空间，并在这个空间内拉近正例的距离，推远负例距离。也就是说，迫使表示模型能够忽略表面因素，学习图像的内在一致结构信息，即学会某些类型的不变性，比如遮挡不变性、旋转不变性、颜色不变性等。SimCLR证明了，如果能够同时融合多种图像增强操作，增加对比学习模型任务难度，对于对比学习效果有明显提升作用。</p><p>有了正例和负例，接下来需要做的是：构造一个表示学习系统，通过它将训练数据投影到某个表示空间内，并采取一定的方法，使得正例距离能够比较近，负例距离比较远。在这个对比学习的指导原则下，我们来看SimCLR是如何构造表示学习系统的。</p><figure><img src="https://tva1.sinaimg.cn/large/008i3skNly1gqee62vy8oj311y0lon8m.jpg" alt="SimCLR结构流程图" /><figcaption aria-hidden="true">SimCLR结构流程图</figcaption></figure><p>上图展示了SimCLR模型的整体结构。它由对称的上下两个分支（Branch）构成，也就是双塔模型。图像领域一般称作“Branch”，所以我们上下文遵循这种惯用叫法。</p><p>我们随机从无标注训练数据中取N个构成一个Batch，对于Batch里的任意图像，根据上述方法构造正例，形成两个图像增强视图：Aug1和Aug2。Aug1和Aug2各自包含N个增强数据，并分别经过上下两个分枝，对增强图像做非线性变换，这两个分枝就是SimCLR设计出的表示学习所需要的投影函数，负责将图像数据投影到某个表示空间。</p><p>因为上下分枝是对称的，所以我们仅以增强视图Aug1所经过的上下分枝来介绍投影过程。Aug1首先经过特征编码器Encoder（一般采用ResNet作为模型结构，这里以函数<span class="math inline">\(f_\theta(x)\)</span>代表），经过CNN转换成对应的特征表示<span class="math inline">\(h_i\)</span>。紧随其后，是另外 一个非线性变换结构Projector（由[FC -&gt; BN -&gt; ReLU -&gt; FC]两层MLP构成，这里以函数<span class="math inline">\(g_\theta(·)\)</span>代表），进一步将特征表示<span class="math inline">\(h_i\)</span>映射成另外一个空间里的向量<span class="math inline">\(z_i\)</span>。这样，增强图像经过<span class="math inline">\(g_\theta(f_\theta(x))\)</span>两次非线性变换，就将增强图像投影到了表示空间，下分枝的Aug2过程类似。对于Batch内某张图像<span class="math inline">\(x\)</span>来说，在Aug1和Aug2里的对应的增强图像分别是<span class="math inline">\(x_i\)</span>和<span class="math inline">\(x_j\)</span>，那么数据对<span class="math inline">\(&lt;x_i,x_j&gt;\)</span>互为正例，而<span class="math inline">\(x_i\)</span>和Aug1和Aug2里除<span class="math inline">\(x_j\)</span>之外的其它任意2N-2个图像都互为负例。在经过<span class="math inline">\(g_\theta(f_\theta(x))\)</span>变换后，增强图像被投影到表示空间。在表示空间内，我们希望正例距离较近，负例距离较远。如果希望达成这一点，一般通过定义合适的损失函数来实现。在介绍损失函数前，我们首先需要一个度量函数，以判断两个向量在投影空间里的距离远近，一般采用相似性函数来作为距离度量标准。具体而言，相似性计算函数采取对表示向量L2正则后的点积或者向量间的<code>Cosine</code>相似性： <span class="math display">\[S(z_i,j_j)=z_i^Tz_j/(||z_i||_2||z_j||_2)\]</span> 损失函数很关键，<code>SimCLR</code>的损失函数采用<code>InfoNCE Loss</code>，某个例子对应的<code>InfoNCE</code>损失为： <span class="math display">\[L_i=-log(exp(S(z_i,z_i^+)/\tau)/\sum^K_{(j=0)}exp(S(z_i,z_j)/\tau)\]</span> 其中，<span class="math inline">\(&lt;z_i,z_i^+&gt;\)</span>代表两个正例相应的表示向量。从<code>InfoNCE</code>可以看出，这个函数的分子部分鼓励正例相似度越高越好，也就是在表示空间内距离越近越好；而分母部分，则鼓励任意负例之间的向量相似度越低越好，也就是距离越远越好。这样，在优化过程中，通过<code>InfoNCE</code>损失函数指引，就能训练模型，以达成我们期望的目标。</p><p>上面介绍了SimCLR的关键做法，本身这个过程，其实是标准的预训练模式；利用海量的无标注图像数据，根据对比学习指导原则，学习出好的Encoder模型以及它对应产生的特征表示。所谓好的Encoder，就是说输入图像，它能学会并抽取出关键特征，这个过程跟Bert模型通过MLM自监督预训练其实目的相同，只是做法有差异。学好Encoder后，可以在解决下游具体任务的时候，用学到的参数初始化Encoder中的ResNet模型，用下游任务标注数据来Fine-tuning模型参数，期待预训练阶段学到的知识对下游任务有迁移作用。</p><blockquote><p>在将增强图像投影到表示空间过程中，我们做了两次非线性映射，分别是Encoder和Projector，为什么要做两次投影变换呢？</p></blockquote><p>Moco在做特征表示投影时只有基于ResNet的Encoder，并未后跟Projector，其实这么做才是复合直觉的做法，而Projector是在后续的SimCLR模型中提出的。实验证明，加上这个Projector对于提升模型效果改进很明显，这从经验角度说明两次投影变换是必须的。</p><p>SimCLR论文中，对于Projector和Encoder的编码差异进行了对比实验，结论是：Encoder后的特征表示，会有更多包含图像增强信息在内的细节特征，而这些细节信息经过Projector后，很多被过滤掉了。虽然为何需要两次非线性变换，目前只有实验结果，并未有理论解释。我个人猜测，可能是如下原因：我们知道，一般的特征抽取器，在做特征提取的时候，底层偏向抽取通用的底层特征，往往与任务无关，通用性强；接近比如分类任务的高层网络结构，更偏向编码任务相关的高阶特征信息。想来，Encoder和Projector也应该如此，也就是说，在接近任务的高层网络，也就是Projector，会编码更多跟对比学习任务相关的信息，底层就是Encoder，会编码更多跟任务无关的通用信息。对于下游任务，这种对比学习训练任务相关的特征，可能会带来负面影响。如果映射网络只包含ENcoder的话，那么特征表示里会有很多预训练任务相关特征，会影响下游任务效果；而加上Projector，等于增加了网络层深，这些任务相关特征就聚集在Projector，此时Encoder则不再包含预训练任务相关特征，只包含更通用的细节特征。</p><p>SimCLR最大的贡献：一个是证明了复合图像增强很重要；另外一个就是Projector结构。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;简介&quot;&gt;简介&lt;/h2&gt;
+&lt;p&gt;对比学习（Contrastive Learning）最近一年比较火，各路大神例如Hinton、Yann LeCun、Kaiming He及一流研究机构比如Facebook、Google、DeepMind，都投入其中并快速提出各种改进模型：Moco系列、SimCLR系列、BYOL、SwAV......，各种方法相互借鉴，又各有创新。对比学习属于无监督或自监督学习，但是目前多个模型的效果已经超越了有监督模型。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="非原创" scheme="http://example.com/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="对比学习" scheme="http://example.com/tags/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>下一个阶段的医疗信息化</title>
+    <link href="http://example.com/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/"/>
+    <id>http://example.com/2021/04/27/%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/</id>
+    <published>2021-04-27T11:36:41.000Z</published>
+    <updated>2021-06-23T00:55:24.506Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="关于医疗信息化">关于医疗信息化</h2><p>由于我个人对这方面比较感兴趣，一直以来我都十分注重收集该领域的信息，但是由于医疗数据的隐私安全性，所以个人或未经授权的组织很难拿到有价值的医疗信息，这就造成了开源社区很少有比较详细的参考资料，只有通过政府关系拿到医疗数据的知名企业为宣传自己的产品断断续续放出一些产品介绍，我们只能根据这些资料粗略的了解目前的发展路线以后的实际应用场景。</p><a id="more"></a><p>医疗服务信息化是国际发展趋势（突入其来的疫情使其更加明显）。随着信息技术的快速发展，国内越来越多的医院正加速实施基于信息化平台、HIS系统的整体建设，以提高医院的服务水平与核心竞争力。信息化不仅提升了医生的工作效率（其实只是优化了看病流程，我并不认为是提升了“医生的工作效率”），使医生有更多的时间为患者服务、更提高了患者的满意度和信任度，无形之中树立起了医院的科技形象。因此，医疗业务应用于基础网络平台的逐步融合正曾为国内医院，尤其是大中型医院信息化发展的方向。</p><p>其实医疗信息化这个议题已经提了好多年，政府部门也有诸多措施，最早可以追溯到上世纪80年代。</p><ol type="1"><li>1998年起：管理信息化阶段，建设以财务为核心的HIS系统，目标是实现管理的规范化</li><li>2010年起：临床信息化阶段，建立以医嘱为驱动的CIS系统，目标是提高医疗服务质量和患者安全</li><li>2015年：集成平台话阶段，建设以数据/集成中心为核心的HIE平台，目标是实现院内业务集成交互和数据共享</li><li>2018年以来：区域医疗互联互通阶段，建设以数据应用为导向的AIS系统，目标是实现信息共享以及数据融合。</li></ol><p>就以上信息来开，中国医疗信息化起步并不晚，但是工程建设质量并不理想，以我自己平时去医院看病为例，我们的确实现了预约、挂号、住院、付款的线上处理，看上去好像非常现代化，但是实际上呢？就我自己来讲，我觉得体验一般，看病流程的线上处理和以前的人工处理并没有对病人看病带来服务体验上的提升，同时预约挂号的复杂操作反而对不会使用手机的老年人造成了十分大的困扰，且本来去看病的人群众就以老年人居多，所以医院不得不另设人工窗口，这就操成了资源浪费。明明花费了几百万去实现信息化，但实际带来的收益却并没有设想的那么理想。这就造成了大多数医院的信息化只是为了应对领导检查的形式工程。所以我个人的观点认为，中国医疗信息化正式起步应该始于2018年前后，在这之前的所有工程并没有带来预期的收益，只能说揭露了信息化道路上的各种各样的亟待解决的问题。</p><p>我认为2018年前后才是中国医疗化真正起步的主要原因是，云计算概念的出现。在这之前，所有的医疗信息化系统的后台及软件都是医院独自出资购买，并设置在医院内部，然而医院的体系结构中并没有设立软件事业部，常规操作是将整个信息化工程进行外包，这就导致了一个十分致命的问题：系统标准不统一，一千家医院的系统，有一千种技术标准。并且大多数医院系统都只是企业系统的套用，并没有实地调查过医院实际的业务流程，根据实际的业务流程去设计系统服务。同时，外包的工程，往往会伴随运维困难的难题，有的时候换一家外包公司，业务系统就要重做，导致原来积累的病例数据一并被删，医疗信息化最大的目的功亏一篑。但是，云计算概念的出现，打破了局面。</p><p>云计算的推过大幅拉低了医院信息化工程的两个门槛：</p><ol type="1"><li>购买硬件及外包软件系统的高额花费</li><li>系统部署之后，运维的技术难度</li></ol><p>这两个门槛的降低，使得开发医疗信息化系统的软件公司，可以更专心于系统业务逻辑的设计，同时诸如阿里巴巴、腾讯、百度等大公司的进场，也倒逼该行业的传统公司更加注重用户体验和技术研发投入。</p><blockquote><p>根据<code>沙利文</code>机构的调研报告2015年至2019年，中国医疗信息化市场规模从54.0亿元人民币增长至120.0亿元人民币，年复合增长率为22.1%；2020年受COVID-19疫情影响，医疗信息化建设再次受到各级医疗机构及医疗监管部门的重视，未来随着电子病历的普及，科研临床对于数据需求持续增长、新兴医疗信息化市场的发展，市场对于医疗信息化产品的需求将得到持续，预计到2024年会增长至365.6亿元人民币，年复合增长率为25.0%。</p></blockquote><p>同时，近些年机器学习技术的突破，和人工智能项目的落地，更加推动了医疗信息化的进程。目前，有诸多试运行的人工智能项目真正做到了<code>提升医生的工作效率</code>。例如：</p><ol type="1"><li><p>IBM Watson临床实验匹配（Watson for Clincal Trial Matching）</p><p>Watson能够帮助确认临床实验匹配的潜在人选。利用认知计算，Watson能够分析临床实验潜在人选的特征，通过评估这些候选人对于相关条件的符合程度，来帮助临床医生，更快速有效的选择临床实验的合适人选。通过提高潜在人选筛选的效果，来帮助提升临床实验的成功率。</p></li><li><p>IBM Watson肿瘤治疗（Watson for Oncology）</p><p>Watson通过MSK外科医生的专业培训后，将为临床医师提供以证据为基础的治疗方案。不论是社区医院还是全球顶级医院，肿瘤专家像所有临床医生一样，都在通过大量的研究成果、医疗记录和临床实验来了解、学习该学科的最新动态。Watson结合重要的知识，协助肿瘤专家解决问题。现在，通过IBM和MSK之间的合作，Watson利用世界知名的MSK公司的专业知识，深度评估和分析每一个病人的具体情况。</p></li></ol><h2 id="microsoft关于ai医疗的探索">Microsoft关于AI医疗的探索</h2><blockquote><p>接下来的内容基本摘自msra.com，自从我加入Microsoft Learn Student Ambassadors Program之后，我开始渐渐了解到微软在AI医疗上的探索性工作，在我有限的了解中，我觉得微软可能是做的比较出色的公司，故我将一些零零散散的文章拼凑一下，以后我会逐渐更新关于AI医疗的技术型文章，这篇文章，只是管中窥豹的了解什么是医疗信息化和下一个阶段的医疗信息化。</p></blockquote><h3 id="ai医疗的无穷可能">AI医疗的无穷可能</h3><p>当医生抽取你的血液后，就拥有了大约100万个T细胞，它们是身体自然免疫系统的样本，每个T细胞的特异性，是由胞外受体（或称T细胞受体）的遗传学机理决定的，因此目前有很多研究试图大批量地解码这些基因所传递的信息。如果能够做到这一点，就可以映射出人体内的T细胞图谱，诊断出发生在人们身上的传染病、癌症、自身免疫性疾病等。这也将成为通用型基于血液的诊断方法的基础。</p><p>目前，微软正在与西雅图的一家生物技术公司Adaptive Biotechnologies进行这方面的合作，其独有的免疫测序技术，可以快速读取血样中大约100万个T细胞，其中涵盖的大量信息，可以用来了解人体免疫系统正在应对的传染病、癌症或其他免疫疾病等。关键在于，能否解码这些信息？这正是AI与机器学习发挥作用的地方。微软一直通过机器学习技术对这些输出内容进行处理，试图将T细胞基因受体语言转换为抗原语言，再利用机器学习进一步探查这些免疫引擎，寻找身体正在对抗哪些疾病。</p><p>双方合作的终极梦想，是采用简易、通用的方法，基于血液检测出任何一种传染病，并且可以对任何癌症进行早期诊断，判断患者可能有哪些免疫性疾病。</p><p>新的理念正在引发无穷的可能，而 AI 等技术在精准医学中的应用，只是未来医疗的一小部分。</p><p>除了面向未来的研究，AI 对于当下诊疗过程的优化也很重要。医生过劳现象在很多国家都很常见，通常医生将更多关注放在计算机屏幕上而不是患者。医疗诊断记录如今都已经实现数字化，但问题是，数字化带来的重担完全落在了医生和护士身上。多项研究表明，目前临床医生要花费超过40％的工作时间在数据录入上，创建临床文档的负担，成为医生过劳的主要原因之一。甚至在许多国家，医生是自杀率最高的职业之一。</p><p>微软与合作伙伴 Nuance 携手开发了一款名为 Dragon Ambient eXperience 的产品，它能够观察并聆听医患之间的对话，然后自动构建绝大部分的诊疗记录。在早期的部署中，医生对它的满意度很高，患者对于聆听对话并帮助医生的机器也给予了良好的信任。</p><h2 id="总结">总结</h2><p>我们通过第一部分，简要了解什么是医疗信息化，以及在过去的二十年中我国医疗信息化的发展，以及我个人针对医疗信息化的一些个人观点（如若有错误的地方，请您斧正）。</p><p>第二部分也是我最感兴趣的部分，由于我目前只是一名本科生，能够了解到的信息有限，主要以最为了解的微软为主要介绍对象，通过微软的工作，我认为目前来看下一阶段的医疗信息化方向已经十分明晰，各大高校以及公司都正在加大对该领域的投入，未来该领域所带来的经济收益以及社会效益十分巨大。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;关于医疗信息化&quot;&gt;关于医疗信息化&lt;/h2&gt;
+&lt;p&gt;由于我个人对这方面比较感兴趣，一直以来我都十分注重收集该领域的信息，但是由于医疗数据的隐私安全性，所以个人或未经授权的组织很难拿到有价值的医疗信息，这就造成了开源社区很少有比较详细的参考资料，只有通过政府关系拿到医疗数据的知名企业为宣传自己的产品断断续续放出一些产品介绍，我们只能根据这些资料粗略的了解目前的发展路线以后的实际应用场景。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="原创" scheme="http://example.com/categories/%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="医疗信息化" scheme="http://example.com/tags/%E5%8C%BB%E7%96%97%E4%BF%A1%E6%81%AF%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>条件概率分布与联合概率分布及边缘概率分布、信息熵</title>
+    <link href="http://example.com/2021/04/20/%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%8E%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E3%80%81%E4%BF%A1%E6%81%AF%E7%86%B5/"/>
+    <id>http://example.com/2021/04/20/%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%8E%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E3%80%81%E4%BF%A1%E6%81%AF%E7%86%B5/</id>
+    <published>2021-04-20T08:44:47.000Z</published>
+    <updated>2021-06-23T00:56:14.460Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="条件概率分布">条件概率分布</h2><blockquote><p>条件概率表示在条件<span class="math inline">\(Y=b\)</span>成立的情况下，<span class="math inline">\(X=a\)</span>的概率，记作<span class="math inline">\(P(X=a|Y=b)\quad or \quad P(a|b)\)</span>，它具有如下性质：</p><p>“在条件<span class="math inline">\(Y=b\)</span>下<span class="math inline">\(X\)</span>的条件分布“也是一种”<span class="math inline">\(X\)</span>的概率分布“，因此穷举<span class="math inline">\(X\)</span>的可取值之后，所有这些值对应的概率之和为<code>1</code>即：</p><p><span class="math inline">\(\sum_aP(X=a|Y=b)=1\)</span></p></blockquote><a id="more"></a><h2 id="联合概率">联合概率</h2><blockquote><p>联合概率指的是包含多个条件且所有条件同时成立的概率，记作<span class="math inline">\(P(X=a,Y=b)\quad or \quad P(a,b)\)</span>，有的书上会记作<span class="math inline">\(P(ab)\)</span></p></blockquote><h2 id="边缘概率">边缘概率</h2><blockquote><p>边缘概率是与联合概率对应的，<span class="math inline">\(P(X=a)\quad or \quad P(Y=b)\)</span>，这类仅与单个随机变量有关的概率称为边缘概率</p></blockquote><h2 id="联合概率与边缘概率的关系">联合概率与边缘概率的关系</h2><blockquote><p><span class="math inline">\(P(X=a)=\sum_bP(X=a,Y=b)\)</span></p><p><span class="math inline">\(P(Y=b)=\sum_aP(X=a,Y=b)\)</span></p><p><span class="math inline">\(P(X=a,Y=b)=\sum_a\sum_bP(X=a,Y=b)\)</span></p></blockquote><p>求和符号表示穷举所有的<span class="math inline">\(Y(or \quad X)\)</span>所能取得<span class="math inline">\(b(or\quad a)\)</span>后，所有对应的值相加得到的和</p><h2 id="贝叶斯公式">贝叶斯公式</h2><blockquote><p>先验概率：知道原因推结果，P(原因)、P(结果｜原因)</p><p>后验概率：根据结果推原因，P(原因｜结果)</p></blockquote><p>贝叶斯公式解决的是一些原因x无法直接观测、测量，而我们希望通过其结果Y来反推出原因X的问题，==也就是知道一部分先验概率，来求后验概率的问题。==</p><h2 id="信息论">信息论</h2><h3 id="熵">熵</h3><p>香农于1948年6月和10月，在贝尔实验室《贝尔系统技术》杂志上发表的文章《通信的数学原理》奠定了信息论的基础。熵是信息论的基本概念。</p><blockquote><p>如果<span class="math inline">\(X\)</span>是一个离散型随机变量，取值空间为<span class="math inline">\(\mathbb{R}\)</span>，其概率分布为<span class="math inline">\(p(x)=P(X=x),x\in\mathbb{R}\)</span>。那么<span class="math inline">\(X\)</span>的熵<span class="math inline">\(H(X)\)</span>定义为： <span class="math display">\[H(x)=-\sum_{x\in \mathbb{R}}p(x)log_2p(x)\]</span> 其中约定<span class="math inline">\(0log0=0\)</span>。</p></blockquote><p>熵又称为自信息（self-information），可以视为描述一个随机变量的不确定性的数量（感觉和热力学的熵类似）。熵的变化符合下述规律：</p><ol type="1"><li>随机变量的熵越大，它的不确定性越大，那么，正确估计其值的可能性就越小。</li><li>越不确定的随机变量越需要大的信息量用以确定其值。</li></ol><h3 id="熵的应用">熵的应用</h3><blockquote><p>在只掌握关于未知分布的部分知识的情况下，符合已知知识的概率分布可能有多个，但使熵值最大的概率分布最真实地反应了时间的分布情况，因为熵定义了随机变量的不确定性，当熵值最大时，随机变量最不确定，最难准确预测其行为。</p></blockquote><p>上述文本所描述的实际意义应该是：</p><p>我们所掌握的样本必然是远远小于总体样本，所以依照我们所掌握的样本很难找到真实的概率分布，但是我想无限接近真实的概率分布，那么如何衡量我们是否尽可能的接近真实的概率分布呢？</p><p>故，在已掌握部分知识的前提下，关于未知分布最合理的推断应该是符合已知知识最不确定或最大随机的推断。换句话说，如果我们根据有限的数据所做的推断的熵值很小，那必然是局部最优解。</p><h3 id="联合熵和条件熵">联合熵和条件熵</h3><h4 id="联合熵">联合熵</h4><blockquote><p>如果<span class="math inline">\(X,Y\)</span>是一对离散型随机变量<span class="math inline">\(X,Y\sim p(x,y),X,Y\)</span>的联合熵（joint entropy）<span class="math inline">\(H(X,Y)\)</span>定义为： <span class="math display">\[H(X,Y)=-\sum_{x\in X}\sum_{y\in Y}p(x,y)log_2p(x,y)\]</span> 联合熵实际上就是描述一对随机变量平均所需要的信息量。</p></blockquote><h4 id="条件熵">条件熵</h4><blockquote><p>给定随机变量<span class="math inline">\(X\)</span>的情况下，随机变量<span class="math inline">\(Y\)</span>的条件熵（conditional entropy）定义： <span class="math display">\[\begin{align}H(Y|X)=&amp;\sum_{x\in X}p(x)H(Y|X=x)\\=&amp; \sum_{x\in X}p(x)[-\sum_{y\in Y}p(y|x)log_2p(y|x)]\\=&amp; -\sum_{x\in X}\sum_{y\in Y}p(x,y)log_2p(y|x)\end{align}\]</span> 熵的连锁规则：</p><p><span class="math inline">\(H(X,Y)=H(X)+H(Y|X)\)</span></p></blockquote><h4 id="互信息">互信息</h4><blockquote><p>根据熵的连锁规则：</p><p><span class="math inline">\(H(X,Y)=H(X)+H(Y|X)=H(Y)+H(X|Y)\)</span></p><p>因此：</p><p><span class="math inline">\(H(X)-H(X|Y)=H(Y)-H(Y|X)\)</span></p><p>这个差值叫做<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>的互信息（mutual information, MI），记作<span class="math inline">\(I(X;Y)\)</span></p><p>互信息反应的是在知道了<span class="math inline">\(Y\)</span>值以后<span class="math inline">\(X\)</span>的不确定性的减少量。也可以理解为Y的值透露了多少关于<span class="math inline">\(X\)</span>的信息量。</p></blockquote><p>互信息基础公式推导： <span class="math display">\[\begin{align}I(X;Y)=&amp;H(X)-H(X|Y)\\=&amp; H(X)+H(Y)-H(X,Y)\\=&amp; \sum_xp(x)log_2\frac{1}{p(x)}+\sum_yp(y)log_2\frac{1}{p(y)}+\sum_{x,y}p(x,y)log_2p(x,y)\\=&amp;\sum_xp(x|y)p(y)log_2\frac{1}{p(x)}+\sum_yp(y|x)p(x)log_2\frac{1}{p(y)}+\sum_{x,y}p(x,y)log_2p(x,y)\\&amp;因为：p(x|y)=\frac{p(x,y)}{p(y)}(联合概率公式)\\=&amp;\sum_{x,y}p(x,y)log_2\frac{1}{p(x)}+\sum_{x,y}p(x,y)log_2\frac{1}{p(y)}+\sum_{x,y}p(x,y)log_2p(x,y)\\=&amp;\sum_{x,y}p(x,y)log_2\frac{P(x,y)}{p(x)p(y)}\end{align}\]</span> 互信息度量的是两个随机变量之间的统计相关性，是从随机变量整体角度，在平均的意义上观察问题，因此通称为平均互信息。</p><p>==在自然语言处理中通常利用这一测度判断两个对象之间的关系，如根据主题类型与词汇之间的互信息大小进行特征词抽取。==</p>]]></content>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;条件概率分布&quot;&gt;条件概率分布&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;条件概率表示在条件&lt;span class=&quot;math inline&quot;&gt;\(Y=b\)&lt;/span&gt;成立的情况下，&lt;span class=&quot;math inline&quot;&gt;\(X=a\)&lt;/span&gt;的概率，记作&lt;span class=&quot;math inline&quot;&gt;\(P(X=a|Y=b)\quad or \quad P(a|b)\)&lt;/span&gt;，它具有如下性质：&lt;/p&gt;
+&lt;p&gt;“在条件&lt;span class=&quot;math inline&quot;&gt;\(Y=b\)&lt;/span&gt;下&lt;span class=&quot;math inline&quot;&gt;\(X\)&lt;/span&gt;的条件分布“也是一种”&lt;span class=&quot;math inline&quot;&gt;\(X\)&lt;/span&gt;的概率分布“，因此穷举&lt;span class=&quot;math inline&quot;&gt;\(X\)&lt;/span&gt;的可取值之后，所有这些值对应的概率之和为&lt;code&gt;1&lt;/code&gt;即：&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math inline&quot;&gt;\(\sum_aP(X=a|Y=b)=1\)&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="原创" scheme="http://example.com/categories/%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="统计学" scheme="http://example.com/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于多模态机器学习的介绍</title>
+    <link href="http://example.com/2021/04/18/%E5%85%B3%E4%BA%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%8B%E7%BB%8D/"/>
+    <id>http://example.com/2021/04/18/%E5%85%B3%E4%BA%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%BB%8B%E7%BB%8D/</id>
+    <published>2021-04-18T05:51:46.000Z</published>
+    <updated>2021-06-23T00:55:40.225Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="介绍">介绍</h2><blockquote><p>模态（Modality）的定义：</p><p>每一种信息的来源或形式，都可以称为一种模态。例如，人有触觉，听觉，视觉，嗅觉；信息的媒介，有语音、视频、文字等；多种多样的传感器，如雷达、红外、加速度计等。以上的每一种都可以称为一种模态。</p></blockquote><p>同时，模态也可以有非常广泛的定义，比如我们可以把两种不同的语言当作是两种模态，甚至在两种不同情况下采集到的数据集，亦可认为是两种模态。</p><p>因此，多模态机器学习，英文全称MultiModel Machine Learning（MMML），旨在通过机器学习的方法实现处理和理解多源模态信息的能力。目前比较热门的研究方向是图像、视频、饮品、语义之间的多模态学习。</p><a id="more"></a><h2 id="多模态学习的分类">多模态学习的分类</h2><p>多模态学习可以划分为以下五个研究方向；</p><ol type="1"><li>多模态表示学习 Multimodal Representation</li><li>模态转化 Translation</li><li>对齐 Alignment</li><li>多模态融合 Multimodal Fusion</li><li>协同学习Co-learning</li></ol><h3 id="多模态表示学习-multimodal-representation">多模态表示学习 Multimodal Representation</h3><p>单模态的表示学习负责将信息表示为计算机可以处理的数值向量或者进一步抽象为更高层的特征向量，而多模态表示学习是指通过利用多模态之间的互补性，剔除模态间的冗余性，从而学习到更好的特征表示。</p><p>主要包括两大研究方向：联合表示（Joint Representation）和协同表示（Coordinated Representation）。</p><ol type="1"><li>联合表示将多个模态的信息一起映射到一个统一的多模态向量空间；</li><li>协同表示负责将多模态中的每个模态分别映射到各自的表示空间，但映射后的向量之间满足一定的相关性约束（例如线性相关）。</li></ol><p>利用多模态表示学习到的特征可以用来做信息检索，也可以用于分类/回归任务。下面列举几个经典的应用。</p><p>在来自NIPS 2012 的《Multimodal learning with deep Boltzmann machines》一文中提出将<code>deep boltzmann machines (DBM)</code>结构扩充到多模态领域，通过<code>Multimodal DBM</code>，可以学习到多模态的联合概率分布。</p><figure><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpnwqrm779j30wc0lo4f7.jpg" alt="摘自Boltzmann Machines原文" /><figcaption aria-hidden="true">摘自Boltzmann Machines原文</figcaption></figure><p>论文中的实验通过Bimodal DBM，学习图片和文本的联合概率分布<span class="math inline">\(P(image,text)\)</span>。在应用阶段，输入图片，利用条件概率<span class="math inline">\(P(text|image)\)</span>，生成文本特征，可以得到图片相应的文本描述；而输入文本，利用条件概率<span class="math inline">\(P(image|text)\)</span>，可以生成图片特征，通过检索出最靠近该特征向量的两个图片实例，可以得到符合文本描述的图片。如上图。</p><p>协同表示学习一个比较经典的应用来自于《Unifying Visual-Semantic Embeddings with Multimodal Neural Language Models》这篇文章，利用协同学习到的特征向量之间满足加减运算这一特性，可以搜索出与给定图片满足“指定的转换语义”的图片。例如：</p><blockquote><p>狗的图片特征向量-狗的文本特征向量+猫的文本特征向量=猫的图片特征向量-&gt;在特征向量空间，根据最近邻距离，检索得到猫的图片</p></blockquote><h3 id="转化-translation映射-mapping">转化 Translation/映射 Mapping</h3><p>转化也称映射，负责将一个模态的信息转换成为另一个模态的信息。常见的信息包括：</p><p>机器翻译（Machine Translation）：将输入的语言A（即时）翻译为另一种语言B。类似的还有唇读（Lip Reading）和语音翻译（Speech Translation），分别将唇部视觉和语音信息转换为文本信息。</p><p>图片描述（Image captioning）或者视频描述（Video captioning）：对给定的图片/视频形成文字描述，以表达图片/视频内容。</p><p>语音合成（Speech Synthesis）：根据输入的文本信息，自动合成一段语音信息号。</p><p>模态间的转换主要有两个难点，一个是<code>open-ended</code>，即未知结束位，例如实时翻译中，在还未得到句尾的情况下，必须实时的对句子进行翻译；另一个是<code>subjective</code>，即主观评判性，是指很多模态转换问题的效果没有一个比较客观的评价标准，也就是说目标函数的确定是非常主观的。例如，在图片描述中，形成怎样的一段话才算是对图片好的诠释？</p><h3 id="对齐alignment">对齐Alignment</h3><p>多模态的对齐负责对来自同一个实例的不同模态信息的子分支/元素寻找对应关系。这个对应关系可以是事件维度的，比如下图所示的<code>Temporal sequence alignment</code>，将一组动作对应的视频流同骨骼图片对齐。类似的还有电影画面-语音-字幕的自动对齐。</p><p>对齐又可以是空间维度的，比如图片语义分割（Image Semantic Segmentation）：尝试将图片的每个像素对应到某一种类型标签，实现视觉-词汇对齐。</p><h3 id="多模态融合-multimodal-fusion">多模态融合 Multimodal Fusion</h3><p>多模态融合（Multimodal Fusion）负责联合多个模态的信息，进行目标检测（分类或者回归），输入MMML最早的研究方向之一，也是目前应用最广的方向，它还存在其他常见的别名，例如多源信息融合（Multi-source Information Fusion）、多传感器融合（Multi-sensor Fusion）。</p><p>按照融合的层次，可以将多模态融合分为<code>pixel level、feature level and decision level</code>三类，分别对应对原始数据进行融合、对抽象特征进行融合和对决策结果进行融合。而<code>feature level</code>又可以分为<code>early</code>和<code>late</code>两个大类，代表了融合发生在特征抽取的早期和晚期。当然还有将多种荣恶化层次混合的<code>hybrid</code>方法。</p><p>多模态情感分析（<code>Multimodal Sentiment Analysis</code>）：综合利用多个模态的数据（例如下图中的文字、面部表情、声音），通过互补，消除歧义和不确定性，得到更加准确的情感类型判断结果。</p><h3 id="协同学习-co--learning">协同学习 Co- learning</h3><p>协同学习是指使用一个资源丰富的模态信息来辅助另一个资源相对贫瘠的模态进行学习。</p><p>比如迁移学习（<code>Transfer Learning</code>）就是属于这个范畴，绝大多熟迈入深度学习的初学者尝试做的一项工作就是将ImageNet数据集上学习到的权重，在自己的目标数据集上进行微调。</p><p>迁移学习比较常探讨的方面目前集中在领域适应性（<code>Domain Adaptation</code>）问题上，即如何将<code>train domain</code>上学习到的模型应用到<code>application domain</code>。</p><p>迁移学习领域著名的还有零样本学习（<code>Zero-Shot Learning</code>）和一样本学习（<code>One-Shot learning</code>），很多相关的方法也会用到领域适应性的相关知识。</p><p><code>Co-learning</code>中还有一类工作叫做协同训练（<code>Co-training</code>），它负责研究如何在多模态数据中将少量的标注进行扩充，得到更多的标注嘻嘻。</p><p>==系统学习是与需要解决的任务无关的，因此它可以用于辅助多模态映射、融合及对齐等问题的研究。==</p>]]></content>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;模态（Modality）的定义：&lt;/p&gt;
+&lt;p&gt;每一种信息的来源或形式，都可以称为一种模态。例如，人有触觉，听觉，视觉，嗅觉；信息的媒介，有语音、视频、文字等；多种多样的传感器，如雷达、红外、加速度计等。以上的每一种都可以称为一种模态。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;同时，模态也可以有非常广泛的定义，比如我们可以把两种不同的语言当作是两种模态，甚至在两种不同情况下采集到的数据集，亦可认为是两种模态。&lt;/p&gt;
+&lt;p&gt;因此，多模态机器学习，英文全称MultiModel Machine Learning（MMML），旨在通过机器学习的方法实现处理和理解多源模态信息的能力。目前比较热门的研究方向是图像、视频、饮品、语义之间的多模态学习。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="多模态" scheme="http://example.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>量子化的变分自编码机</title>
+    <link href="http://example.com/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/"/>
+    <id>http://example.com/2021/04/17/%E9%87%8F%E5%AD%90%E5%8C%96%E7%9A%84%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E6%9C%BA%20Vector%20Quantized%20VAE%20(VQ-VAE)/</id>
+    <published>2021-04-17T07:57:25.000Z</published>
+    <updated>2021-06-23T00:56:30.408Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="量子化的变分自编码机-vector-quantized-vae-vq-vae">量子化的变分自编码机 Vector Quantized VAE (VQ-VAE)</h1><h2 id="简介">简介</h2><p>变分自编码机（VAE）是一种非监督学习方法，它属于一个AutoEncoder的一个变种。一个AutoEncoder模型包含两个部分，一个编码器Encoder，一个解码器Decoder。前者将高维输入图像x压缩到一个低维潜变量<code>z</code>，后者将<code>z</code>解码，重建<code>x</code>。计算重构误差并反向传播，即可学习编码器与解码器的神经网络权重。成功训练之后，编码器和解码器分别学习到了两个概率：</p><p>Encoder：<span class="math inline">\(P(z|x)\)</span> 给定输入<code>x</code>，判别得到潜在变量z的条件概率</p><p>Decoder：<span class="math inline">\(P(x|z)\)</span> 给定潜变量<code>z</code>，生成图像<code>x</code>的条件概率</p><p>这两个概率就是贝叶斯公式中最重要的两个条件概率： <span class="math display">\[P(x|z)=\frac{P(z|x)P(x)}{P(z)}\]</span> PS：联合概率<span class="math inline">\(P(x,z)=P(x|z)P(z)=P(z|x)P(x)\)</span></p><a id="more"></a><h2 id="贝叶斯公式两个概率pxpz">贝叶斯公式两个概率：<span class="math inline">\(P(x),P(z)\)</span></h2><p>原始的<code>AutoEncoder</code>只求得编码器和解码器，但变分自编码器（VAE）的思路是，如果强迫潜在表示的<code>z</code>满足正态分布，那么训练完成后，丢掉编码器，直接从<span class="math inline">\(P(z)\thicksim\mathcal{N}(\mu =0,\sigma=1)\)</span> 抽样得到潜在表示<code>z</code>，使潜在表示<code>z</code>，使解码器<span class="math inline">\(P(x|z)\)</span> 就可以生成新样本。实现过程为，在重构误差之外加一项<span class="math inline">\(P(z)\)</span> 和正态分布之间的<code>KL divergence</code> ，就能强迫神经网络学习满足正态分布的<code>z</code>。</p><p>PS：<code>KLdivergence</code>可以量化两个概率分布的差别。</p><p><span class="math inline">\(P(x)\)</span> 是输入概率分布。比如一张<span class="math inline">\(N=256*256\)</span>像素的黑白照片<code>x</code>，第一个像素<span class="math inline">\(x_0\)</span>，第<code>n</code>个像素用<span class="math inline">\(x_n\)</span>表示，那么这张图片在所有黑白照片里出现的概率为： <span class="math display">\[P(x)=P(x_0)P(x_1|x_0)P(x_2|x_0x_1)\dots P(x_n|x_1x_2\dots x_{n-1})\]</span> 该公式的意思是为了知道整张照片的概率，要知道第一个像素取值为<span class="math inline">\(x_0\)</span>的概率<span class="math inline">\(P(x_0)\)</span>，确定<span class="math inline">\(x_0\)</span>后第二个像素为<span class="math inline">\(x_1\)</span>的条件概率<span class="math inline">\(p(x_1|x_0)\)</span>，依次类推连乘，即可得到最终概率。一旦知道了整张照片的概率分布，就可以从这个分布抽样无数的新图像。具体的抽样工程是先从<span class="math inline">\(P(x_0)\)</span>抽样<span class="math inline">\(x_0\)</span>，然后根据条件概率依次抽取剩余像素值。这个过程也被称为自回归<code>(AutoRegressive)</code>。</p><p>自回归模型在图像比较大的情况下因计算需求暴增而失效。所以，我们自然能想到将照片压缩到低维空间，在低维空间训练自回归神经网络，再解码到高维。这也是VQ-VAE以及VQ-VAE算法的精髓。==在压缩空间<code>z</code>上使用自回归神经网络。== <span class="math display">\[P(z)=P(z_1|z_0)P(z_2|z_0z_1)\dots P(z_m|z_0z_1z_2\dots z_{m-1})\]</span> <code>z</code>向量里元素的个数<code>m</code>一般远小于<code>x</code>中像素的个数<code>N</code>。另一个好处是，原始图像里面有大量的冗余信息，比如大块的同色像素，对<code>z</code>使用自回归，可以忽略这些冗余信息，得到结构化的全局语义概率分布。</p><p>在PixelCNN里每个像素是按顺序生成的，但自编码机的潜在表示z又有什么顺序呢？在VQ-VAE-1文章的截图来看，每个<code>feature map</code>大小可能是<span class="math inline">\(m=32*32\)</span>，它的纵向有D个通道（对应D个卷积filter）。就像其他文章发现的那样，神经网络深层学到的<code>feature map</code>与输入图像的横平面空间位置存在对应关系。因此<code>feature map</code>与输入图像的横平面空间位置存在对应关系。因此<code>feature map</code>上横屏面每个坐标对应的纵向D个通道构成潜在表示的一个分量。这样潜在表示就大体保留了位置信息。</p><figure><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpmxufobmuj31260catgy.jpg" alt="VQ-VAE原始论文示意图" /><figcaption aria-hidden="true">VQ-VAE原始论文示意图</figcaption></figure><p>对于输入图像<code>x</code>使用自回归神经网络，每个像素的值可离散为0到255之间的一个整数。但对潜在表示<span class="math inline">\(z_e(x)\)</span>使用自回归神经网络时，如上图左边立方体所示，它的每个分量是一个D维向量。为了简化计算，最好能够将D维向量压缩为一个整数。这样32x32xD个格子的立体潜在表示<span class="math inline">\(z_e(x)\)</span>就能压缩为上图正中间下方的那个大小为32x32的二维潜在表示<code>z</code>。这就是VQ-VAE算法中VQ（Vector Quantization）---向量量子化的实际意义。</p><p>示意图中<code>z</code>的二维格子有1，2，3，53几个数字。它们的计算来自于上图最上方有一排向量，<span class="math inline">\(e_1,e_2,e_3\dots e_k\)</span>，这些向量就像字典，或者说基向量。编码器得到的潜在表示<span class="math inline">\(z_e\)</span>的每个分量都需要与这组字典向量比较，距离最近的那个字典向量的ID就是向量化得到的正整数。1，2，3，53表示那几个格子对应<span class="math inline">\(z_e\)</span>分量分别与<span class="math inline">\(e_1,e_2,e_3,e_{53}\)</span>最为接近。注意：字典向量的纵向维数等于D，等于卷积编码器的<code>filter</code>个数。量子化公式如下： <span class="math display">\[q(z=k|x)=\begin{cases}1 &amp; \text{for}\quad\text{k}=argmin_j||z_e(x)-e_j||_2, \\                                            0 &amp; \text{otherwise}                    \end{cases}\]</span> 上面的公式等于给出了<span class="math inline">\(z_e(x)\)</span>的<code>one hot</code>表示。即如果<span class="math inline">\(z_e(x)\)</span>距离第<code>k</code>个字典向量最近，那么量子化表示的第<code>k</code>位设为1，其他<code>k-1</code>个位全部设为0。或者直接用数字<code>k</code>表示。</p><p>量子化很容易，但字向量<span class="math inline">\(e_1,e_2,e_3\dots e_k\)</span>很难获得。这里使用了随机初始生成，但是随着训练的进行，机器会自己学习创造字典向量。</p><p>损失函数<span class="math inline">\(\mathcal{L}(x,D(e))\)</span>告诉我们神经网络参数和字典向量如何更新。 <span class="math display">\[\mathcal{L}(x,D(e))=||x-D(e)||^2_2+||sg[E(x)]-e||^2_2+\beta||sg[e]-E(x)||_2^2\]</span> 其中<code>x</code>是输入图像，<code>D</code>是解码器，<code>E</code>是解码器，<code>sg</code>是<code>stop gradient</code>的缩写，表示不对<code>sg[]</code>方括号里的变量计算梯度，误差不向此变量传递。<span class="math inline">\(\beta\)</span>是一个不重要的超参数。</p><p>损失函数分三部分。第一部分是重构误差，可以看到这里重构误差与普通的<code>AutoEncoder</code>重构误差<span class="math inline">\(||x-D(z)||^2_2\)</span>不一样，因为使用了量子化，解码器的输入变为量子化后的字向量<code>e</code>。这一项需要同时更新编码器和解码器。</p><p>第二部分计算编码器得到的潜在向量与字典向量的距离，并将其作为辅助误差项。此误差项只向字典向量<code>e</code>传递，通过对误差惩罚来学习<code>e</code>向量。不更新编码器和解码器。</p><p>第三部分与第二部分一致，也是计算潜在向量与字典向量的距离。不过这里对字典向量<code>e</code>使用了<code>stop gradient</code>约束，使得此误差项只向编码器反响传递。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;量子化的变分自编码机-vector-quantized-vae-vq-vae&quot;&gt;量子化的变分自编码机 Vector Quantized VAE (VQ-VAE)&lt;/h1&gt;
+&lt;h2 id=&quot;简介&quot;&gt;简介&lt;/h2&gt;
+&lt;p&gt;变分自编码机（VAE）是一种非监督学习方法，它属于一个AutoEncoder的一个变种。一个AutoEncoder模型包含两个部分，一个编码器Encoder，一个解码器Decoder。前者将高维输入图像x压缩到一个低维潜变量&lt;code&gt;z&lt;/code&gt;，后者将&lt;code&gt;z&lt;/code&gt;解码，重建&lt;code&gt;x&lt;/code&gt;。计算重构误差并反向传播，即可学习编码器与解码器的神经网络权重。成功训练之后，编码器和解码器分别学习到了两个概率：&lt;/p&gt;
+&lt;p&gt;Encoder：&lt;span class=&quot;math inline&quot;&gt;\(P(z|x)\)&lt;/span&gt; 给定输入&lt;code&gt;x&lt;/code&gt;，判别得到潜在变量z的条件概率&lt;/p&gt;
+&lt;p&gt;Decoder：&lt;span class=&quot;math inline&quot;&gt;\(P(x|z)\)&lt;/span&gt; 给定潜变量&lt;code&gt;z&lt;/code&gt;，生成图像&lt;code&gt;x&lt;/code&gt;的条件概率&lt;/p&gt;
+&lt;p&gt;这两个概率就是贝叶斯公式中最重要的两个条件概率： &lt;span class=&quot;math display&quot;&gt;\[
+P(x|z)=\frac{P(z|x)P(x)}{P(z)}
+\]&lt;/span&gt; PS：联合概率&lt;span class=&quot;math inline&quot;&gt;\(P(x,z)=P(x|z)P(z)=P(z|x)P(x)\)&lt;/span&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="非原创" scheme="http://example.com/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="编码器" scheme="http://example.com/tags/%E7%BC%96%E7%A0%81%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Word2Vec的本质</title>
+    <link href="http://example.com/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/"/>
+    <id>http://example.com/2021/04/06/Word2Vec%E7%9A%84%E6%9C%AC%E8%B4%A8/</id>
+    <published>2021-04-06T11:38:08.000Z</published>
+    <updated>2021-04-06T13:02:44.186Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="简介">简介</h4><p>NLP处理中，最细粒度的是词语，词语组成句子，句子再组成段落、篇章、文档。所以处理NLP的问题，首先就是要处理词语。</p><p>例如：判断一个词的词性，是动词还是名词。用机器学习的思路，我们有一系列样本(x, y)，这里x是词语，y是它们的词性，我们要构建F(x)--&gt;y的映射，但这里的数学模型F(比如神经网路、SVM)只接受数值型输入，而NLP里的词语，是人类的抽象总结，是符号形式的(比如中文、英文、拉丁文等等)，所以我们要把他们转换成数值形式，或者说——嵌入到一个数学空间里，这种嵌入方式，就叫词嵌入(word embedding)，而Word2Vec，就是词嵌入(word embedding)的一种。</p><a id="more"></a><h4 id="参考资料">参考资料</h4><blockquote><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&gt;1. Mikolov 两篇原论文：</span><br><span class="line">&gt;『Distributed Representations of Sentences and Documents』</span><br><span class="line">     贡献：在前人基础上提出更精简的语言模型（language model）框架并用于生成词向量，这个框架就是 Word2vec</span><br><span class="line">&gt;『Efficient estimation of word representations in vector space』</span><br><span class="line">     贡献：专门讲训练 Word2vec 中的两个trick：hierarchical softmax 和 negative sampling</span><br><span class="line">&gt;优点：Word2vec 开山之作，两篇论文均值得一读</span><br><span class="line">&gt;缺点：只见树木，不见森林和树叶，读完不得要义。</span><br><span class="line">     这里『森林』指 word2vec 模型的理论基础——即 以神经网络形式表示的语言模型</span><br><span class="line">     『树叶』指具体的神经网络形式、理论推导、hierarchical softmax 的实现细节等等</span><br><span class="line"></span><br><span class="line">&gt;2. 北漂浪子的博客：『深度学习word2vec 笔记之基础篇』</span><br><span class="line">&gt;优点：非常系统，结合源码剖析，语言平实易懂</span><br><span class="line">&gt;缺点：太啰嗦，有点抓不住精髓</span><br><span class="line"></span><br><span class="line">&gt;3. Yoav Goldberg 的论文：『word2vec Explained- Deriving Mikolov et al.’s Negative-Sampling Word-Embedding Method』</span><br><span class="line">&gt;优点：对 negative-sampling 的公式推导非常完备</span><br><span class="line">&gt;缺点：不够全面，而且都是公式，没有图示，略显干枯</span><br><span class="line"></span><br><span class="line">&gt;4. Xin Rong 的论文：『word2vec Parameter Learning Explained』：</span><br><span class="line">&gt;！重点推荐！</span><br><span class="line">&gt;理论完备由浅入深非常好懂，且直击要害，既有 high-level 的 intuition 的解释，也有细节的推导过程</span><br><span class="line">&gt;一定要看这篇paper！一定要看这篇paper！一定要看这篇paper！</span><br><span class="line"></span><br><span class="line">&gt;5. 来斯惟的博士论文『基于神经网络的词和文档语义向量表示方法研究』以及他的博客（网名：licstar）</span><br><span class="line">&gt;可以作为更深入全面的扩展阅读，这里不仅仅有 word2vec，而是把词嵌入的所有主流方法通通梳理了一遍</span><br><span class="line"></span><br><span class="line">&gt;6. 几位大牛在知乎的回答：『word2vec 相比之前的 Word Embedding 方法好在什么地方？』</span><br><span class="line">&gt;刘知远、邱锡鹏、李韶华等知名学者从不同角度发表对 Word2vec 的看法，非常值得一看</span><br><span class="line"></span><br><span class="line">&gt;7. Sebastian 的博客：『On word embeddings - Part 2: Approximating the Softmax』</span><br><span class="line">&gt;详细讲解了 softmax 的近似方法，Word2vec 的 hierarchical softmax 只是其中一种</span><br></pre></td></tr></table></figure><p>在NLP中，把x看做一个句子里的词语，y是这个句子的上下文词语，那么这里的f，便是NLP中经常出现的(language model)，这个模型的目的，就是判断(x, y)这个样本，是否符合自然语言法则，更通俗点说就是：词语x和词语y放在一起，是不是人话。</p></blockquote><p>word2vec源于这个思想，但它的最终目的，不是要把f训练的完美，而是只关心模型训练后的副产物——模型参数（这里特指神经网络的权重），并将这些参数，作为输入x的某种向量化表示，这个向量变叫做——词向量。</p><h4 id="skip-gram和cbow的简单形式">Skip-gram和CBOW的简单形式</h4><p>上面说到，y是x的上下文，所以y只取上下文里一个词语的时候，语言模型就变成：</p><blockquote><p>用当前词x预测它的下一个词y</p></blockquote><p>一般的数学模型只接受数值类型输入，这里的x应该如何表示？显然不能使用Word2Vec，因为这是我们训练完模型的产物，现在我们想要的是x的一个原始输入形式。</p><p>所以，我们要使用one-hot encoder</p><p>所谓one-hot encoder，其思想跟特征工程里处理类别变量的one-hot一样。例如：假设全世界所有的词语总共有V个，这V个词语有自己的先后顺序，假设(吴彦祖)这个词是第一个词，(我)是第二个词，那么吴彦祖就可以表示为一个V维全零向量，把第一个位置的0变为1，同样，(我)也是V维，把第二个位置的0变为1.这样，每个词语都可以找到属于自己的唯一表示。</p><h5 id="skip-gram网络结构">Skip-gram网络结构</h5><figure><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpabcbepm3j314g0lwjyi.jpg" alt="image-20210406204858538" /><figcaption aria-hidden="true">image-20210406204858538</figcaption></figure><blockquote><p>x就是上面提到的one-hot encoder形式的输入，y是在这个V个词上输出的概率，我们期望跟真实的y的one-hot encoder一样。</p><p>需要说明的是：隐含层的激活函数其实是线性的，相当于没有做任何处理(这也是word2vec简化之前语言模型的独到之处)，我们要训练这个神经网络，用反向传播算法，本质是链式求导。</p></blockquote><p>当模型训练完之后，最后得到的是==神经网络的权重==，例如现在输入一个x的one-hot encoder:[1, 0, 0, ..., 0]，对应刚说的那个词语(吴彦祖)，则在输入层到隐含层的权重里，只有对应<code>1</code>这个位置的权重被激活，这些权重的个数，跟隐含层节点数是一致的，从而这些权重组成一个向量vx来表示x，而因为每个词语的one-hot encoder里面<code>1</code>的位置是不同的，所以，这个向量vx就可以用来唯一表示x。</p><p>另外，输出y也是用V个节点表示，对应V个词语，所以其实，我们把输出节点设置成[1, 0, 0, ..., 0]，他也能表示(吴彦祖)这个单词，但是激活的是隐含层到输出层的权重，这些权重的个数，跟隐含层一样，也可以组成一个向量vy，跟上面提到的vx的维度一样，并且可以看作是(吴彦祖)这个词的另一种词向量。而这两种词向量vx和vy，正是Mikolov在论文里所提到的，(输入向量)和(输出向量）。</p><p>这个词向量的维度（与隐含层节点数一致）一般情况下要远远小于词语总数 V 的大小，所以 Word2vec 本质上是一种<strong>降维</strong>操作——把词语从 one-hot encoder 形式的表示降维到 Word2vec 形式的表示。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;简介&quot;&gt;简介&lt;/h4&gt;
+&lt;p&gt;NLP处理中，最细粒度的是词语，词语组成句子，句子再组成段落、篇章、文档。所以处理NLP的问题，首先就是要处理词语。&lt;/p&gt;
+&lt;p&gt;例如：判断一个词的词性，是动词还是名词。用机器学习的思路，我们有一系列样本(x, y)，这里x是词语，y是它们的词性，我们要构建F(x)--&amp;gt;y的映射，但这里的数学模型F(比如神经网路、SVM)只接受数值型输入，而NLP里的词语，是人类的抽象总结，是符号形式的(比如中文、英文、拉丁文等等)，所以我们要把他们转换成数值形式，或者说——嵌入到一个数学空间里，这种嵌入方式，就叫词嵌入(word embedding)，而Word2Vec，就是词嵌入(word embedding)的一种。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="非原创" scheme="http://example.com/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="语言模型" scheme="http://example.com/tags/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>BERT中的MLM任务替换为Replaced token detection</title>
+    <link href="http://example.com/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/"/>
+    <id>http://example.com/2021/03/31/BERT%E4%B8%AD%E7%9A%84MLM%E4%BB%BB%E5%8A%A1%E6%9B%BF%E6%8D%A2%E4%B8%BAReplaced-token-detection/</id>
+    <published>2021-03-31T08:14:37.000Z</published>
+    <updated>2021-03-31T09:38:20.224Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="masked-language-model-replaced-token-detection">Masked language-model &amp; Replaced token detection</h4><h5 id="简介">简介</h5><p>回顾Bert中，模型会替换掉传入句子中15%的token，其中Masked掉80%，10%随机替换，10%保持不变，随后将替换的句子输入到BERT中用于预测被替换的token。</p><a id="more"></a><p><a href="https://link.zhihu.com/?target=https%3A//openreview.net/pdf%3Fid%3Dr1xMH1BtvB">ELECTRA: Pre-training Text Encoders as Discriminators Rather Than Generators</a> 的作者认为只学习15%的token浪费算力，同时存在Mask不会在实际任务中出现的问题。于是，文章提出了新的训练任务：replaced token detection，即首先使用一个生成器预测句子中被mask掉的token，接下来使用预测的token代替句子中的Mask标记，然后使用一个判别器区分句子中的每个token是原始的还是替换后的。</p><p>在预训练后，将判别器用于下游任务。作者认为Replaced token detection任务让模型（判别器）可以在所有的token上学习，而不是那些仅仅被mask掉的token，这使得计算机效率更高。</p><h4 id="生成器与判别器">生成器与判别器</h4><p>生成器输入token序列<span class="math inline">\(x=[x_1,\dots,x_n]\)</span>，经过编码得到<span class="math inline">\(h_G(x)=[h_1^G,\dots,h_n^G]\)</span>。于是，生成器在位置t上输出token<span class="math inline">\(x\)</span>的概率为： <span class="math display">\[p_G(x|X)=softmask(e(x)^T h_t^D)\]</span> 其中，<span class="math inline">\(e(\cdot)\)</span>表示token的embedding。而对于判别器，输入token序列<span class="math inline">\(x=[x_1,\dots,x_n]\)</span>，经过编码得到<span class="math inline">\(h_D(x)=[h_1^D,\dots,h_n^D]\)</span>，于是判别器预测位置<span class="math inline">\(t\)</span>的token被替换掉的概率为 <span class="math display">\[D(x,t)=sigmoid(w^Th_t^D)\]</span> 其中，<span class="math inline">\(w\)</span>是模型的参数。</p><h4 id="损失函数">损失函数</h4><p>假设被mask掉的token位置为<span class="math inline">\(m=[m_1,\dots,m_k]\)</span>，假设最初的句子为<span class="math inline">\(x=[x_1,\dots,x_n]\)</span>，mask后的句子为<span class="math inline">\(x^{masked}\)</span>，替换后的句子为<span class="math inline">\(x^{corrupt}\)</span>，那么mask和替换过程可以形式化为： <span class="math display">\[m_i \sim unif\{1,n\}for i = 1 to k \\x^{masked}=REPLACE(x,m,[MASK]) \\\hat{x}_i \sim p_G(x_i|x^{masked})for\space i\in m\\x^{corrupt}=REPLACE(x,m,\hat{x})\]</span> 于是损失函数为： <span class="math display">\[L_{MLM}(x,\theta_G)=\mathbb{E}(\sum_{i\in m}-logp_G(x_i|x^{maskd})) \\L_{Dise}(x,\theta_D)=\mathbb{E}(\sum^n_{t=1}\mathbb{I}(x_t^{corrupt}=x_t)logD(x^{corrupt},t)+\mathbb{I}(x_t^{corrupt}\ne x_t)log(1-D(x^{corrupt},t)))\]</span></p><p>文章指出虽然上面的两个损失函数看起来像GAN，但二者还是有很大区别：</p><ol type="1"><li>如果生成器恰好将masked掉的token预测为真正的token，那么这个token将会被认为是没有被替换过，作者发现这样为有益于下游任务</li><li>生成器通过最大似然估计来训练，而不是对抗地愚弄判别器，因为对抗训练对生成器来说仍然是一个挑战，毕竟梯度没办法回传。</li></ol><p>最终的优化目标： <span class="math display">\[\min_{\theta_G,\theta_D}\sum_{x \in \chi}L_{MLM}(x,\theta_G)+L_{Disc}(x,\theta_D)\]</span> 其中<span class="math inline">\(\chi\)</span>是一个大型的语料库</p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;masked-language-model-replaced-token-detection&quot;&gt;Masked language-model &amp;amp; Replaced token detection&lt;/h4&gt;
+&lt;h5 id=&quot;简介&quot;&gt;简介&lt;/h5&gt;
+&lt;p&gt;回顾Bert中，模型会替换掉传入句子中15%的token，其中Masked掉80%，10%随机替换，10%保持不变，随后将替换的句子输入到BERT中用于预测被替换的token。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="非原创" scheme="http://example.com/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="BERT" scheme="http://example.com/tags/BERT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>batch的大小对学习效果的影响</title>
+    <link href="http://example.com/2021/03/29/batch%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%AF%B9%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E7%9A%84%E5%BD%B1%E5%93%8D/"/>
+    <id>http://example.com/2021/03/29/batch%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%AF%B9%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E7%9A%84%E5%BD%B1%E5%93%8D/</id>
+    <published>2021-03-29T04:04:19.000Z</published>
+    <updated>2021-03-29T08:19:35.965Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="简介">简介</h4><p>目前深度学习模型多采用批量随机梯度下降算法进行优化，随机梯度下降算的原理： <span class="math display">\[w_{t+1}=w_t - \eta\frac{1}{n}\sum_{x\in B}\bigtriangledown l(x,w_t)\]</span> n是批量大小（batch_size），<span class="math inline">\(\eta\)</span> 是学习率（learning rate）。可知道除了梯度本身，这两个因子直接决定了模型的权重更新，从优化本身来看它们是影响模型性能收敛最重要的参数。</p><p>学习率直接影响模型的收敛状态，batch_size则影响模型的泛化性能，两者又是分子分母的直接关系，相互也可影响，因此这一次来详述它们对模型性能的影响。</p><a id="more"></a><h4 id="学习率如何影响模型性能">学习率如何影响模型性能</h4><p>通常我们都需要合适的学习率才能进行学习，要达到一个强的凸函数的最小值，学习率的调整应该满足下面的条件，<code>i</code>代表第<code>i</code>次更新。 <span class="math display">\[\sum_{i=1}^{\infty}\epsilon_i = \infty \\\sum^\infty_{i=1}\epsilon_i^2 &lt; \infty\]</span> 第一个式子决定了不管初始状态离最优状态多远，总是可以收敛。第二个式子约束了学习率随着训练进行有效地降低，保证收敛稳定性，各种自适应学习率算法本质上就是不断在调整各个时刻的学习率。</p><p>学习率决定了权重迭代的步长，因此是一个非常敏感的参数，它对模型性能的影响体现在两个方面，第一个是初始学习率的大小，第二个是学习率的变换方案。</p><h6 id="初始学习率大小对模型性能的影响">初始学习率大小对模型性能的影响</h6><p>初始的学习率肯定是有一个最优值，过大则导致模型不收敛，过小则导致模型收敛特别慢或者无法学习。</p><p>通常可以采用最简单的搜索算法，即从小到大开始训练模型，然后记录损失的变化。随着学习率的增加，损失会慢慢变小，而后增加，但最佳的学习率就可以从其中损失最小的区域选择。</p><p>随着学习率的增加，模型也可能会从欠拟合过渡到过拟合状态，在大型数据集上的表现尤其明显。</p><h6 id="学习率变换策略对模型性能的影响">学习率变换策略对模型性能的影响</h6><p>学习率在模型的训练过程中很少有不变化的，通常会有两种方式对学习率进行更改，一种是预设规则学习率变化法，一种是自适应学习率变换法。</p><h6 id="预设规则学习率变化法">预设规则学习率变化法</h6><p>常见的策略包括fixed，step，exp，inv，multistep，ploy，sigmoid等：</p><figure><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gp0u33knv2j30ic0cfaf2.jpg" alt="image-20210329160149639" /><figcaption aria-hidden="true">image-20210329160149639</figcaption></figure><p>对比：</p><ol type="1"><li>step，multistep方法的收敛效果最好，虽然学习率的变化是最离散的，但是并不因膝盖难过模型收敛到比较好的结果。</li><li>其次是exp，ploy。它们能取得与step，multistep相当的结果，也是因为学习率以比较好的速率下降，虽然变化更加平滑，但是结果也未必能胜过step和multistep方法，在这很多研究中都得到过验证，离散的学习率变更策略不影响模型的学习。</li><li>inv和fixed的收敛结果最差，因为fixed方法始终使用了较大的学习率，而inv方法的学习率下降过程太快。</li></ol><h6 id="自适应学习率变化法">自适应学习率变化法</h6><p>自适应学习策略以Adagrad，Adam等为代表，原理上各种改进的自适应学习率算法都比SGD算法更有利于性能的提升，但实际上精细调优过的SGD算法可能取得更好的结果。</p><h4 id="batch_size如何影响模型性能">Batch_size如何影响模型性能</h4><p>模型性能对Batch_size虽然没有学习率那么敏感，但是在进一步提升模型性能时，Batch_size就会成为一个非常关键的参数。</p><h6 id="大的batch_size减少训练时间提高稳定性">大的Batch_size减少训练时间，提高稳定性</h6><p>同样的epoch数目，大的Batch_size需要的batch数目减少，所以可以减少训练时间，另一方面，大的Batch_size梯度计算更加稳定，因为模型训练曲线更加平滑，在微调的时候大的Batch_size可能会取得更好的效果。</p><h6 id="大的batch_size导致模型泛化能力下降">大的Batch_size导致模型泛化能力下降</h6><p>大的batchsize收敛到sharp minimum，而小的batchsize收敛到flat minimum，后者具有更好的泛化能力。两者的区别就在于变化的趋势，一个快一个慢，如下图，造成这个现象的主要原因是小的batchsize带来的噪声有助于逃离sharp minimum。大的batchsize性能下降是因为训练时间不够长，本质上并不少batchsize的问题，在同样的epochs下的参数更新变少了，因此需要更长的迭代次数。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;简介&quot;&gt;简介&lt;/h4&gt;
+&lt;p&gt;目前深度学习模型多采用批量随机梯度下降算法进行优化，随机梯度下降算的原理： &lt;span class=&quot;math display&quot;&gt;\[
+w_{t+1}=w_t - \eta\frac{1}{n}\sum_{x\in B}\bigtriangledown l(x,w_t)
+\]&lt;/span&gt; n是批量大小（batch_size），&lt;span class=&quot;math inline&quot;&gt;\(\eta\)&lt;/span&gt; 是学习率（learning rate）。可知道除了梯度本身，这两个因子直接决定了模型的权重更新，从优化本身来看它们是影响模型性能收敛最重要的参数。&lt;/p&gt;
+&lt;p&gt;学习率直接影响模型的收敛状态，batch_size则影响模型的泛化性能，两者又是分子分母的直接关系，相互也可影响，因此这一次来详述它们对模型性能的影响。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="非原创" scheme="http://example.com/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="深度学习" scheme="http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>优化器算法Optimizer详解</title>
+    <link href="http://example.com/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://example.com/2021/03/26/%E4%BC%98%E5%8C%96%E5%99%A8%E7%AE%97%E6%B3%95Optimizer%E8%AF%A6%E8%A7%A3/</id>
+    <published>2021-03-26T11:29:28.000Z</published>
+    <updated>2021-06-23T00:56:31.732Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="简介">简介</h4><p>在机器学习中使用的优化算法除了常见的梯度下降，还有Adadelta、Adagrad、RMSProp等几种优化器</p><p><a href="https://arxiv.org/pdf/1609.04747.pdf">Sebastian Ruder 的这篇论文中给出了常用优化器的比较</a></p><a id="more"></a><h4 id="梯度下降算法">梯度下降算法</h4><p>对于优化算法，优化的目标是网络模型中的参数 <span class="math inline">\(\theta\)</span> (是一个集合，<span class="math inline">\(\theta_1,\theta_2\dots\)</span>)目标函数为损失函数<span class="math inline">\(L=1/N*\sum L_i\)</span> （每个样本损失函数的叠加求平均值）。这个损失函数L变量就是<span class="math inline">\(\theta\)</span> ，其中L中的参数是整个训练集，换句话说，目标函数（损失函数）是通过整个训练集来确定的，训练集全集不同，则损失函数的图像也不同。</p><p>那么为何在mini-batch中如果遇到鞍点/局部最小值点就无法进行优化了？</p><p>因为在这些点上，L对于<span class="math inline">\(\theta\)</span> 的梯度为零，换句话说，对<span class="math inline">\(\theta\)</span> 每个分量求偏导数，带入训练集全集，导数为0。对于SGD/MBGD而言，每次使用的损失函数只是通过这一个小批量的数据确定的，其函数图像与真实全集损失函数有所不同，所以其求解的梯度也含有一定的随机性， 在鞍点或者局部最小值点的时候，震荡跳动，因为在此点处，如果训练集全集带入即BGD，则优化就会停止不动，如果是mini-batch或者SGD，每次找到的梯度都是不同的，就会发生震荡，来回跳动。</p><h4 id="优化器算法简述">优化器算法简述</h4><p>梯度下降算大常见三种变形：BGD、SGD、MBGD，这三种形态的区别就是取决于我们用多少数据来计算目标函数的梯度，这样的话就涉及到一个trade-off，即参数更新的准确率和运行时间。</p><h5 id="batch-gradient-descentbgd">1. Batch Gradient Descent（BGD）</h5><p>BGD采用整个训练集的数据来计算cost function对参数的梯度：</p><p><span class="math inline">\(\theta=\theta-\eta·\bigtriangledown_{\theta}J(\theta)\)</span></p><p>==缺点：==</p><p>由于这种方法是在一次更新中，就对整个数据集计算梯度。所以计算起来非常慢，遇到很大量的数据集也会非常棘手，而且不能投入新数据实时更新模型。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nb_epochs):</span><br><span class="line">  params_grad = evaluate_gradient(loss_function, data, param)</span><br><span class="line">  params = params - learning_rate * params_grad</span><br></pre></td></tr></table></figure><p>Batch gradient descent 对于凸函数可以收敛到全局最小值，对于非凸函数可以收敛到局部极小值。</p><h5 id="stochastic-gradient-descentsgd">2.Stochastic Gradient Descent（SGD）</h5><p>==梯度更新规则：==</p><p>和BGD的一次使用所有数据更新梯度相比，SGD每次更新时对每个样本进行梯度更新，对与很大的数据集来说，可能会有相似的样本，这样BGD在计算梯度时会出现冗余，而SGD一次只进行一次更新，就没有冗余，而且比较快，并且可以新增样本。</p><p><span class="math inline">\(\theta=\theta-\eta·\bigtriangledown_{\theta}J(\theta;x^{(i)};y^{(i)})\)</span></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nb_epochs):</span><br><span class="line">  np.random.shuffle(data)</span><br><span class="line">  <span class="keyword">for</span> example <span class="keyword">in</span> data:</span><br><span class="line">    params_grad = evaluate_gradient(loss_function, example, params)</span><br><span class="line">    params = params - learning_rate * params_grad</span><br></pre></td></tr></table></figure><p>随机梯度下降是通过每个样本来迭代更新一次，如果样本量很大的情况，那么可能只用其中部分样本，就已经将theta迭代到最优解了，对比上面的批量梯度下降，迭代一次需要用到十几万训练样本，一次迭代不可能最优，如果迭代10次就要遍历训练样本10次。缺点是SGD的噪声较BGD要多 ，使得SGD并不是每次迭代都朝着整体最优化方向。所以虽然训练速度快，但是准确度下降，并不是全局最优。虽然包含一定的随机性，但从期望上来看，它是等于正确的导数的。</p><p>==缺点：==</p><p>SGD因为更新比较频繁，会造成cost function有严重的震荡。</p><p>BGD可以收敛到局部极小值，当然SGD的震荡可能会跳到更好的局部极小值。</p><h5 id="mini-batch-gradient-desentmbgd">3.Mini-batch Gradient Desent（MBGD）</h5><p>梯度更新规则：</p><p>MBGD每一次利用一小批样本，即n个样本进行计算，这样它就可以降低参数更新时的方差，收敛更稳定，另一方面可以充分地利用深度学习库中高度优化的矩阵操作来进行更有效地梯度计算。</p><p><span class="math inline">\(\theta=\theta-\eta·\bigtriangledown_n J(\theta;x^{(i;i+n)};y^{(i;i+n)})\)</span></p><p>和SGD的区别是每一次循环不是作用于每个样本，而是具有n个样本的批次。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nb_epochs):</span><br><span class="line">  np.random.shuffle(data)</span><br><span class="line">  <span class="keyword">for</span> batch <span class="keyword">in</span> get_batches(data, batch_size=<span class="number">50</span>):</span><br><span class="line">    params_grad = evaluate_gradient(loss_function, batch, params)</span><br><span class="line">    params = params - learning_rate * params_grad</span><br></pre></td></tr></table></figure><p>超参数设定值：n一般取值在50～256</p><p>缺点：（两大缺点）</p><ol type="1"><li>Mini-batch gradient descent 不能保证很好的收敛性了，learning rate 如果选择的太小，收敛速度会很慢，如果太大，loss function 就会在极小值处不停地震荡甚至偏离。（有一种措施是先设定大一点的学习率，当两次迭代之间的变化低于某个阈值之后，就减小learning rate，不过这个阈值的设定需要提前写好，这样的话就不能够适应数据的特点。）对于非凸函数，还要避免陷入局部极小值处，或者鞍点处，因为鞍点周围的error是一样的，所以维度的梯度都接近于0，SGD很容易被困在这里。（会在鞍点或者局部最小点震荡跳动，因为在此点处，如果是训练集全集带入即BGD，则优化会停止不动，如果是mini-batch或者SGD，每次找到的梯度都是不同的，就会发生震荡，来回跳动。）</li><li>SGD对所有参数更新时应用同样的 learning rate，如果我们的数据是稀疏的，我们更希望对出现频率低的特征进行大一点的更新。LR会随着更新的次数逐渐变小。</li></ol><h4 id="momentum">Momentum</h4><p>SGD在ravines的情况下容易被困住，ravines就是曲面的一个方向比另一个方向更陡，这时SGD会发生震荡而迟迟不能接近极小值：</p><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1goyrj0y97oj30fw04ndg2.jpg" /></p><p>==梯度更新规则：==</p><p>Momentum 通过加入<span class="math inline">\(\gamma v_{t-1}\)</span> ，可以加速SGD，并且抑制震荡</p><p><span class="math inline">\(v_t = \gamma v_{t-1}+\eta\bigtriangledown_\theta J(\theta)\)</span></p><p><span class="math inline">\(\theta = \theta-v_t\)</span></p><p>当我们将一个小球从山上滚下来时，没有阻力的话，它的动量会越来越大，但如果遇到了阻力，速度就会变小。</p><p>加入的这一项，可以使得梯度方向不变的维度上速度变快，梯度方向有所改变的维度上的更新速度变慢，这样就可以加快收敛并渐小震荡。</p><p>==缺点：==</p><p>这种情况相当于小球从山上滚下来时是在盲目地沿着坡滚，如果它能具备一些先知，例如快要上坡时，就知道需要减速了的话，适应性会更好。</p><h4 id="nesterov-accelerated-gradient">Nesterov Accelerated Gradient</h4><p>梯度更新规则：</p><p>用<span class="math inline">\(\theta-\gamma v_{t-1}\)</span>来近似当作参数下一步会变成的值，则在计算梯度时，不是在当前的位置，而是未来位置上</p><p><span class="math inline">\(v_t = \gamma v_{t-1}+\eta \bigtriangledown_\theta J(\theta - \gamma v_{t-1})\)</span></p><p><span class="math inline">\(\theta=\theta-v_t\)</span></p><figure><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gozg0agcvyj30d7048aa6.jpg" alt="NAG梯度下降对比图" /><figcaption aria-hidden="true">NAG梯度下降对比图</figcaption></figure><p>蓝色是Momentum的过程，会计算当前的梯度，然后在更新后的累积梯度后会有一个大的跳跃。</p><p>而NAG会先在前一步的累积梯度上（Brown vector）有一个大的跳跃，然后衡量一下梯度做NAG可以使RNN在很多任务上有更好的表现。</p><p>目前为止，我们可以做到，在更新梯度时顺应loss function的梯度来调整速度，并且对SGD进行加速。</p><h4 id="adagrad-adaptive-gradient-algorithm">Adagrad （Adaptive gradient algorithm）</h4><p>这个算法就可以对低频率的参数较大的更新，对高频的做较小的更新，也因此，对于稀疏的数据它的表现很好，很好地提高了SGD的鲁棒性，例如识别Youtube视频里的猫，训练GloVe word embeddings，因为它们都是需要在低频的特征上有更大的更新。</p><p>梯度更新规则： <span class="math display">\[\theta_{t+1,i}=\theta_{t,i}-\frac{n}{\sqrt{G_{t,ii}+\epsilon}}\cdot g_{t,i}\]</span> 其中g为：t时刻参数<span class="math inline">\(\theta_i\)</span>的梯度 <span class="math display">\[g_{t,i}=\bigtriangledown_\theta J(\theta_i)\]</span> 如果是普通的SGD，那么<span class="math inline">\(\theta_i\)</span>在每一时刻的梯度更新公式为： <span class="math display">\[\theta_{t+1,i}=\theta_{t,i}-\eta\cdot g_{t,i}\]</span> 但这里的learning rate <span class="math inline">\(\eta\)</span> 也随<code>t</code>和<code>i</code>而变： <span class="math display">\[\theta_{t+i,i}=\theta_{t,i}-\frac{\eta}{\sqrt{G_{t,ii}+\epsilon}}\cdot g_{t,i}\]</span> 其中<span class="math inline">\(G_t\)</span> 是一个对角矩阵，<code>(i,i)</code> 元素就是t时刻参数<span class="math inline">\(\theta_i\)</span>的梯度平方和。</p><p>Adagrad的优点是减少了学习率的手动调节</p><p>超参数设定值：一般<span class="math inline">\(\eta\)</span> 选取0.01</p><p>缺点：</p><p>它的缺点是分母会不断积累，这样学习率就会收缩并最终为变得非常小。</p><h4 id="adadelta">Adadelta</h4><p>该算法是对Adagrad的改进，和Adagrad相比，就是将分母的G换成了过去的梯度平方的衰减平均值，指数衰减平均值 <span class="math display">\[\Delta\theta_t=-\frac{\eta}{\sqrt{E[g^2]_t + \epsilon}}\cdot g_t\]</span> 这个分母相当于梯度的均方根（RMS），在数据统计分析中，将所有值平方求和，求其平均值，再开平方，就得到均方根值，所以可以用RMS简写： <span class="math display">\[\Delta\theta_t=-\frac{\eta}{RMS[g]_t}\cdot g_t\]</span> 其中E的计算公式如下，t时刻的依赖于前一时刻的平均和当前的梯度： <span class="math display">\[E[g^2]_t=\gamma E[g^2]_{t-1}+(1-\gamma)g^2_t\]</span> 梯度更新规则：</p><p>将学习率<span class="math inline">\(\eta\)</span>换成<span class="math inline">\(RMS[\Delta\theta]\)</span>，这样的话，我们甚至不需要提前设置学习率： <span class="math display">\[\Delta\theta_t=-\frac{RMS[\theta]_{t-1}}{RMS[g]_t}\cdot g_t \\\theta_{t+1}=\theta_t+\Delta\theta_t\]</span></p><h4 id="rmsprop">RMSprop</h4><p>RMSprop是Geoff Hintom提出的一种自适应学习率方法</p><p>RMSprop和Adadelta都是为了解决Adagrad学习率极具下降问题的</p><p>==梯度更新规则==</p><p>RMSprop与Adadelta的第一种形式相同：（使用的是指数加权平均，旨在消除梯度下降中的摆动，与Momentum的效果一样，某一维度的导数比较大，则指数加权平均就大，某一维度的导数比较小，则其指数加权平均就小，这样就保证了各个维度导数都在一个量级，进而减少了摆动。允许使用一个更大的学习率<span class="math inline">\(\eta\)</span>） <span class="math display">\[E[g^2]_t=0.9[g^2]_{t-1}+0.1g^2_t \\\theta_{t+1}=\theta_t - \frac{\eta}{\sqrt{E[g^2]_t}+\epsilon}\cdot g_t\]</span> ==超参数设定：==</p><p>Hinton建议设定<span class="math inline">\(\gamma\)</span>为0.9，学习率<span class="math inline">\(\eta\)</span>为0.001</p><h4 id="adamadaptive-moment-estimation">Adam：Adaptive Moment Estimation</h4><p>这个算法是另一种计算每个参数的自适应学习率的方法。相当于RMSprop + Momentum</p><p>除了像<code>Adadelta</code>和<code>RMSprop</code>一样存储了过去梯度的平方<code>vt</code>的指数衰减平均值，也像Momentum一样保持了过去梯度<code>mt</code>的指数衰减平均值： <span class="math display">\[m_t=\beta_1 m_{t-1}+(1-\beta_1)\cdot g_t \\v_t = \beta_2 v_{t-1}+(1-\beta_2)g^2_t\]</span> 如果<code>mt</code>和<code>vt</code>被初始化为0向量，那么它们就会向0偏置，所以做了==偏差矫正==，通过计算偏置矫正后的<code>mt</code>和<code>vt</code>来抵消这些偏差： <span class="math display">\[\hat{m}_t = \frac{m_t}{1-\beta_1^t} \\\hat{v}_t=\frac{v_t}{1-\beta^t_2}\]</span> ==梯度更新规则：== <span class="math display">\[\theta_{t+1}=\theta_t-\frac{\eta}{\sqrt{\hat{v}_t}+\epsilon}\hat{m}_t\]</span> 超参数设定值：</p><p>建议<span class="math inline">\(\beta_1=0.9,\beta_2=0.999,\epsilon=10e-8\)</span></p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;简介&quot;&gt;简介&lt;/h4&gt;
+&lt;p&gt;在机器学习中使用的优化算法除了常见的梯度下降，还有Adadelta、Adagrad、RMSProp等几种优化器&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1609.04747.pdf&quot;&gt;Sebastian Ruder 的这篇论文中给出了常用优化器的比较&lt;/a&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="非原创" scheme="http://example.com/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="深度学习" scheme="http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>tensorflow-gpu的远程开发环境配置</title>
+    <link href="http://example.com/2021/03/11/tensorflow-gpu%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
+    <id>http://example.com/2021/03/11/tensorflow-gpu%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</id>
+    <published>2021-03-11T01:47:41.000Z</published>
+    <updated>2021-03-26T11:26:09.115Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="各个软件包的版本">各个软件包的版本</h4><ol type="1"><li>tensoflow-gpu==2.2.0</li><li>Cuda10.2</li><li>Cudnn-v8.0.5.39</li><li>Nividia-driver 450</li></ol><a id="more"></a><h4 id="遇到的坑">遇到的坑</h4><ul><li><p>截止至2021年3月11日，tensorflow的2.2.0版本暂不适配cuda10.2，所有再运行测试的时候会回报错找不到各种包的情况，所以Tensorflow的官方开发人员建议，因为cuda10.2向下兼容，因此tensorflow推出的新版本之前可以通过修改cuda库软链的方式适配现有的tensorflow版本。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cuda库的目录</span></span><br><span class="line">/usr/local/cuda-<span class="number">10.2</span></span><br><span class="line"><span class="comment"># 设置软链</span></span><br><span class="line">sudo ln -s /usr/local/cuda-<span class="number">10.2</span>/targets/x86_64-linux/lib/libcudart.so<span class="number">.10</span><span class="number">.2</span> /usr/lib/x86_64-linux-gnu/libcudart.so<span class="number">.10</span><span class="number">.1</span></span><br></pre></td></tr></table></figure></li><li><p>Could not dlopen library 'libcublas.so.10.0'这一类的错误</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /usr/local/cuda-<span class="number">10.0</span>/lib64/libcublas.so<span class="number">.10</span><span class="number">.0</span> /usr/local/lib/libcublas.so<span class="number">.10</span><span class="number">.0</span> &amp;&amp; sudo ldconfig</span><br><span class="line">sudo cp /usr/local/cuda-<span class="number">10.0</span>/lib64/libcufft.so<span class="number">.10</span><span class="number">.0</span> /usr/local/lib/libcufft.so<span class="number">.10</span><span class="number">.0</span> &amp;&amp; sudo ldconfig</span><br></pre></td></tr></table></figure><p>按照上面的命令将不能找到的文件复制到 /usr/local/lib</p></li><li><p>关于/etc/ld.so.conf.d/cuda-10.2.conf 文件</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 参考github上的一些issue，我再改文件中添加了一些路径配置。但不知道是否有用</span></span><br><span class="line">/usr/local/cuda-<span class="number">10.2</span>/targets/x86_64-linux/lib</span><br><span class="line">/usr/local/cuda-<span class="number">10.2</span>/extras/CUPTI/lib64</span><br><span class="line">/usr/local/cuda-<span class="number">10.2</span>/lib64</span><br><span class="line">/usr/local/cuda-<span class="number">10.2</span>/nvvm/lib64</span><br></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;各个软件包的版本&quot;&gt;各个软件包的版本&lt;/h4&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;tensoflow-gpu==2.2.0&lt;/li&gt;
+&lt;li&gt;Cuda10.2&lt;/li&gt;
+&lt;li&gt;Cudnn-v8.0.5.39&lt;/li&gt;
+&lt;li&gt;Nividia-driver 450&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    
+    <category term="工具" scheme="http://example.com/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sigmoid函数在神经网络中的意义</title>
+    <link href="http://example.com/2021/02/19/sigmoid%E5%87%BD%E6%95%B0%E5%9C%A8%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E6%84%8F%E4%B9%89/"/>
+    <id>http://example.com/2021/02/19/sigmoid%E5%87%BD%E6%95%B0%E5%9C%A8%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E6%84%8F%E4%B9%89/</id>
+    <published>2021-02-19T06:41:28.000Z</published>
+    <updated>2021-02-19T07:06:23.303Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="神经网络背后的数学原理">神经网络背后的数学原理</h4><blockquote><p>任何连续的多元函数都能被一组一元函数的有限次叠加而成，其中每个医院函数的自变量都是一组连续单变量函数的有限次加权叠加。而这内层的每个单变量函数的自变量都是一个（一维）变量。</p><p>两层有限次叠加足够准确表达任何多元函数。这比多项式逼近要精确，用多项式去准确表示一个连续多元（非多项式）函数需要无穷多项。</p><p>固定一种统一的有限层计算网络结构，调整每个节点的参数和每层节点之间叠加计算的权重，来一致逼近任意一个多元函数。更近一步，我们期望每个节点的一元函数都具有统一形式。</p><p>Kurt Hornik指出如果仅考虑一致逼近，关键不在于sigmoidal-type的激活函数，而是多层网络的前馈结构。除了sigmoidal-type，还可以选择其他激活函数，只要他们在连续函数空间上稠密。</p><p>sigmoid函数是高斯分布的和，而高斯又是随机变量的和，世界本源也是随机的，大量的随机似乎有时候又显示出一些规律，其实也是中心极限，这也是最大信息熵的来源。</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h4 id=&quot;神经网络背后的数学原理&quot;&gt;神经网络背后的数学原理&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;任何连续的多元函数都能被一组一元函数的有限次叠加而成，其中每个医院函数的自变量都是一组连续单变量函数的有限次加权叠加。而这内层的每个单变量函数的自变量都是一个（一维）变量。</summary>
+      
+    
+    
+    
+    
+    <category term="sigmoid" scheme="http://example.com/tags/sigmoid/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>基于DGCNN和概率图的轻量级关系抽取模型</title>
+    <link href="http://example.com/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://example.com/2021/01/22/%E5%9F%BA%E4%BA%8EDGCNN%E5%92%8C%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/</id>
+    <published>2021-01-22T09:04:31.000Z</published>
+    <updated>2021-03-26T12:37:12.334Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="概率图思想">概率图思想</h4><blockquote><p>一种比较基准的思想是先进行实体识别，然后对识别出的实体进行关系分类，但这种思路无法很好的处理同一组（subject，object）对应多个predicative的情况，同时会存在采样效率的问题；另一种思路是作为一个整体的序列标注，但是这种设计不能很好地处理同食多个s、多个o的情况，需要采取丑陋的“就近原则”；强化学习也不是一个好的解决方法。</p><p>在苏剑林大佬提出使用类似seq2seq的概率图思路。</p><p>seq2seq的解码器：</p><p><span class="math inline">\(P(y_1,y_2,\dots,y_n|x)=P(y_1|x)P(y_2|x,y_1)\dots P(y_n|x,y_1,y_2,\dots,y_{n-1})\)</span></p><p>上述公式的意思是：先通过x来预测第一个单词，然后假设第一个单词已知来预测第二个单词，以此类推，直到出现结束标记。</p><p>抽取三元组时参考这个思路，则会变成：</p><p><span class="math inline">\(P(s,p,o)=P(s)P(o|s)P(p|s,o)\)</span></p><p>也就是说，我们可以先预测s，然后传入s来预测该s对应的o，然后传入s、o来预测所传入的s、o的关系p，实际应用中，我们还可以把o、p的预测合并成一步，所以总的步骤只需要两步：先预测s，然后传入s来预测该s所对应的o及p。</p><p>理论上，上述模型只能抽取单一一个三元组，所以为了处理多个s、多个o甚至多个p的情况，我们全部使用“半指针-半标注”结构。</p></blockquote><a id="more"></a><h4 id="模型整体结构">模型整体结构</h4><blockquote><p>模型使用了CNN+Attention的结构（为加一个短序列LSTM，由于序列很短，所以即使有循环也不影响效率），CNN使用了DGCNN，Attention是用了Google的Self- Attention。</p><p><img src="https://raw.githubusercontent.com/dnimo/img/master/基于DGCNN和概率图的轻量级关系抽取模型/image-20210122184728721.png" alt="模型整体结构图" style="zoom:50%;" /></p><p>处理流程：</p><ol type="1"><li>输入字id序列，然后通过字词混合Emdeding得到了对应的字向量序列，然后加上Position Embedding；</li><li>将得到“字+词+位置Embedding”输入到12层DGCNN中进行编码，然后得到编码后的序列（H）</li><li>将H传入一层Self- Attention后，将输出结果与先验特征进行拼接</li><li>将拼接后的结果传入CNN、Dense，用“半指针-半标注”结构预测s的首、尾位置；</li><li>训练时随机采样一个标注的s（预测时逐一遍历所有的s），然后将H对应此s的子序列传入到一个双向LSTM中，得到s的编码向量，然后加上相对位置的Position Embedding，得到一个与输入序列等长的向量序列；</li><li>将H传入另一层Self-Attention后，将输出结果与第5步输出的向量序列、先验特征进行拼接（先验特征可加可不加）；</li><li>将拼接结果传入CNN、Dense，对于每一种p，都构建一个“半指针-半标注”结构来预测对应的o的首、尾位置，这样就同时把o、p都预测出来；</li></ol></blockquote><h4 id="字词混合的embedding">字词混合的Embedding</h4><blockquote><p>为了最大程度上避免边界切分错误，我们应当选择字标注的方法，即以字为基本单位进行输入。但是，单纯的字embedding难以存储有效的语义信息，换句话说，单个字具有很少的语义信息，更为有效地融入语义信息的方案是“字词混合Embedding”。</p><p>在DGCNN模型中，苏剑林大佬，使用了一种自行设计的字词混合方式，我们在这里简要介绍。</p><p>首先，输入以字为单位的文本序列，经过一个字Embedding层后得到字向量序列；然后将文本分词，通过一个训练好的Word2Vec模型来提取对应的词向量，为了得到跟字向量对齐的词向量序列，我们可以将每个词的词向量重复“词的字数”那么多次；得到对齐的词向量序列后，我们将词向量序列经过一个矩阵变换到跟字向量一样的维度，并将两者相加（也就是做特征值合并）。</p><p>在这里我们使用pyhanlp作为分词工具，用1000万条百度百科词条训练了一个Word2Vec模型（Skip Gram + 负采样），而字向量则使用随机初始化的字Embedding层，在模型训练过程中，固定Word2Vec词向量不变，只优化变换矩阵和字向量，从另一个角度看也可以认为是我们是通过字向量和变换矩阵对Word2Vec的词向量矩阵进行微调。这样，我们既融合了预训练词向量模型所带来的先验语义信息，又保留了字向量的灵活性。</p></blockquote><h4 id="概率图思想中的sigmod函数----双标注函数">概率图思想中的Sigmod函数----双标注函数</h4><blockquote><p>因为一个答案可能对应多个结果，要想使模型将这些不同的词都有同样的标注结果，比较困难，所以我们使用两次标注的方式，来分别标注答案的开始位置和终止位置。</p><p><span class="math inline">\(p_i^{start}=\sigma(\alpha^T_1 Act(W_1 x_i+b)+\beta_1)\)</span></p><p><span class="math inline">\(p_i^{end}=\sigma(\alpha^T_2 Act(W_2 x_i +b_2)+\beta_2)\)</span></p><p>由此，模型的输出设计跟指针方式和纯序列标注都不一样，或者说是两者的简化及融合。</p></blockquote><h5 id="解码策略">解码策略</h5><p>答案的解码哟话，可能远比反复对模型调参带来的提升要大。</p><h5 id="解码方式">解码方式</h5><p>什么叫作答案解码？不管是softmax形式的指针，还是用sigmoid形式的“半指针-半标注”，最后模型输出的是两列浮点数，分别代表了答案启始位置和终止位置的大粉。问题是，什么指标来界定答案区间？==确定答案的最大长度，然后遍历材料所有长度不超过最大长度的区间，计算他们的启始位置和终止位置的打分的和或者积，然后取最大值。==</p><p>那么紧接着的问题就是，“和”好还是“积”好呢？又或者是“积的平方根”？</p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;概率图思想&quot;&gt;概率图思想&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一种比较基准的思想是先进行实体识别，然后对识别出的实体进行关系分类，但这种思路无法很好的处理同一组（subject，object）对应多个predicative的情况，同时会存在采样效率的问题；另一种思路是作为一个整体的序列标注，但是这种设计不能很好地处理同食多个s、多个o的情况，需要采取丑陋的“就近原则”；强化学习也不是一个好的解决方法。&lt;/p&gt;
+&lt;p&gt;在苏剑林大佬提出使用类似seq2seq的概率图思路。&lt;/p&gt;
+&lt;p&gt;seq2seq的解码器：&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math inline&quot;&gt;\(P(y_1,y_2,\dots,y_n|x)=P(y_1|x)P(y_2|x,y_1)\dots P(y_n|x,y_1,y_2,\dots,y_{n-1})\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;上述公式的意思是：先通过x来预测第一个单词，然后假设第一个单词已知来预测第二个单词，以此类推，直到出现结束标记。&lt;/p&gt;
+&lt;p&gt;抽取三元组时参考这个思路，则会变成：&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math inline&quot;&gt;\(P(s,p,o)=P(s)P(o|s)P(p|s,o)\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;也就是说，我们可以先预测s，然后传入s来预测该s对应的o，然后传入s、o来预测所传入的s、o的关系p，实际应用中，我们还可以把o、p的预测合并成一步，所以总的步骤只需要两步：先预测s，然后传入s来预测该s所对应的o及p。&lt;/p&gt;
+&lt;p&gt;理论上，上述模型只能抽取单一一个三元组，所以为了处理多个s、多个o甚至多个p的情况，我们全部使用“半指针-半标注”结构。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="非原创" scheme="http://example.com/categories/%E9%9D%9E%E5%8E%9F%E5%88%9B/"/>
+    
+    
+    <category term="DGCNN" scheme="http://example.com/tags/DGCNN/"/>
+    
+    <category term="关系抽取" scheme="http://example.com/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用CNN构建阅读理解式问答模型</title>
+    <link href="http://example.com/2021/01/14/%E4%BD%BF%E7%94%A8CNN%E6%9E%84%E5%BB%BA%E9%98%85%E8%AF%BB%E7%90%86%E8%A7%A3%E5%BC%8F%E9%97%AE%E7%AD%94%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://example.com/2021/01/14/%E4%BD%BF%E7%94%A8CNN%E6%9E%84%E5%BB%BA%E9%98%85%E8%AF%BB%E7%90%86%E8%A7%A3%E5%BC%8F%E9%97%AE%E7%AD%94%E6%A8%A1%E5%9E%8B/</id>
+    <published>2021-01-14T09:55:09.000Z</published>
+    <updated>2021-03-26T12:15:11.640Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="dgcnn模型">DGCNN模型</h4><blockquote><p>全称为Dilate Gated Convolutional Neural Network，中文译名“膨胀门卷积神经网络”</p><p>该模型融合：膨胀卷积、门卷积，同时增加了人工特征和trick，最终使得模型在轻、快的基础上达到了最佳的效果</p></blockquote><a id="more"></a><h4 id="卷积中的门机制">卷积中的门机制</h4><h5 id="一维卷积">一维卷积</h5><blockquote><p>CNN是NLP的标配方法，fackbook发布的论文：《Convolutional Sequence to Sequence Learning》充分体现了CNN在NLP中还有很大的挖掘空间。</p><p><img src="https://raw.githubusercontent.com/dnimo/img/master//使用CNN构建阅读理解式问答模型/image-20210114182352864.png" alt="image-20210114182352864" style="zoom:50%;" /></p></blockquote><h5 id="门激活机制">门激活机制</h5><blockquote><p>在自然语言处理中，使用GLU（Gated Linear Unit，门线性单元）作为激活函数效果最好。</p><p><img src="https://raw.githubusercontent.com/dnimo/img/master//使用CNN构建阅读理解式问答模型/image-20210114183016125.png" alt="image-20210114183016125" style="zoom:50%;" /></p><p>假设我们需要处理的时间向量序列是<span class="math inline">\(X = [x_1,x_2,\dots,x_n]\)</span>，那么我们就可以设置一个简单的门：</p><p><span class="math inline">\(Y=Conv1\space D_1(X) \otimes \sigma(Conv1D_2(X))\)</span></p><p>Attention: 这里使用的两个卷积形式一样（比如卷积核书、窗口大小），但权重不共享，也就是说参数翻倍，其中一个设置了sigmoid激活函数，另外一个不设置，然后将矩阵逐位相乘。因为sigmoid值域是<span class="math inline">\((0,1)\)</span>，所以从直觉上来看，就是给Conv1D的每个输出都加了一个“阀门”来控制流量。这就是所说的GCNN结构，或者说GLU（Gated Linear Unit）。</p><p>One advantage of GCNN is that the risk of gradient disappearing is lower than CNN, because one Conv1D without sigmoid function.</p><p>如果输入和输出的维度大小一致，那么我们就把输入也加到输出序列，也就是使用残差结构：</p><p><span class="math inline">\(Y=X\otimes(1-\sigma(Conv1D_2(X)))+Conv1D_1(X)\otimes\sigma(Conv1D_2(X))\)</span></p><p>引入残差结构，并不只是为了解决提督消失，而是使得信息能够多通道传输：以<span class="math inline">\(1-\sigma\)</span>的概率直接通过，以<span class="math inline">\(\sigma\)</span>的概率经过变换之后才能通过。</p><p><img src="https://raw.githubusercontent.com/dnimo/img/master//使用CNN构建阅读理解式问答模型/image-20210121175157836.png" alt="image-20210121175157836" style="zoom: 50%;" /></p></blockquote><h5 id="残差机制">残差机制</h5><blockquote><p>主观上我们可能觉得只要我们无脑的增加网络的层数，我们就能从此获益，但是实验数据告诉我们，事实并不是这样。</p><p>随着网络层数的增加，网络会发生退化（de gradation）的现象：随着网络层数的增加，训练集Loss的逐渐下降，然后趋于饱和，当我们再增加网络深度的时候，训练集Loss反而会增大。</p><p>但是需要强调的是，这并不是过拟合现象，因为过拟合时模型的Loss依然是下降的。</p><p>当网络退化的时候，浅层网络能够达到比深层网络更好的训练效果，这时我们把低层的特征传到高层，那么效果应该至少不比浅层网络效果差，所以我们在浅层网络和深层网络之间添加一条直接映射，传递参数。</p><p>为什么叫作残差网络？</p><p>残差块：<span class="math inline">\(x_{l+1}=x_l+\digamma(x_l,W_l)\)</span></p><p>在统计学中，残差和误差是非常容易混淆的。误差是衡量观测值和真实值之间的差距，残差是指预测值和观测值之间的差距。对于残差网络的命名原因，原作者给出的解释是：网络的一层通常可以看作<span class="math inline">\(y=H(x)\)</span>，但残差网络的一个残差快可以表示为<span class="math inline">\(H(x)=F(x)+x\)</span>，也就是说<span class="math inline">\(F(x)=H(x)-x\)</span>，在单位映射中，<span class="math inline">\(y=x\)</span>便是观测值，而<span class="math inline">\(H(x)\)</span>是预测值，所以<span class="math inline">\(F(x)\)</span>便对应着残差，因此叫做残差网络。</p><p>残差网络网络本来是为了解决深层网络训练不均衡的问题，但事实上也加速了信息流动，使得简单的问题可以使用简单的路径。</p><p>如果与一维卷积、GLU激活函数配合使用，则卷积块在数学上等价于：</p><p><span class="math inline">\(o=x\oplus[1-\sigma(f_{w_2}(x))]+f_{w_1}(x) \oplus \sigma(f_{w_2}(x))\)</span></p><p>这体现了信息在双通道中的选择性流动</p></blockquote><h5 id="膨胀cnn">膨胀CNN</h5><blockquote><p>膨胀CNN，又叫作空洞CNN，通过在卷积核中增加“空洞”，从而在不增加参数量的情况下允许捕捉更远的距离，目前已经被广泛运用。</p><p><img src="https://raw.githubusercontent.com/dnimo/img/master//使用CNN构建阅读理解式问答模型/image-20210121175507051.png" alt="image-20210121175507051" style="zoom:50%;" /></p><p>膨胀卷积使得模型能够捕捉到更远距离的信息，并且不增加模型参数。</p></blockquote><h4 id="attention">Attention</h4><blockquote><p>在DGCNN模型中，Attention主要是用于取代简单的Pooling来完成对序列信息的整合，包括将问题的向量序列编码为一个总的问题向量，将材料的序列编码为一个总的材料向量。</p><p>“加性注意力”，形式为：</p><p><span class="math inline">\(x=Econdoer(x_1,x_2,\dots,x_n)=\sum\limits_{i=1}^n\lambda_i x_i\)</span></p><p><span class="math inline">\(\lambda_i = softmax(\alpha^T Act(Wx_i))\)</span></p><p>这里的<span class="math inline">\(\alpha,W\)</span>都为可训练参数。Act为激活函数，一般取tanh，也可以考虑swish函数。使用swish时，需要添加偏置项：</p><p><span class="math inline">\(\lambda_i=softmax(\alpha^TAct(Wx_i+b)+\beta)\)</span></p><p>参考自 R-Net模型</p></blockquote>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;dgcnn模型&quot;&gt;DGCNN模型&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;全称为Dilate Gated Convolutional Neural Network，中文译名“膨胀门卷积神经网络”&lt;/p&gt;
+&lt;p&gt;该模型融合：膨胀卷积、门卷积，同时增加了人工特征和trick，最终使得模型在轻、快的基础上达到了最佳的效果&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    
+    <category term="CNN" scheme="http://example.com/tags/CNN/"/>
+    
+    <category term="QATask" scheme="http://example.com/tags/QATask/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>轻量级Bert关系抽取模型</title>
+    <link href="http://example.com/2021/01/10/%E8%BD%BB%E9%87%8F%E7%BA%A7Bert%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://example.com/2021/01/10/%E8%BD%BB%E9%87%8F%E7%BA%A7Bert%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E6%A8%A1%E5%9E%8B/</id>
+    <published>2021-01-10T08:47:40.000Z</published>
+    <updated>2021-03-27T02:28:58.732Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="bert的诞生">Bert的诞生</h4><blockquote><p>Bert是谷歌开源的大规模语料预训练模型，也是基于Attention</p></blockquote><h4 id="keras封装的bert">Keras封装的Bert</h4><blockquote><p>目前，Github上已经有大佬封装好的Keras版Bert，可以直接调用官方发布的预训练权重，如果有一定的keras基础，使用Keras是最简单的调用Bert的方式，也就是“站在巨人的肩膀上”。</p></blockquote><a id="more"></a><h4 id="keras-bert">Keras-bert</h4><p><a href="https://github.com/CyberZHG/keras-bert">keras-bert的github链接</a></p><p>在该开源项目中，CyberZHG大佬还封装了很多有价值的Keras模块，例如Keras-gpt-2（可以像使用Bert一样使用gpt2）、keras-lr-multiplier（分层设置学习率）、keras-ordered-neurons（On-LSTM）等等</p><p>事实上，有Keras-bert之后，再加上一点点Keras基础知识，而且Keras-bert给出的demo已经十分完善，调用、微调Bert已经变成了没有什么技术含量的事情，下文我们将根据CyberZHG大佬给出的demo解读keras-bert的基本用法。</p><h4 id="tokenizer-分词器">Tokenizer 分词器</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入tokenizer并进行重构</span></span><br><span class="line"><span class="comment"># 使用官方开源的中文权重 项目代号chinese_L-12_H-768_A-12</span></span><br><span class="line"><span class="keyword">from</span> keras_bert <span class="keyword">import</span> load_trained_model_from_checkpoint, Tokenizer</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"></span><br><span class="line">config_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/bert_config.json&#x27;</span></span><br><span class="line">checkpoint_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/bert_model.ckpt&#x27;</span></span><br><span class="line">dict_path = <span class="string">&#x27;../bert/chinese_L-12_H-768_A-12/vocab.txt&#x27;</span></span><br><span class="line"></span><br><span class="line">token_dict = &#123;&#125;</span><br><span class="line"><span class="keyword">with</span> codecs.<span class="built_in">open</span>(dict_path, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;utf8&#x27;</span>) <span class="keyword">as</span> reader:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> reader:</span><br><span class="line">        token = line.strip()</span><br><span class="line">        token_dict[token] = <span class="built_in">len</span>(token_dict)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OurTokenizer</span>(<span class="params">Tokenizer</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_tokenize</span>(<span class="params">self, text</span>):</span></span><br><span class="line">        R = []</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> text:</span><br><span class="line">            <span class="keyword">if</span> c <span class="keyword">in</span> self._token_dict:</span><br><span class="line">                R.append(c)</span><br><span class="line">            <span class="keyword">elif</span> self._is_space(c):</span><br><span class="line">                R.append(<span class="string">&#x27;[unused1]&#x27;</span>) <span class="comment"># space类用未经训练的[unused1]表示</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                R.append(<span class="string">&#x27;[UNK]&#x27;</span>) <span class="comment"># 剩余的字符是[UNK]</span></span><br><span class="line">        <span class="keyword">return</span> R</span><br><span class="line"></span><br><span class="line">tokenizer = OurTokenizer(token_dict)</span><br><span class="line">tokenizer.tokenize(<span class="string">u&#x27;今天天气不错&#x27;</span>)</span><br></pre></td></tr></table></figure><blockquote><p>默认情况下，分词后句首毁分别添加[CLS]和[SEP]标记，其中[CLS]位置对应的输出向量是能代表整句的句向量，[SEP]则是句间的分隔符，其余部分为单字输出。</p><p>keras-bert中自带的Tokenizer有自己的_tokenize方法，我们在这里重写该方法的目的是为了，保证tokenize之后的结果，跟原来的字符串长度保持一致。Tokenizer自带的 _tokenize方法会自动去除空格，然后有部分字符会粘贴在在一起输出，导致tokenize之后的列表不等于原来字符串的长度，这样做序列标注任务十分模范。在这里我们使用[unused1]表示空格类字符，其余不在列表中的字符使用[UNK]表示，其中[unused*]这一类标记是未经训练的（初始化），是Bert预留出来用来添加词汇的标记，所以我们可以用它们指代任何新的字符。</p></blockquote><h4 id="关系抽取模型部分">关系抽取模型部分</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">t = bert_model([t1,t2])</span><br><span class="line">ps1 = Dense(<span class="number">1</span>,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line">ps2 = Dense(<span class="number">1</span>,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line"></span><br><span class="line">subject_model = Model([t1_in,t2_in],[ps1,ps2])<span class="comment"># 预测subject的模型</span></span><br><span class="line"></span><br><span class="line">k1v = Lambda(seq_gather)([t,k1])</span><br><span class="line">k2v = Lambda(seq_gather)([t,k2])</span><br><span class="line">kv = Average()([k1v,k2v])</span><br><span class="line">t = Add()[t,kv]</span><br><span class="line">po1 = Dense(num_classes,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line">po2 = Dense(num_classes,activation=<span class="string">&#x27;sigmoid&#x27;</span>)(t)</span><br><span class="line"></span><br><span class="line">object_model = Model([t1_in,t2_in,ki_in,k2_in],[po1,po2])<span class="comment">#输入text和subject，预测object及其关系</span></span><br><span class="line"> train_model = Model([t1_in,t2_in,si_in,s2_in,k1_in,k2_in,o1_in,o2_in],</span><br><span class="line">                     [ps1,ps2,po1,po2])</span><br></pre></td></tr></table></figure><blockquote><p>在这段关键代码中，我们引入了bert作为编码器，然后得到编码序列t，然后直接泗洪两个Dense()，这就完成了subject的标注模型；接着，我们把传入的s的首尾对应的编码向量拿出来，直接加到编码向量序列t中去，然后再接两个Dense(num_classes)，就完成object的标注模型，同时标注出了关系。</p><p>在关系抽取这个例子中，第一个epoch学习率慢慢从0增加到<span class="math inline">\(5*10^{-5}\)</span> （这样成为warmup），第二个epoch再从<span class="math inline">\(5*10^{-5}\)</span>降到<span class="math inline">\(10^{-5}\)</span>，总的来说就是先增后减，Bert本身也是用类似的学习率曲线来进行训练，这样的训练方式比较稳定，不容易崩溃，而且效果也比较好。</p></blockquote><p>参考：苏剑林. (Jun. 18, 2019). 《当Bert遇上Keras：这可能是Bert最简单的打开姿势 》[Blog post]. Retrieved from https://kexue.fm/archives/6736</p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;bert的诞生&quot;&gt;Bert的诞生&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Bert是谷歌开源的大规模语料预训练模型，也是基于Attention&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&quot;keras封装的bert&quot;&gt;Keras封装的Bert&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;目前，Github上已经有大佬封装好的Keras版Bert，可以直接调用官方发布的预训练权重，如果有一定的keras基础，使用Keras是最简单的调用Bert的方式，也就是“站在巨人的肩膀上”。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    
+    <category term="bert 关系抽取" scheme="http://example.com/tags/bert-%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>希尔伯特空间</title>
+    <link href="http://example.com/2021/01/02/%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/"/>
+    <id>http://example.com/2021/01/02/%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</id>
+    <published>2021-01-02T12:21:29.000Z</published>
+    <updated>2021-01-02T12:27:59.551Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="希尔伯特空间">希尔伯特空间</h4><p>希尔伯特空间是欧几里德空间的直接推广。对希尔伯特空间及作用在希尔伯特空间上的算子的研究是泛函分析的重要组成部分。</p><a id="more"></a><p>设H是一个实的线性空间，如果对H中的任何两个向量x和y，都对应着一个实数，记为(x，y)、满足下列条件：</p><p>①对H中的任何两个向量x，y，有(x，y)=(y，x);</p><p>②对H中的任何三个向量x、y、z及实数α、β，有(αx+βy，z)=α(x，z)+β(y，z);</p><p>③对H中的一切向量x，均有(x，x)≥0，且(x，x)=0的充分必要条件是x=0。则(x，y)称为是H上的一个内积，而H称为内积空间。</p><p>如果定义 ，则在‖0‖下，H构成一个线性赋范空间。</p><p>完备的内积空间称为希尔伯特空间，希尔伯特空间的概念还可以推广到复线性空间上。</p><p>欧几里德空间是希尔伯特空间的一个重要特例，希尔伯特空间的另一个最重要的特例是L(G)，设G是n维欧几里德空间中的一个有界闭域， 定义在G上的满足⨜G|f(x)|dx&lt;+∞的勒具格可测函数全体记为L(G)，在L2(G)中引入内积(f，g)=⨜Gf (x)g(x)dx，则L(G) 是一个希尔伯特空间，L(G)是实用中最重要和最常用的希尔伯特空间。</p><p>希尔伯特空间有许多与欧几里德空间相似的性质，例如，在希尔伯特空间中，可以定义向量正交、正交和、正交投影的概念，柯西一许瓦兹不等式成立、勾股定理和投影定理成立。在可分希尔伯特空间中，存在着完全的标准正交系，希尔伯特空间中的任一向量可以依任一完全的标准正交系分解。</p><p>在泛函分析中，详细地研究了希尔伯特空间自共轭算子的理论，特别是自共轭算子的谱理论，这一理论在经典数学的不少领域中有广泛的应用。需要特别指出的是，自共轭算子的谱理论，为量子力学的发展，提供了适合的工具。</p><p>理论数学、应用数学和物理中的许多问题，在希尔伯特空间中，可得到较好的处理，因此，希尔伯特空间成为泛函分析中最重要的和最常用的一类空间，它在许多其他数学分支、理论物理和现代工程技术理论中，也得到了广泛的应用。</p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;希尔伯特空间&quot;&gt;希尔伯特空间&lt;/h4&gt;
+&lt;p&gt;希尔伯特空间是欧几里德空间的直接推广。对希尔伯特空间及作用在希尔伯特空间上的算子的研究是泛函分析的重要组成部分。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="数学理论" scheme="http://example.com/tags/%E6%95%B0%E5%AD%A6%E7%90%86%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>了解N-Gram模型</title>
+    <link href="http://example.com/2020/12/29/%E4%BA%86%E8%A7%A3N-Gram%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://example.com/2020/12/29/%E4%BA%86%E8%A7%A3N-Gram%E6%A8%A1%E5%9E%8B/</id>
+    <published>2020-12-29T08:05:20.000Z</published>
+    <updated>2021-03-26T12:13:36.939Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="关于语言模型">关于语言模型</h4><blockquote><p>语言模型就是用来计算一个句子的概率的模型，也就是判断一句话是否合理的概率</p><p>一开始，都是基于规则的语言模型研究，但这样往往有很大的问题，后来发明了基于统计的语言模型</p><p>N-gram就是统计语言模型的一种，其他的还有RNN以及LSTM</p></blockquote><a id="more"></a><h4 id="n-gram详解">N-Gram详解</h4><p>基于统计概率来说，我们需要计算句子的概率大小：<span class="math inline">\(P(S)=P(\omega_1,\omega_2,\cdot\cdot\cdot,\omega_n)\)</span> ，这个就是最终要求的一句话的概率，概率大说明更合理，概率小说明不合理</p><p>因为是不能直接计算的，所以我们要应用条件概率得到：</p><p><span class="math inline">\(P(\omega_1,\omega_2,\cdot\cdot\cdot,\omega_n)=P(\omega_1)*P(\omega_2|\omega_1)*P(\omega_3|\omega_1,\omega_2)\cdot\cdot\cdot P(\omega_n|\omega1,\cdot\cdot\cdot,\omega_{n-1})\)</span></p><p>中间插入条件概率：P(B|A)：A条件下B发生的概率。从一个大的空间进入到一个字空间（切片），计算在子空间中的占比</p><p><span class="math inline">\(P(B|A)=\frac{P(A,B)}{P(A)}\)</span></p><p>然而，如果直接计算条件概率转化后的式子的话，对每个词要考虑它前面的所有词，这在实际中意义不大，而且不好计算。这个时候我们要基于马尔科夫假设来做简化</p><h4 id="马尔科夫假设">马尔科夫假设</h4><blockquote><p>马尔可夫假设是指，每个词出现的概率只跟它前面的少数几个词有关，例如，二阶马尔可夫假设只考虑前面的两个词，相应的语言模型是三元模型。引入马尔科夫假设的语言模型，也叫做马尔科夫模型。</p><p>马尔可夫链为状态空间中经过从一个状态到另一状态的转换的随机 过程。该过程要求具备“无记忆”的性质：下一个状态的概率分布只能由当前状态决定，在时间序列中它前面的事件均与之无关</p></blockquote><p>要就是说，应用了这个假设表明了当前这个词仅仅跟前面几个有限词相关，因此也就不必追溯到最开始的那个词，这样便可以大幅度缩减上述的算式长度</p><p><span class="math inline">\(P(\omega_1,\omega_2,\cdots,\omega_n)=P(\omega_i|\omega_{i-m+1},\cdots,\omega_{i-1})\)</span></p><blockquote><p>这里的m表示前m个词相关</p></blockquote><p>然后我们可以设置m=1,2,3,....得到相应的一元模型，二元模型，三元模型</p><p>而N-Gram模型也就是这样，当m=1，叫1-gram或者unigram；m=2，叫2-gram或者bigram</p><h4 id="利用n-gram模型评估语句是否合理">利用N-Gram模型评估语句是否合理</h4><p>假设现在有一个语料库，我们统计了下面的一些词出现的数量</p><table><thead><tr class="header"><th>i</th><th>want</th><th>to</th><th>eat</th><th>chinese</th><th>food</th><th>lunch</th><th>spend</th></tr></thead><tbody><tr class="odd"><td>2533</td><td>927</td><td>2417</td><td>746</td><td>158</td><td>1093</td><td>341</td><td>278</td></tr></tbody></table><p>下面的这些概率作为已知条件：</p><p><span class="math inline">\(P(i|&lt;s&gt;)=0.25 \hspace{2cm} P(english|want)=0.0011\)</span></p><p><span class="math inline">\(P(food|english)=0.5 \hspace{2cm} P(&lt;/s&gt;|food)=0.68\)</span></p><p><span class="math inline">\(P(want|&lt;s&gt;)=0.25\)</span></p><p>下面这个表给出了基于bigram模型进行计数之结果</p><figure><img src="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183103524.png" alt="image-20201229183103524" /><figcaption aria-hidden="true">image-20201229183103524</figcaption></figure><p>Ex：其中第一行，第二列表示给定前一个词是“i”时，当前词“want”的情况一共出现了827次，据此，我们便可以计算相应的频率分布表</p><figure><img src="https://raw.githubusercontent.com/dnimo/img/master/了解N-Gram模型/image-20201229183248740.png" alt="image-20201229183248740" /><figcaption aria-hidden="true">image-20201229183248740</figcaption></figure><p>比如说，我们就以表中的<span class="math inline">\(P(eat|i)=0.0036\)</span> 这个概率值讲解，从表中得出”i“一共出现了2533次，而其后出现eat的次数一共有9次，<span class="math inline">\(P(eat|i)=P(eat,i)\hspace{2cm}P(i)=count(eat,i)/count(i)=\frac{9}{2533}=0.0036\)</span></p><p>下面我们通过这个语料库进行判断：</p><ul><li>s1=“i want english food”</li><li>S2="want i English food"</li></ul><p>首先判断p(s1)：<span class="math inline">\(P(s1)=P(i|&lt;s&gt;)P(want|i)P(english|want)P((food|english)P(&lt;/s&gt;|food)=0.000031\)</span></p><p><span class="math inline">\(P(s2)=P(want|&lt;s&gt;)P(i|want)P(english|want)P(food|english)P(&lt;/s&gt;|food)=0.00000002057\)</span></p><p>通过比较我们发现s1更合理，以上就是二元模型</p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;关于语言模型&quot;&gt;关于语言模型&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;语言模型就是用来计算一个句子的概率的模型，也就是判断一句话是否合理的概率&lt;/p&gt;
+&lt;p&gt;一开始，都是基于规则的语言模型研究，但这样往往有很大的问题，后来发明了基于统计的语言模型&lt;/p&gt;
+&lt;p&gt;N-gram就是统计语言模型的一种，其他的还有RNN以及LSTM&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    
+    <category term="语言模型" scheme="http://example.com/tags/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/"/>
+    
+  </entry>
+  
+</feed>
